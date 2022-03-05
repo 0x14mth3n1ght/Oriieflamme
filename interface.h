@@ -2,27 +2,27 @@
 #define INTERFACE_H
 
 /*@requires : p est un plateau valide
-@assigns    : nothing (???)
-@ensures    : affiche p (wip)
+@assigns    : nothing
+@ensures    : affiche p
 */
 void show_board(plateau p);
 
 /*@requires : f est valide
-@assigns    : nothing (???)
+@assigns    : nothing
 @ensures    : affiche la main de f
 */
 void show_hand(faction f);
 
 /*@requires : f est valide, les cartes de f ont été piochées, already = O ou 1 (1 si la faction a déjà utilisé l'option)
-@assigns    : nothing (???)
+@assigns    : nothing
 @ensures    : demande à f une des actions suivantes, et si already = 0, renvoie la valeur associée :
-    0. conserve sa main
+    0. conserve sa main (par défaut si already==1)
     1. vide sa main, mélange la pioche, repioche sa nouvelle main
 */
 int mulligan_hand(faction f, int already);
 
 /*@requires : f est valide
-@assigns    : nothing (???)
+@assigns    : nothing
 @ensures    : demande à f la carte qu'elle souhaite poser sur le plateau, retourne la valeur (comprise entre 0 et 7, la position étant fixée au début de la manche)
 */
 int choose_card(faction f);
