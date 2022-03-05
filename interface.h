@@ -27,11 +27,11 @@ int mulligan_hand(faction f, int already);
 */
 int choose_card(faction f);
 
-/*@requires : f est valide, pos est un tableau de taille 2, carte est compris entre 0 et 7, pos est un tableau d'entiers positifs de taille 2
+/*@requires : f est valide, pos est un tableau de taille 2, pos est un tableau d'entiers positifs de taille 2
 @assigns    : pos
-@ensures    : demande à f les coordonnées (x,y) de l'endroit où elle souhaite poser la carte. Les coordonnées seront stockées dans le tableau pos = [x,y]
+@ensures    : demande à f les coordonnées (x,y) de l'endroit où elle souhaite poser la carte c. Les coordonnées seront stockées dans le tableau pos = [x,y]
 */
-void position_card(faction f, int carte, int* pos);
+void position_card(faction f, carte c, int* pos);
 
 /*@requires : c est valide
 @assigns    : nothing (???)
@@ -43,6 +43,6 @@ void show_effect(carte c);
 @assigns    : nothing (???)
 @ensures    : affiche le vainqueur de la partie (et le retourne)
 */
-int winner(int* won_games, int size);
+int show_winner(int* won_games, int size);
 
 #endif
