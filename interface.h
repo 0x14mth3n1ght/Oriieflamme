@@ -1,6 +1,11 @@
 #ifndef INTERFACE_H
 #define INTERFACE_H
 
+/*Obtention des types carte, faction et plateau*/
+#include "carte.h"
+#include "faction.h"
+#include "plateau.h"
+
 /*@requires : p est un plateau valide
 @assigns    : nothing
 @ensures    : affiche p
