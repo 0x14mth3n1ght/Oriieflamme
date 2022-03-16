@@ -28,7 +28,7 @@ int mulligan_main(faction f, int already);
 @ensures    : demande à f la carte qu'elle souhaite poser sur le plateau*/
 carte choix_carte(faction f);
 
-/*@requires : f est valide, pos est un tableau de taille 2, pos est un tableau d'entiers positifs de taille 2
+/*@requires : f est valide, pos est un tableau d'entiers positifs de taille 2
 @assigns    : pos
 @ensures    : demande à f les coordonnées (x,y) de l'endroit où elle souhaite poser la carte. Les coordonnées seront stockées dans le tableau pos = [x,y]*/
 void position_carte(faction f, int* pos);
