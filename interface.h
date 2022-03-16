@@ -18,8 +18,8 @@ void affiche_main(faction f);
 
 /*@requires : f est valide, les cartes de f ont été piochées, already = O ou 1 (1 si la faction a déjà utilisé l'option)
 @assigns    : nothing
-@ensures    : demande à f une des actions suivantes, et si already = 0, renvoie la valeur associée :
-    0. conserve sa main (par défaut si already==1)
+@ensures    : si already==1, alors renvoie 0, sinon si already == 0, demande à f une des actions suivantes, et renvoie la valeur associée :
+    0. conserve sa main
     1. vide sa main, mélange la pioche, repioche sa nouvelle main*/
 int mulligan_main(faction f, int already);
 
