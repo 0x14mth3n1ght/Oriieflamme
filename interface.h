@@ -25,7 +25,7 @@ int mulligan_main(faction f, int already);
 
 /*@requires : f est valide
 @assigns    : nothing
-@ensures    : demande à f la carte qu'elle souhaite poser sur le plateau*/
+@ensures    : demande à f la carte qu'elle souhaite poser sur le plateau et la retourne*/
 carte choix_carte(faction f);
 
 /*@requires : f est valide, pos est un tableau d'entiers positifs de taille 2
@@ -40,7 +40,7 @@ void affiche_effet(carte c);
 
 /*@requires : won_rounds est le tableau de int représentant le nombre de manche gagnées par chaque faction, de taille size
 @assigns    : nothing
-@ensures    : affiche le vainqueur de la partie (et retourne l'indice du vainqueur dans won_rounds)*/
+@ensures    : affiche le vainqueur de la partie et retourne l'indice du vainqueur (indice selon le tableau won_rounds)*/
 int affiche_gagnant(int* won_rounds, int size);
 
 #endif
