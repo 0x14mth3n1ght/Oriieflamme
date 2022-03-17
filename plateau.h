@@ -52,18 +52,6 @@ int retourner_sommet(pile);
 */
 void afficher_pile(pile);
 
-/*
-Interface à proprement parler :
-
-un type plateau (possiblement abstrait)
-une fonction pour créer un nouveau plateau (et les deux factions qui joueront dessus)
-une fonction pour libérer la mémoire associée à un plateau (et ses deux factions)
-une fonction pour initialiser une nouvelle manche du jeu, ou, le cas échéant, indiquer que le jeu est terminé
-une fonction qui renvoie la liste des deux factions du jeu
-une fonction pour permettre à une faction de poser une carte face cachée sur le plateau
-une fonction pour retourner une carte face visible et activer son effet
-*/
-
 /* Type abstrait d'un plateau de jeu (pile pour la grille et taille ) */
 typedef struct plateau plateau;
 
@@ -92,16 +80,16 @@ void reinitialisation(plateau*);
 /*
 @requires: nothing
 @assigns: nothing
-@ensures: choisit le coup du joueur et place ses coordonnées dans ligne, colonne
+@ensures: affiche l'état du jeu (factions)
 */
 void affiche_factions(faction *f1,faction *f2);
 
 /*
-@requires: ligne et colonne adresses valides
-@assigns: ligne, colonne
-@ensures: choisit la carte du joueur et place ses coordonnées dans ligne, colonne
+@requires: carte valide
+@assigns: faction*
+@ensures: pioche une carte à jouer (cachée)
 */
-void coup_faction(faction*);
+void carte_faction(faction*);
 
 /*
 @requires: carte valide
