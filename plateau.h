@@ -2,6 +2,7 @@
 #define PLATEAU_H
 
 #include "carte.h"
+#include "faction.h"
 
 /* Pile pour définir le tableau*/
 
@@ -93,14 +94,14 @@ void reinitialisation(plateau*);
 @assigns: nothing
 @ensures: choisit le coup du joueur et place ses coordonnées dans ligne, colonne
 */
-void affiche_factions(faction f1,faction f2);
+void affiche_factions(faction *f1,faction *f2);
 
 /*
 @requires: ligne et colonne adresses valides
 @assigns: ligne, colonne
 @ensures: choisit la carte du joueur et place ses coordonnées dans ligne, colonne
 */
-void coup_faction(int* ligne, int* colonne);
+void coup_faction(faction*);
 
 /*
 @requires: carte valide
