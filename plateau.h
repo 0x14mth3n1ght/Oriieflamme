@@ -1,77 +1,113 @@
 #ifndef PLATEAU_H
 #define PLATEAU_H
 
-/* Type concret d'un plateau de jeu */
-typedef struct _plateau {
-    pile **grille;
-    int taille;
-    int **activees;
-} plateau;
+#include "carte.h"
 
+/* Pile pour définir le tableau*/
+
+typedef int valeur;
+
+typedef struct pile pile;
 
 /*
-@requires: /nothing
-@assigns: /nothing
+@requires: nothing
+@assigns: nothing
+@ensures: Retourne une pile vide
+*/
+pile pile_vide();
+
+/*
+@requires: nothing
+@assigns: nothing
+@ensures: Retourne vrai ssi la pile est vide
+*/
+int est_vide(pile);
+
+/*
+@requires: nothing
+@assigns: pile
+@ensures: Ajoute la valeur sur le dessus de la pile
+*/
+void empiler(pile*, valeur);
+
+/*
+@requires: pile non vide
+@assigns: pile
+@ensures: Supprime et retourne l'élément au sommet de la pile
+*/
+int depiler(pile*);
+
+/*
+@requires: pile non vide
+@assigns: nothing
+@ensures: Retourne l'élément au sommet de la pile
+*/
+int retourner_sommet(pile);
+
+/*
+@requires: nothing
+@assigns: nothing
+@ensures: Affiche la pile
+*/
+void afficher_pile(pile);
+
+/*
+Interface à proprement parler :
+
+un type plateau (possiblement abstrait)
+une fonction pour créer un nouveau plateau (et les deux factions qui joueront dessus)
+une fonction pour libérer la mémoire associée à un plateau (et ses deux factions)
+une fonction pour initialiser une nouvelle manche du jeu, ou, le cas échéant, indiquer que le jeu est terminé
+une fonction qui renvoie la liste des deux factions du jeu
+une fonction pour permettre à une faction de poser une carte face cachée sur le plateau
+une fonction pour retourner une carte face visible et activer son effet
+*/
+
+/* Type abstrait d'un plateau de jeu (pile pour la grille et taille ) */
+typedef struct plateau plateau;
+
+typedef int faction;
+
+/*
+@requires: nothing
+@assigns: nothing
 @ensures: Initialise un plateau vide
 */
 plateau creer_plateau(int taille);
 
+/*
+@requires: mat has size m
+@assigns: nothing
+@ensures: libère la mémoire associée au plateau*/
+void detruire_plateau(plateau);
 
 /*
-@requires: /nothing
+@requires: nothing
 @assigns: plateau
-@ensures: réinitialise les cases activées du plateau
+@ensures: réinitialise le jeu ou indique s'il est terminé
 */
-void reinitialisation_activees(plateau*);
-
+void reinitialisation(plateau*);
 
 /*
-@requires: plateau non rempli
-@assigns: /nothing
-@ensures: renvoit vrai ssi le coup joué par joueur aux coordonnées indiquées est valide
+@requires: nothing
+@assigns: nothing
+@ensures: choisit le coup du joueur et place ses coordonnées dans ligne, colonne
 */
-int coup_valide(plateau, int ligne, int colonne);
-
+void affiche_factions(faction f1,faction f2);
 
 /*
-@requires: /nothing
-@assigns: /nothing
-@ensures: renvoit vrai ssi le plateau est rempli
+@requires: ligne et colonne adresses valides
+@assigns: ligne, colonne
+@ensures: choisit la carte du joueur et place ses coordonnées dans ligne, colonne
 */
-int est_rempli(plateau);
-
+void coup_faction(int* ligne, int* colonne);
 
 /*
-@requires: coordonnées valides
-@assigns: /nothing
-@ensures: Renvoit la liste (pile) des cases voisines
+@requires: carte valide
+@assigns: carte
+@ensures: retourne une carte face visible et activer son effet
 */
-pile cases_voisines(plateau, int, int);
 
-
-/*
-@requires: ligne et colonnes coordonnées valides
-@assigns: /nothing
-@ensures: Affiche la pile de la case correspondante
-*/
-void montrer_pile(plateau, int ligne, int colonne);
-
-
-/*
-@requires: /nothing
-@assigns: /nothing
-@ensures: Affiche le plateau
-*/
-void afficher_plateau(plateau);
-
-
-/*
-@requires: indice valide ou égal à -1 ; coordoonées valides ou égales à -1
-@assigns: indice, ligne, colonne
-@ensures: Retourne les coordonnées correspondant à l'indice ou vice versa
-*/
-void convertion_indice_coordonnees(plateau, int* indice, int* ligne, int* colonne);
-
-
+carte_base active_carte(faction);
 
 #endif
