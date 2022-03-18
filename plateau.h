@@ -23,16 +23,16 @@ void detruire_plateau(plateau);
 /*
 @requires: plateau* est un pointeur valide
 @assigns: plateau
-@ensures: réinitialise le jeu ou indique s'il est terminé
+@ensures: réinitialise le jeu ou indique s'il est terminé en renvoyant 1
 */
-void reinitialisation(plateau*);
+int reinitialisation(plateau);
 
 /*
 @requires: f1 et f2 sont des pointeurs vers des factions valides
 @assigns: nothing
-@ensures: affiche l'état du jeu (factions)
+@ensures: affiche l'état du jeu en renvoyant la liste des factions
 */
-void affiche_factions(faction *f1,faction *f2);
+int* affiche_factions(faction *f1,faction *f2);
 
 /*
 @requires: faction* est pointeur vers une faction valide
