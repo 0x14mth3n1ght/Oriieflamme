@@ -1,5 +1,5 @@
-#ifndef PLATEAU_H
-#define PLATEAU_H
+#ifndef _PLATEAU_H
+#define _PLATEAU_H
 
 #include "carte.h"
 #include "faction.h"
@@ -32,7 +32,7 @@ int reinitialisation(plateau);
 @assigns: nothing
 @ensures: affiche l'état du jeu en renvoyant la liste des factions
 */
-int* affiche_factions(faction *f1,faction *f2);
+void retourne_factions(faction *f1,faction *f2);
 
 /*
 @requires: faction* est pointeur vers une faction valide
