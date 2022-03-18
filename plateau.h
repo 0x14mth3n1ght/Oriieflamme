@@ -4,11 +4,11 @@
 #include "carte.h"
 #include "faction.h"
 
-/* Type abstrait d'un plateau de jeu (pile pour la grille et taille ) */
+/* Type abstrait d'un plateau de jeu (tableau 2D) */
 typedef struct plateau_base *plateau;
 
 /*
-@requires: taille est un entier
+@requires: nothing
 @assigns: nothing
 @ensures: Initialise un plateau vide
 */
