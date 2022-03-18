@@ -5,14 +5,14 @@
 #include "faction.h"
 
 /* Type abstrait d'un plateau de jeu (pile pour la grille et taille ) */
-typedef struct plateau plateau;
+typedef struct plateau_base *plateau;
 
 /*
 @requires: taille est un entier
 @assigns: nothing
 @ensures: Initialise un plateau vide
 */
-plateau creer_plateau(int taille);
+plateau creer_plateau();
 
 /*
 @requires: plateau
