@@ -1,5 +1,5 @@
 #ifndef _FACTION_H
-#define _FACTION_H
+#define _FACTION_H  
 
 /**
 * \struct ceci est une declaration d'un type abstrait
