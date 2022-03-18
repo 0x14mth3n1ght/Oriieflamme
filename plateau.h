@@ -37,7 +37,7 @@ void retourne_factions(faction *f1,faction *f2);
 /*
 @requires: faction* est pointeur vers une faction valide
 @assigns: faction*
-@ensures: pioche une carte à jouer (cachée)
+@ensures: place sur le plateau une carte à jouer (cachée)
 */
 void carte_faction(faction*);
 
@@ -47,6 +47,6 @@ void carte_faction(faction*);
 @ensures: retourne une carte face visible et activer son effet
 */
 
-carte_base active_carte(faction);
+carte active_carte(faction);
 
 #endif
