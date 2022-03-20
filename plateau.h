@@ -43,8 +43,8 @@ int pose_carte(plateau *p,faction *f,carte *c,int *position);
 
 /*
 @requires: *p pointeur vers plateau valide, *reste pointeur vers entier
-@assigns: carte
-@ensures: retourne une carte face visible , active son effet et indique s'il reste des cartes à retourner (entier entre 0 et n=nombre de cartes)
+@assigns: plateau
+@ensures: retourne une carte face visible , active son effet et indique le nombre de cartes restances en actualisant reste
 */
 
 carte active_carte(plateau *p,int *reste);
