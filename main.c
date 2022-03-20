@@ -28,17 +28,31 @@ void print_title() {
     free(str_dash_title);
 }
 
+void tour_de_jeu(faction *fact,plateau *partie ){
+    int new_pos[2];
+    carte new_card;
+    int possible=0;
+    while(!possible){
+        affiche_main(*fact);
+        new_card=choix_carte(*fact);
+        affiche_plateau(*partie);
+        position_carte(*fact,&new_pos);
+        possible=pose_carte(fact,new_card,new_pos);
+    }
+
+}
+
+
+
 int main ()
 {
     srand(time(NULL)); // Utilisé pour pour générer le rand()
     print_title();
-    char* new_game= "y";
-    while(new_game=="y") {
+    char new_game= 'y';
+    while(new_game=='y') {
             int manche =0;
             int starting_faction;
-            plateau partie;
-            partie=creer_plateau();
-        
+            plateau partie=creer_plateau();
             faction faction1;
             faction faction2;
             retourne_factions(&faction1,&faction2);
@@ -60,39 +74,28 @@ int main ()
             else{
             starting_faction= (starting_faction + 1)%2;
             }
-            carte new_card;
-            int new_pos[2];
-            int possible;
             for (int j=0; j<18; j+=1){
                 if ((j+starting_faction)%2== 1) {
                     //FACTION 1
-                    possible=0;
-                    while(!possible){
-                        affiche_main(faction1);
-                        new_card=choix_carte(faction1);
-                        position_carte(faction1,&new_pos);
-                        possible=carte_faction(&faction1,new_pos,new_card);
-                    }
-
+                    tour_de_jeu(&faction1,&partie);
                 }
                 else {
                     //FACTION 2
-                    possible=0;
-                    while(!possible){
-                        affiche_main(faction2);
-                        new_card=choix_carte(faction2);
-                        position_carte(faction2,&new_pos);
-                        possible=carte_faction(&faction2,new_pos,new_card);
-                    }
+                    tour_de_jeu(&faction2,&partie);
                 }
             }
+            int reste_cartes=1;
+            while(reste_cartes) {
+                affiche_effet(active_carte(&partie,reste_cartes));
+            }
         }
+
+        detruire_plateau(&partie);
 
         }
         // fin partie
 
 
-        detruire_plateau(&partie);
         }
         
 
@@ -143,4 +146,4 @@ int main ()
         
         
         */
-    }
+    
