@@ -35,18 +35,18 @@ int reinitialisation(plateau p);
 void retourne_factions(faction *f1,faction *f2);
 
 /*
-@requires: faction* est pointeur vers une faction valide , carte et position tableaux d'entiers de taille 2
+@requires: *f est pointeur vers une faction valide , *carte et *position pointeurs valides vers tableaux d'entiers de taille 2
 @assigns: faction
 @ensures: place sur le plateau une carte à jouer (cachée) et renvoie 1 si le placement est effectué, 0 sinon
 */
-void pose_carte(faction *f,int **carte,int **position);
+void pose_carte(faction *f,int *carte,int *position);
 
 /*
-@requires: carte valide, reste entier 
+@requires: plateau* pointeur valide, reste entier 
 @assigns: carte
 @ensures: retourne une carte face visible , active son effet et indique s'il reste des cartes à retourner
 */
 
-carte active_carte(faction *f,int reste);
+carte active_carte(plateau* p,int reste);
 
 #endif
