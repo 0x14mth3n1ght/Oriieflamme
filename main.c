@@ -35,9 +35,10 @@ void print_title()
 
 void tour_de_jeu(faction *fact, plateau *partie)
 {
-    int new_pos[2];
+    int *new_pos;
     carte new_card;
     int possible = 0;
+    new_pos=malloc(2*sizeof(int));
     while (!possible)
     {
         affiche_main(*fact);
@@ -84,7 +85,7 @@ int main()
             {
                 starting_faction = (starting_faction + 1) % 2;
             }
-            for (int j = 0; j < 18; j += 1)
+            for (int j = 0; j < 16; j += 1)
             {
                 if ((j + starting_faction) % 2 == 1)
                 {
@@ -98,6 +99,7 @@ int main()
                 }
             }
             int reste_cartes = 1;
+            affiche_plateau(partie);
             while (reste_cartes)
             {
                 affiche_effet(active_carte(&partie, reste_cartes));
