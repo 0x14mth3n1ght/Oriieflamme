@@ -18,14 +18,14 @@ plateau creer_plateau();
 @requires: plateau
 @assigns: nothing
 @ensures: libère la mémoire associée au plateau*/
-void detruire_plateau(plateau);
+void detruire_plateau(plateau p);
 
 /*
-@requires: plateau* est un pointeur valide
+@requires: plateau est un type plateau_base valide
 @assigns: plateau
-@ensures: réinitialise le jeu ou indique s'il est terminé en renvoyant 1
+@ensures: réinitialise le jeu en renvoyant 0 ou indique s'il est terminé en renvoyant 1
 */
-int reinitialisation(plateau);
+int reinitialisation(plateau p);
 
 /*
 @requires: f1 et f2 sont des pointeurs vers des factions valides
@@ -35,18 +35,18 @@ int reinitialisation(plateau);
 void retourne_factions(faction *f1,faction *f2);
 
 /*
-@requires: faction* est pointeur vers une faction valide
-@assigns: faction*
-@ensures: place sur le plateau une carte à jouer (cachée)
+@requires: faction* est pointeur vers une faction valide , carte et position tableaux d'entiers de taille 2
+@assigns: faction
+@ensures: place sur le plateau une carte à jouer (cachée) et renvoie 1 si le placement est effectué, 0 sinon
 */
-void carte_faction(faction*);
+void pose_carte(faction *f,int **carte,int **position);
 
 /*
-@requires: carte valide
+@requires: carte valide, reste entier 
 @assigns: carte
-@ensures: retourne une carte face visible et activer son effet
+@ensures: retourne une carte face visible , active son effet et indique s'il reste des cartes à retourner
 */
 
-carte active_carte(faction);
+carte active_carte(faction *f,int reste);
 
 #endif
