@@ -39,7 +39,7 @@ void retourne_factions(faction *f1,faction *f2);
 @assigns: faction
 @ensures: place sur le plateau une carte à jouer (cachée) et renvoie 1 si le placement est effectué, 0 sinon
 */
-void pose_carte(faction *f,carte_base *carte,int *position);
+void pose_carte(faction *f,carte *c,int *position);
 
 /*
 @requires: plateau* pointeur valide, reste entier 
