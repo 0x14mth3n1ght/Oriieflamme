@@ -38,9 +38,9 @@ void position_carte(faction f, int* pos);
 @ensures    : affiche les effets d'une carte c (qui vient d'être retournée sur le plateau)*/
 void affiche_effet(carte c);
 
-/*@requires : won_rounds est le tableau de int représentant le nombre de manche gagnées par chaque faction, de taille size
+/*@requires : f1 et f2 valides
 @assigns    : nothing
-@ensures    : affiche le vainqueur de la partie et retourne l'indice du vainqueur (indice selon le tableau won_rounds)*/
-int affiche_gagnant(int* won_rounds, int size);
+@ensures    : affiche le vainqueur de la partie et retourne 1 ou 2 le numéro de la faction gagnante*/
+int affiche_gagnant(faction f1, faction f2);
 
 #endif
