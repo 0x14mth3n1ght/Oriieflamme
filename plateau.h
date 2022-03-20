@@ -15,17 +15,17 @@ typedef struct plateau_base *plateau;
 plateau creer_plateau();
 
 /*
-@requires: plateau
+@requires: *p pointeur vers plateau valide
 @assigns: nothing
 @ensures: libère la mémoire associée au plateau*/
-void detruire_plateau(plateau p);
+void detruire_plateau(plateau *p);
 
 /*
-@requires: plateau est un type plateau_base valide
+@requires: *p pointeur vers plateau valide
 @assigns: plateau
 @ensures: réinitialise le jeu en renvoyant 0 ou indique s'il est terminé en renvoyant 1
 */
-int reinitialisation(plateau p);
+int reinitialisation(plateau *p);
 
 /*
 @requires: f1 et f2 sont des pointeurs vers des factions valides
