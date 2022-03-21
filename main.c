@@ -57,7 +57,7 @@ void tour_de_jeu(faction *fact, plateau *partie)
         new_card = choix_carte(*fact);
         affiche_plateau(*partie);
         position_carte(*fact, new_pos);
-        possible = pose_carte(partie, fact, &new_card, new_pos);
+        possible = pose_carte(partie, fact, new_card, new_pos);
     }
 }
 
