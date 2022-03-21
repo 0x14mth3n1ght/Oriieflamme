@@ -23,7 +23,7 @@ void detruire_plateau(plateau *p);
 /*
 @requires: *p pointeur vers plateau valide
 @assigns: plateau *p
-@ensures: réinitialise le jeu en renvoyant 0 ou indique s'il est terminé en renvoyant 1
+@ensures: réinitialise le jeu en vidant le main puis mélange la pioche et recrée les 2 factions
 */
 int reinitialisation(plateau *p);
 
