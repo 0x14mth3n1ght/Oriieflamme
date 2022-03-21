@@ -22,7 +22,7 @@ void detruire_plateau(plateau *p);
 
 /*
 @requires: *p pointeur vers plateau valide
-@assigns: plateau
+@assigns: plateau *p
 @ensures: réinitialise le jeu en renvoyant 0 ou indique s'il est terminé en renvoyant 1
 */
 int reinitialisation(plateau *p);
@@ -35,15 +35,15 @@ int reinitialisation(plateau *p);
 void retourne_factions(faction *f1,faction *f2);
 
 /*
-@requires: *p pointeur vers plateau valide *f est pointeur vers une faction valide , *carte et *position pointeurs valides vers tableaux d'entiers de taille 2
-@assigns: faction
+@requires: *p pointeur vers plateau valide *f est pointeur vers une faction valide , c carte valide et *position pointeur valide vers tableau d'entier de taille 2
+@assigns: *p et *f
 @ensures: place sur le plateau une carte à jouer (cachée) et renvoie 1 si le placement est effectué, 0 sinon
 */
-int pose_carte(plateau *p,faction *f,carte *c,int *position);
+int pose_carte(plateau *p,faction *f,carte c,int *position);
 
 /*
 @requires: *p pointeur vers plateau valide, *reste pointeur vers entier
-@assigns: plateau
+@assigns: *p
 @ensures: retourne une carte face visible , active son effet et indique le nombre de cartes restances en actualisant reste
 */
 
