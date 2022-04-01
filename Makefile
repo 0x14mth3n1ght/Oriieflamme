@@ -1,6 +1,11 @@
-CC=gcc -Wall -Wextra -std=c99
+CC = gcc -Wall -Wextra -std=c99
 
-jeu: main.o carte.o faction.o interface.o plateau.o
+OBJDIR = ./obj
+SRC = $(wildcard *.c)
+HEADER = $(wildcard *h)
+OBJ = $(SRC:.c=.o )
+
+jeu: $(OBJ)
 	$(CC) -o $@ $^
 
 clean:
