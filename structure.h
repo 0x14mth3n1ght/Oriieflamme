@@ -33,7 +33,7 @@ carte get_carte(plateau g, int x, int y);
     @ensures  : supprime la carte du plateau située aux coordonnées (x,y) du plateau *pg (remplacée par la carte nulle), retourne 1 le cas échéant. retourne 0 sinon (pas de carte ou carte déjà supprimée) */
 int supprime_carte_plateau(plateau *pg, int x, int y);
 
-/*---------------------------------Cartes en main---------------------------------*/
+/*--------------------------------- Cartes en main ---------------------------------*/
 typedef carte* carteEnMain; /*Tableau 1D de cartes ; un emplacement vide sera caractérisé par la carte nulle*/
 
 /*  @requires : cmain tableau de taille size
@@ -61,7 +61,7 @@ int supprime_carte_main(carte c, carteEnMain cmain, int size);
     @ensures  : renvoie la carte de la main cmain située à la position pos, renvoie la carte nulle s'il n'y a plus de carte à la position pos */
 carte get_carte_at(int pos, carteEnMain cmain, int size);
 
-/*---------------------------------Pioche---------------------------------*/
+/*--------------------------------- Pioche : liste chainee ---------------------------------*/
 typedef struct bucket *pioche;
 
 /*  @requires : nothing

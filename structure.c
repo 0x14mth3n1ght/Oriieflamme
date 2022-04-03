@@ -106,7 +106,9 @@ int supprime_carte_main(carte c, carteEnMain cmain, int size){
 }
 
 carte get_carte_at(int pos, carteEnMain cmain, int size){
-    return cmain[pos];
+    if (0 <= pos < size)
+        return cmain[pos];
+    return NULL;/*wip : carte nulle*/
 }
 
 /*--------------------------------- Pioche : liste chaînée ---------------------------------*/
