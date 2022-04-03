@@ -87,7 +87,7 @@ int indice_carte_main(carte c, carteEnMain cmain, int size){
 }
 
 int supprime_carte_main(carte c, carteEnMain cmain, int size){
-    if (!(mem_main(c, cmain, size)))
+    if (!(indice_carte_main(c, cmain, size)))
         return 0;
     int i = 0;
     int deleted = 0;
