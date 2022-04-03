@@ -95,7 +95,7 @@ int supprime_carte_main(carte c, carteEnMain cmain, int size){
         if (cmain[i] == c)
             deleted = 1;
         if (deleted)
-            cmain[i] == cmain[i+1]; //carte nulle si le prochain est carte_nulle.
+            cmain[i] = cmain[i+1]; //carte nulle si le prochain est carte_nulle.
         i++;
     }
     //Cas la carte etait en derniere position ou si elle a déjà été supprimée
