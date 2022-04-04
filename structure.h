@@ -99,4 +99,9 @@ int mem_pioche(pioche p, carte c);
     @ensures  : retourne le nombre d'éléments dans la pioche */
 int pioche_len(pioche p);
 
+/*  @requires : p est une pioche valide
+    @assigns  : nothing
+    @ensures  : retourne une pioche qui contient les cartes de p mais mélangées */
+pioche melanger(pioche p);
+
 #endif
