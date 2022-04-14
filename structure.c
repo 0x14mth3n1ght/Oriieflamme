@@ -158,10 +158,11 @@ elt get_at(int pos, liste l){
 
 liste melanger(liste l){
     liste out = cree_liste_vide();
+    //On va choisir des elements restants au hasard dans l, on les ajoute à out et on les supprime de l 
     int n = len_liste(l);
-    for (int i=0; i<n; i++){//Itération sur la taille de la liste
-        int j = rand()%(n-i);
-        elt chosen = get_at(j, l);
+    for (int i=0; i<n; i++){ //Itération sur la taille de la liste
+        int j = rand()%(n-i); //Choix d'un entier parmis les éléments restants de la liste l (entre 0 et n-i-1)
+        elt chosen = get_at(j, l); //Element choisi par l'aléatoire
         push(chosen, &out);
         enlever(chosen, &l);
     }

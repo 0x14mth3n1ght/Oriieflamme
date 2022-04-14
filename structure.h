@@ -67,27 +67,28 @@ elt peek(liste l);
 
 /*  @requires : l est une liste valide, e est un élément valide
     @assigns  : nothing
-    @ensures  : teste si e est dans la liste l et retourne son indice dans la liste le cas échéant, -1 sinon */
+    @ensures  : teste si e est dans la liste l et retourne son indice (de 0 à len_liste(l)-1) dans la liste le cas échéant, -1 sinon */
 int indice(elt e, liste l);
 
 /*  @requires : l est une liste valide
     @assigns  : nothing
     @ensures  : retourne le nombre d'éléments dans la liste */
-int len(liste l);
+int len_liste(liste l);
+
+/*  @requires : pl est un pointeur valide vers une liste valide non-vide
+    @assigns  : *pl
+    @ensures  : supprime la première occurence de l'élément e de la liste, retourne 1 le cas échéant, 0 sinon*/
+int enlever(elt e, liste* pl);
+
+/*  @requires : l est une liste valide, 0 <= pos < len_liste(l)
+    @assigns  : nothing
+    @ensures  : renvoie l'élement de la liste l situé à la position pos, l est indexé de 0 à len_liste(l)-1 */
+elt get_at(int pos, liste l);
 
 /*  @requires : l est une liste valide
     @assigns  : nothing
     @ensures  : retourne une liste qui contient les éléments de l mais mélangées */
 liste melanger(liste l);
 
-/*  @requires : pl est un pointeur valide vers une liste valide non-vide
-    @assigns  : *pl
-    @ensures  : supprime la première occurence de l'élément e de la liste*/
-int enlever(elt e, liste* pl);
-
-/*  @requires : l est une liste valide, pos < len(l)
-    @assigns  : nothing
-    @ensures  : renvoie l'élement de la liste l situé à la position pos */
-elt get_at(int pos, liste l);
 
 #endif
