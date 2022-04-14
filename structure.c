@@ -54,123 +54,116 @@ plateau init_grille(carte c){
 
 /*wip*/
 
-/*--------------------------------- Cartes en main : Fonctions ---------------------------------*/
-void main_vide(carteEnMain cmain, int size){
-    for (int i=0; i<size; i++){
-        cmain[i] = /*wip : carte_nulle*/NULL ;
-    }
-}
-
-int ajout_carte(carte c, carteEnMain cmain, int size){
-    int i = 0;
-    while (i<size){
-        i++;
-        if (cmain[i] == /*wip : carte_nulle*/NULL){
-            cmain[i] = c;
-            return i;
-        }
-    }
-    //main pleine
-    //assert(i == size-1);
-    return 0;
-}
-
-int indice_carte_main(carte c, carteEnMain cmain, int size){
-    int i=0;
-    while (i<size){
-        if (cmain[i] == c)
-            return i;
-        i++;
-    }
-    //non trouvé
-    return -1;
-}
-
-int supprime_carte_main(carte c, carteEnMain cmain, int size){
-    if (!(indice_carte_main(c, cmain, size)))
-        return 0;
-    int i = 0;
-    int deleted = 0;
-    while (i<size - 1){
-        if (cmain[i] == c)
-            deleted = 1;
-        if (deleted)
-            cmain[i] = cmain[i+1]; //carte nulle si le prochain est carte_nulle.
-        i++;
-    }
-    //Cas la carte etait en derniere position ou si elle a déjà été supprimée
-    if (cmain[size-1] == c || deleted)
-        cmain[size-1] = /*wip : carte_nulle*/NULL;
-
-    return 1;
-}
-
-carte get_carte_at(int pos, carteEnMain cmain, int size){
-    if (0 <= pos < size)
-        return cmain[pos];
-    return NULL;/*wip : carte nulle*/
-}
-
-/*--------------------------------- Pioche : liste chaînée ---------------------------------*/
+/*--------------------------------- Liste chaînée ---------------------------------*/
 struct bucket {
-    carte card;
-    pioche next;
+    elt val;
+    liste next;
 };
 
 /*----Fonctions----*/
-pioche creer_pioche_vide(){
+liste cree_liste_vide(){
     return NULL;
 }
 
-int est_vide(pioche p){
-    return (p==NULL);
+int test_vide(liste l){
+    return (l==NULL);
 }
 
-/*  @requires : p est une pioche valide, c une carte valide
+/*  @requires : l est une liste valide, e un élément valide
     @assigns  : nothing
-    @ensures  : ajoute c au dessus de la liste p */
-pioche cons(carte c, pioche p){
-    pioche res = malloc(sizeof(pioche));
-    res->card = c;
-    res->next = p;
+    @ensures  : renvoie une nouvelle liste avec e au dessus de la liste l */
+liste cons(elt e, liste l){
+    liste res = malloc(sizeof(liste));
+    res->val = e;
+    res->next = l;
     return res;
 }
 
-void push(carte c, pioche *pp){
-    *pp = cons(c, *pp);
+void push(elt e, liste *pl){
+    *pl = cons(e, *pl);
 }
 
-carte pop(pioche* pp){
-    if (*pp == NULL){
-        printf("Error pop : la pioche est vide.\n");
+elt pop(liste* pl){
+    if (*pl == NULL){
+        printf("Error pop : list is empty.\n");
         exit(EXIT_FAILURE);
     }
-    carte out = (*pp)->card;
-    *pp = (*pp) -> next;
-    return out;
+    elt e = (*pl)->val; //On stocke l'élément en haut de la liste
+    *pl = (*pl)-> next; //On avance dans la liste
+    return e;
 }
 
-carte peek(pioche p){
-    if (p == NULL){
-        printf("Error peek : la pioche est vide.\n");
+elt peek(liste l){
+    if (l == NULL){
+        printf("Error peek : list is empty.\n");
         exit(EXIT_FAILURE);
     }
-    return p->card;
+    return l->val;
 }
 
-int mem_pioche(pioche p, carte c){
-    while (p!=NULL){
-        if (p->card == c) return 1;
-        p = p->next;
+int indice(elt e, liste l){
+    int i = 0;
+    while (l!=NULL){
+        if (l->val == e)
+            return i;
+        i++;
+        l = l->next;
     }
+    //e n'a pas été trouvé
+    return -1;
+}
+
+int len_liste(liste l){
+    int n = 0;
+    while (l!=NULL){
+        n++;
+        l = l->next;
+    }
+    return n;
+}
+
+int enlever(elt e, liste* pl){
+    liste curr = (*pl)->next; //Pointeur vers la case courante
+    liste prec = *pl; //Pointeur vers la case précédente
+    //Cas initial
+    if (prec->val == e){ //Si la première case contient e
+        *pl = (*pl)->next; //On commence par la case suivante
+        return 1;
+    }
+    //Tant que l'on a pas trouvé e
+    while (curr->val != e){
+        prec->next = curr; //le suivant du précédent devient le pointeur courant
+        prec = prec->next; //le pointeur du précédent avance
+        curr = curr->next; //le pointeur du courant avance
+    }
+    //On est arrivé à e, ou à la fin
+    if (curr != NULL){ //Arrivé à e
+        prec->next = curr->next;
+        free(curr); //On libère le maillon pointé par curr
+        return 1;
+    }
+    //Pas arrivé à e : arrivée à la fin, e non enlevé
     return 0;
 }
 
-int pioche_len(pioche p){
-    int len = 0;
-    while (p!=NULL){
-        len++;
-        p = p->next;
+elt get_at(int pos, liste l){
+    if (pos >= len(l)){
+        printf("Error get_at : index pos out of range.\n");
+        exit(EXIT_FAILURE);
     }
-    return len;
+    for (int i=0; i<pos; i++)
+        pop(&l);
+    return peek(l);
+}
+
+liste melanger(liste l){
+    liste out = cree_liste_vide();
+    int n = len_liste(l);
+    for (int i=0; i<n; i++){//Itération sur la taille de la liste
+        int j = rand()%(n-i);
+        elt chosen = get_at(j, l);
+        push(chosen, &out);
+        enlever(chosen, &l);
+    }
+    return out;
 }
