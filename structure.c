@@ -146,7 +146,7 @@ int enlever(elt e, liste* pl){
 }
 
 elt get_at(int pos, liste l){
-    if (pos >= len(l)){
+    if (pos >= len_liste(l)){
         printf("Error get_at : index pos out of range.\n");
         exit(EXIT_FAILURE);
     }
