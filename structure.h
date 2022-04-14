@@ -3,7 +3,6 @@
 
 /*Obtention des types*/
 #include "carte.h"
-#include "faction.h"
 #include "plateau.h"
 
 /*----------- Plateau = Grille : liste doublement chainee imbriquee dans liste doublement chainee -----------*/
