@@ -31,7 +31,7 @@ carte get_carte(plateau g, int x, int y);
 /*  @requires : pg est un pointeur valide vers un plateau valide
     @assigns  : *pg
     @ensures  : supprime la carte du plateau située aux coordonnées (x,y) du plateau *pg (remplacée par la carte nulle), retourne 1 le cas échéant. retourne 0 sinon (pas de carte ou carte déjà supprimée) */
-int supp_carte_plateau(plateau *pg, int x, int y);
+int supp_carte_plateau(plateau* pg, int x, int y);
 
 /*--------------------------------- Liste chainee de cartes ---------------------------------*/
 typedef struct bucket *liste;
@@ -67,7 +67,7 @@ elt peek(liste l);
 
 /*  @requires : l est une liste valide, e est un élément valide
     @assigns  : nothing
-    @ensures  : teste si e est dans la liste l et retourne son indice (de 0 à len_liste(l)-1) dans la liste le cas échéant, -1 sinon */
+    @ensures  : teste si e est dans la liste l et retourne son indice de première occurence (de 0 à len_liste(l)-1) dans la liste le cas échéant, -1 sinon */
 int indice(elt e, liste l);
 
 /*  @requires : l est une liste valide

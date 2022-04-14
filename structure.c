@@ -1,7 +1,5 @@
 #include <stdlib.h>
 #include <stdio.h>
-
-
 #include "structure.h"
 
 /*----------- Plateau = Grille : liste doublement chainee imbriquee dans liste doublement chainee -----------*/
@@ -123,23 +121,24 @@ int len_liste(liste l){
 }
 
 int enlever(elt e, liste* pl){
-    liste curr = (*pl)->next; //Pointeur vers la case courante
-    liste prec = *pl; //Pointeur vers la case précédente
     //Cas initial
-    if (prec->val == e){ //Si la première case contient e
+    if ((*pl)->val == e){ //Si la première case contient e
+        liste first = *pl;
         *pl = (*pl)->next; //On commence par la case suivante
+        free(first);
         return 1;
     }
+    liste curr = (*pl)->next; //Pointeur vers la case courante
+    liste prec = *pl; //Pointeur vers la case précédente
     //Tant que l'on a pas trouvé e
     while (curr->val != e){
-        prec->next = curr; //le suivant du précédent devient le pointeur courant
         prec = prec->next; //le pointeur du précédent avance
         curr = curr->next; //le pointeur du courant avance
     }
     //On est arrivé à e, ou à la fin
     if (curr != NULL){ //Arrivé à e
         prec->next = curr->next;
-        free(curr); //On libère le maillon pointé par curr
+        free(curr);
         return 1;
     }
     //Pas arrivé à e : arrivée à la fin, e non enlevé
