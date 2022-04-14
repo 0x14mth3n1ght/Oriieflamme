@@ -4,20 +4,6 @@
 
 /*----------- Plateau = Grille : liste doublement chainee imbriquee dans liste doublement chainee -----------*/
 
-/*----Liste doublement chainee mere----*/
-//Liste doublement chaine mere = Pointeur vers un maillon "colonne"
-typedef struct plateau_base colonne;
-typedef colonne* ldc_mere;
-
-struct plateau_base {
-    //Element de la liste doublement chainee
-    ldc_fille ligne;
-    int y; //ordonnée de la colonne (offset_from_center : 0 si centre, 1 si colonne d'en dessous, -1 si colonne d'au dessus etc)
-    //Pointeurs vers le "maillon" precedent ou suivant
-    ldc_mere north;
-    ldc_mere south;
-};
-
 /*----Liste doublement chainee fille----*/
 typedef struct maillon * ldc_fille;
 typedef struct maillon cell;
@@ -33,14 +19,28 @@ struct maillon {
     ldc_fille east;
 };
 
+/*----Liste doublement chainee mere----*/
+//Liste doublement chaine mere = Pointeur vers un maillon "colonne"
+typedef struct plateau_base colonne;
+typedef colonne* ldc_mere;
+
+struct plateau_base {
+    //Element de la liste doublement chainee
+    ldc_fille ligne;
+    int y; //ordonnée de la colonne (offset_from_center : 0 si centre, 1 si colonne d'en dessous, -1 si colonne d'au dessus etc)
+    //Pointeurs vers le "maillon" precedent ou suivant
+    ldc_mere north;
+    ldc_mere south;
+};
+
 /*----Fonctions----*/
 plateau init_grille(carte c){
-    plateau out;
-    ldc_fille ini;
+    plateau out = malloc(sizeof *out);
+    ldc_fille ini = malloc(sizeof *out);
         ini->card = c;
-        ini->x = 0;
         ini->is_visible = 0;
         ini->is_activated = 0;
+        ini->x = 0;
         ini->west = NULL;
         ini->east = NULL;
     out->ligne = ini;
