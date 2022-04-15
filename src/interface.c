@@ -2,11 +2,14 @@
 #ifndef INTERFACE_H
 #define INTERFACE_H
 
+#include <stdlib.h>
+#include <stdio.h>
 /*Obtention des types carte, faction et plateau*/
 #include "../header/carte.h"
 #include "../header/faction.h"
 #include "../header/plateau.h"
 #include "../header/structure.h"
+
 
 /*@requires : p est un plateau valide
 @assigns    : nothing
