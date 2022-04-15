@@ -1,4 +1,5 @@
-CC = gcc -Wall -Wextra -std=c99
+CC = gcc
+CFLAGS = -Wall -Wextra -std=c99 
 
 OBJDIR= ./obj
 
@@ -6,7 +7,7 @@ SRCS=$(wildcard *.c)
 OBJS=$(SRCS:.c=.o )
 
 jeu: $(OBJS)
-	$(CC)-c $< -o $(OBJDIR)/$@
+	$(CC) $(CFLAGS) -c $< -o $(OBJDIR)/$@
 
 clean:
 	rm -rf *.o
