@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "structure.h"
+#include "../header/structure.h"
 
 /*----------- Plateau = Grille : liste doublement chainee imbriquee dans liste doublement chainee -----------*/
 
