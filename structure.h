@@ -32,6 +32,44 @@ carte get_carte(plateau g, int x, int y);
     @ensures  : supprime la carte du plateau située aux coordonnées (x,y) du plateau *pg (remplacée par la carte nulle), retourne 1 le cas échéant. retourne 0 sinon (pas de carte ou carte déjà supprimée) */
 int supp_carte_plateau(plateau* pg, int x, int y);
 
+/*  @requires : pg est un pointeur valide vers un plateau valide
+    @assigns  : *pg
+    @ensures  : déplace la carte du plateau située aux coordonnées (x1,y1) du plateau *pg (remplacée par la carte nulle) vers les coordonnées (x2, y2),
+    retourne 0 le cas échéant.
+    retourne -1 si problème sur la case de départ (x1, y1)
+    retourne 1 si problème sur la case d'arrivée (x2, y2)*/
+int deplacer_carte(plateau* pg, int x1, int y1, int x2, int y2);
+
+/*  @requires : g est un plateau valide
+    @assigns  : nothing
+    @ensures  : retourne la coordonnée de la case située la plus au nord du plateau*/
+int taille_north(plateau g);
+
+/*  @requires : g est un plateau valide
+    @assigns  : nothing
+    @ensures  : retourne la coordonnée de la case située la plus au sud du plateau*/
+int taille_south(plateau g);
+
+/*  @requires : g est un plateau valide
+    @assigns  : nothing
+    @ensures  : retourne la coordonnée de la case située la plus à l'ouest du plateau*/
+int taille_west(plateau g);
+
+/*  @requires : g est un plateau valide
+    @assigns  : nothing
+    @ensures  : retourne la coordonnée de la case située la plus à l'est du plateau*/
+int taille_east(plateau g);
+
+/*  @requires : g est un plateau valide
+    @assigns  : nothing
+    @ensures  : retourne la coordonnée de la case située la plus à l'ouest de la ligne i du plateau*/
+int taille_ligne_west(plateau g, int i);
+
+/*  @requires : g est un plateau valide
+    @assigns  : nothing
+    @ensures  : retourne la coordonnée de la case située la plus à l'est de la ligne i du plateau*/
+int taille_ligne_east(plateau g, int i);
+
 /*--------------------------------- Liste chainee de cartes ---------------------------------*/
 typedef struct bucket *liste;
 typedef carte elt; /*valeur des éléments de la liste*/
