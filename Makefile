@@ -1,15 +1,12 @@
 CC = gcc -Wall -Wextra -std=c99
 
-SRCDIR   = src
-OBJDIR   = obj
-BINDIR   = bin
+OBJDIR= ./obj
 
-SRC := $(wildcard $(SRCDIR)/*.c)
-HEADER := $(wildcard $(SRCDIR)/*.h)
-OBJDIR  := $(SOURCES:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
+SRCS=$(wildcard *.c)
+OBJS=$(SRCS:.c=.o )
 
-jeu: $(OBJ)
-	$(CC) -o $@ $^
+jeu: $(OBJS)
+	$(CC)-c $< -o $(OBJDIR)/$@
 
 clean:
 	rm -rf *.o
