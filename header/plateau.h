@@ -4,8 +4,17 @@
 #include "carte.h"
 #include "faction.h"
 
-/* Type abstrait d'un plateau de jeu (tableau 2D) */
+/* Type abstrait d'un plateau de jeu */
 typedef struct plateau_base *plateau;
+
+/* Type concret d'une case du plateau */
+struct cell_base{
+   carte c;
+   faction f;
+   /* indique si la carte est retournee */
+   int retournee;
+}
+
 
 /*
 @requires: nothing
@@ -42,11 +51,14 @@ void retourne_factions(faction *f1,faction *f2);
 int pose_carte(plateau *p,faction *f,carte c,int *position);
 
 /*
-@requires: *p pointeur vers plateau valide, *reste pointeur vers entier
+@requires: *p pointeur vers plateau valide
 @assigns: *p
-@ensures: retourne une carte face visible , active son effet et indique le nombre de cartes restances en actualisant reste
+@ensures: retourne une carte face visible , active son effet
 */
+carte active_carte(plateau *p);
 
-carte active_carte(plateau *p,int *reste);
+/*
+@requires: *p pointeur vers plateau valide, *position pointeur valide vers tableau d'entier de taille 2
+@assigns: 
 
 #endif

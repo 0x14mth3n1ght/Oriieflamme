@@ -1,5 +1,9 @@
 #ifndef _FACTION_H
-#define _FACTION_H  
+#define _FACTION_H
+#include "carte.h"
+#include "structure.h"
+
+/* vérifier qu'il n'y a pas de soucis avec le include "structure" */
 
 /**
 * \struct ceci est une declaration d'un type abstrait
@@ -66,5 +70,89 @@ void melanger_pioche(faction *f);
 * \return la procedure ne retourne rien
 */
 void repiocher(faction *f);
+
+/**
+* \brief cette fonction permet de récupérer le nom d'une faction
+* \param f une faction
+* \attention la faction doit exister, si ce n'est pas le cas une 
+* exception est renvoyee
+* \return le nom de la faction
+*/
+char* get_faction_nom(faction f);
+ 
+/**
+* \brief cette fonction permet de récupérer le nombre de points DDRS d'une faction
+* \param f une faction
+* \attention la faction doit exister, si ce n'est pas le cas une 
+* exception est renvoyee
+* \return le nombre de points DDRS de la faction
+*/
+int get_ptsddrs_faction(faction f);
+
+/**
+* \brief cette procédure permet de modifier le nombre de points DDRS d'une faction
+* \param fp un pointeur vers une faction
+* \param i un nombre de points a accorder 
+* \attention le pointeur doit pointer vers une faction existante
+* \attention le nombre passe en parametre est positif ou nul
+* \return rien
+*/
+void set_ptsddrs_faction(faction *f, int i);
+
+/**
+* \brief cette fonction permet de récupérer la main d'une faction 
+* \param f une faction
+* \attention la faction doit exister, si ce n'est pas le cas une exception est renvoyee 
+* \return la main de la faction
+*/
+carte* get_main_faction(faction f);
+
+/**
+* \brief cette fonction permet d'obtenir le nombre de victoires d'une faction
+* \param f une faction
+* \attention la faction doit exister, si ce n'est pas le cas une exception est renvoyee 
+* \return le nombre de victoires d'une faction
+*/
+int get_nb_victoires(faction f);
+
+/**
+* \brief cette fonction permet de modifier le nombre de victoires d'une faction
+* \param fp un pointeur vers une faction
+* \param i un nombre de victoires a accorder
+* \attention le pointeur doit pointer vers une faction existante
+* \attention le nombre passe en parametre est positif ou nul
+* \return rien 
+*/
+void set_nb_victoires(faction *f, int i);
+
+/**
+* \brief cette fonction permet d'obtenir la pioche d'une faction
+* \param f une faction
+* \attention la faction doit exister, si ce n'est pas le cas une exception est renvoyee 
+* \return la pioche d'une faction
+*/  
+carte* get_pioche(faction f);
+
+/* fonctions supplémentaires que j'implémenterai si j'ai le temps */
+
+/**
+* \brief cette procédure permet de modifier la main d'une faction
+* \param cartes une liste de cartes
+* \param fp un pointeur vers une faction
+* \attention la liste ne doit pas avoir plus de 8 cartes 
+* \attention le pointeur doit pointer vers une faction existante
+* \return rien 
+*/
+void set_main(faction *f, liste cartes);
+
+/**
+* \brief cette procédure permet de modifier la pioche d'une faction
+* \param cartes une liste de cartes
+* \param fp un pointeur vers une faction
+* \attention le pointeur doit pointer vers une faction existante
+* \attention la main doit etre initialement vide 
+* \return rien 
+*/
+void set_pioche(faction *f, liste cartes);
 
 #endif
