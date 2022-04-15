@@ -10,11 +10,9 @@ typedef struct maillon maillon2D;
 
 struct maillon {
     //Elements de la liste doublement chainee
-    carte card;             //carte posee sur ces coordonnees (x,y)
-    //a changer en : cell val;
+    cell val; //cellule posee sur ces coordonnees (x,y)
     int x; //abscisse de la ligne (offset_from_center : 0 si centre, 1 si case a droite, -1 si case a gauche etc)
-    int is_visible;         //0 si la carte est face cachée ; 1 si la carte est retournée
-    int is_activated;       //1 si l'effet de la carte a été activée ; 0 sinon
+    int y; //ordonnée de la case (egale à ddl_mere->y)
     //Pointeurs vers le "maillon" precedent ou suivant
     ddl_fille west;
     ddl_fille east;
@@ -36,13 +34,12 @@ struct plateau_base {
 
 // ----Fonctions----
 
-plateau init_grille(carte c){
+plateau init_grille(cell c){
     plateau out = malloc(sizeof *out);
     ddl_fille ini = malloc(sizeof *out);
-        ini->card = c;
-        ini->is_visible = 0;
-        ini->is_activated = 0;
+        ini->val = c;
         ini->x = 0;
+        ini->y = 0;
         ini->west = NULL;
         ini->east = NULL;
     out->ligne = ini;
@@ -56,52 +53,47 @@ plateau init_grille(carte c){
 /*  @requires : l est une liste doublement chaînée (fille) valide
     @assigns  : nothing
     @ensures  : retourne 1 si l est vide et 0 sinon*/
-int test_colonne_vide(ddl_fille l){
+int test_ligne_vide(ddl_fille l){
     return (l==NULL);
 }
 
-/*  @requires : l est une liste doublement chaînée (fille) valide, c une carte valide
+/*  @requires : l est une liste doublement chaînée (fille) valide, c une cellule valide
     @assigns  : nothing
     @ensures  : renvoie une nouvelle liste avec c à l'ouest de la liste l */
-ddl_fille cons_colonne_west(carte c, ddl_fille l){
-    //Accès à la case la plus à l'ouest de l
-    int offset = l->x;
-    while (l->west != NULL){
-        l = l-> west;
-        offset--;
-    }
+ddl_fille cons_colonne_west(cell c, ddl_fille l){
+    ddl_fille start = l; //Pointeur vers le début de la ddl
     ddl_fille res = malloc(sizeof(ddl_fille));
-    res->card = c;
-    res->x = offset; //décalage à gauche : -1
-    res->is_visible = 0;
-    res->is_activated = 0;
+    res->val = c;
+    res->x = (l->x)-1; //décalage à gauche : -1
+    res->y = l->y;
     res->west = NULL;
     res->east = l;
+    res = start;
     return res;
 }
 
-/*  @requires : l est une liste doublement chaînée (fille) valide, c une carte valide
+/*  @requires : l est une liste doublement chaînée (fille) valide, c une cellule valide
     @assigns  : nothing
     @ensures  : renvoie une nouvelle liste avec c à l'est de la liste l */
-ddl_fille cons_colonne_east(carte c, ddl_fille l){
+ddl_fille cons_colonne_east(cell c, ddl_fille l){
+    ddl_fille start = l; //Pointeur vers le début de la ddl
     ddl_fille res = malloc(sizeof(ddl_fille));
-    res->card = c;
+    res->val = c;
     res->x = (l->x)+1;  //décalage à gauche : +1
-    res->is_visible = 0;
-    res->is_activated = 0;
     res->west = l;
     res->east = NULL;
+    res = start;
     return res;
 }
 
-/*  @requires : pl est un pointeur valide vers une liste doublement chaînée (fille) valide, c une carte valide
+/*  @requires : pl est un pointeur valide vers une liste doublement chaînée (fille) valide, c une cellule valide
     @assigns  : *pl
     @ensures  : renvoie une nouvelle liste avec c à l'ouest de la liste *pl */
-void push_west(carte c, ddl_fille *pl){
+void push_west(cell c, ddl_fille *pl){
     *pl = cons_colonne_west(c, *pl);
 }
 
-/*  @requires : pl est un pointeur valide vers une liste doublement chaînée (fille) valide, c une carte valide
+/*  @requires : pl est un pointeur valide vers une liste doublement chaînée (fille) valide, c une cellule valide
     @assigns  : *pl
     @ensures  : renvoie une nouvelle liste avec c à l'est de la liste *pl */
 void push_east(carte c, ddl_fille *pl){
@@ -128,7 +120,7 @@ void push_east(carte c, ddl_fille *pl){
 /*  @requires : l est une liste doublement chaînée (fille) valide non-vide
     @assigns  : nothing
     @ensures  : retourne l'élément à l'ouest de la liste*/
-carte peek_west(ddl_fille l){
+cell peek_west(ddl_fille l){
     if (l == NULL){
         printf("Error peek_west : list is empty.\n");
         exit(EXIT_FAILURE);
@@ -137,13 +129,13 @@ carte peek_west(ddl_fille l){
     while (l->west != NULL){
         l = l->west;
     }
-    return l->card;
+    return l->val;
 }
 
 /*  @requires : l est une liste doublement chaînée (fille) valide non-vide
     @assigns  : nothing
     @ensures  : retourne l'élément à l'est de la liste*/
-carte peek_east(ddl_fille l){
+cell peek_east(ddl_fille l){
     if (l == NULL){
         printf("Error peek_east : list is empty.\n");
         exit(EXIT_FAILURE);
@@ -152,7 +144,7 @@ carte peek_east(ddl_fille l){
     while (l->east != NULL){
         l = l->east;
     }
-    return l->card;
+    return l->val;
 }
 
 // --- Fonctions de base de liste chainee mère ---
@@ -222,6 +214,7 @@ int taille_fille_east(ddl_fille l){
 }
 
 int taille_west(plateau g){
+    //Recherche de la taille de la ligne la plus petite
     int min = 0;
     ddl_mere l_north = g; //Parcourt la liste vers le nord
     ddl_mere l_south = g; //Parcourt la liste vers le sud
@@ -241,6 +234,7 @@ int taille_west(plateau g){
 }
 
 int taille_east(plateau g){
+    //Recherche de la taille de la ligne la plus grande
     int max = 0;
     ddl_mere l_north = g; //Parcourt la liste vers le nord
     ddl_mere l_south = g; //Parcourt la liste vers le sud

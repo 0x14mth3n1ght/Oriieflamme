@@ -6,8 +6,10 @@
 #include "plateau.h"
 
 /*----------- Plateau = Grille : liste doublement chainee imbriquee dans liste doublement chainee d'éléments de type cell -----------*/
-//Temporaire :
-typedef carte cell;
+//Type abstrait des cases du plateau
+typedef struct ...;
+typedef struct cell_base * cell;
+
 
 /*  @requires : c est une cellule valide
     @assigns  : nothing
