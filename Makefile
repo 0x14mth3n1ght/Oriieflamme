@@ -1,9 +1,12 @@
 CC = gcc -Wall -Wextra -std=c99
 
-OBJDIR = ./obj
-SRC = $(wildcard *.c)
-HEADER = $(wildcard *h)
-OBJ = $(SRC:.c=.o )
+SRCDIR   = src
+OBJDIR   = obj
+BINDIR   = bin
+
+SRC := $(wildcard $(SRCDIR)/*.c)
+HEADER := $(wildcard $(SRCDIR)/*.h)
+OBJDIR  := $(SOURCES:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
 jeu: $(OBJ)
 	$(CC) -o $@ $^
