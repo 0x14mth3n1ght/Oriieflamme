@@ -6,12 +6,73 @@
 #include "../header/carte.h"
 #include "../header/faction.h"
 #include "../header/plateau.h"
+#include "../header/structure.h"
+
+/*@requires : p est un plateau valide
+@assigns    : nothing
+@ensures    : affiche p*/
+void print_ligne(int line_length) {
+    char c = '_';
+    int count = line_length;
+    for (int i = 0; i < count; i ++) {
+        putchar(c);
+        }
+}
 
 /*@requires : p est un plateau valide
 @assigns    : nothing
 @ensures    : affiche p*/
 void affiche_plateau(plateau p) {
-    
+    int max_north = taille_north(p);
+    int max_south =taille_south(p);
+    int max_west = taille_west(p);
+    int max_east = taille_east(p);
+    int i,j;
+
+    for(i=max_north; i>=max_south; i-=1){
+        print_ligne(max_east-max_west);
+        print("\n");
+        for(j=max_west;j<=max_east;j+=1) {
+            putchar('|');
+            cell cell_to_print= get_cell(p,i,j);
+            /*
+            recup card
+            card card_to_print= get_card(cell);
+            if (card==null)
+                printf("%4s","");
+
+            recup retourné ou nn: Si retourné:
+            et a qui appartient
+            int num_faction= get_card_faction(cell_to_print)
+            (if (get_retourné(cell)) {
+
+                if(num_faction==1){
+                    printf("\033[0;31m");
+                    printf("%4s","X");
+                    printf("\033");
+                }
+                else {
+                    printf("%4s","X");
+                }
+            }
+            else {
+                char * name_card= get_card_name(cell)
+                if(num_faction==1) {
+                    printf("\033[0;31m");
+                    printf("%4s",name_card);
+                    printf("\033"); 
+                }
+                else{
+                    printf("%4s",name_card);
+
+                }
+            }
+            printf("|\n") */
+
+        }
+        putchar("|");
+    }
+
 }
 
 /*@requires : f est valide
