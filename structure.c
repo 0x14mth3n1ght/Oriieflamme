@@ -6,11 +6,12 @@
 
 /*----Liste doublement chainee fille----*/
 typedef struct maillon * ddl_fille;
-typedef struct maillon cell;
+typedef struct maillon maillon2D;
 
 struct maillon {
     //Elements de la liste doublement chainee
     carte card;             //carte posee sur ces coordonnees (x,y)
+    //a changer en : cell val;
     int x; //abscisse de la ligne (offset_from_center : 0 si centre, 1 si case a droite, -1 si case a gauche etc)
     int is_visible;         //0 si la carte est face cachée ; 1 si la carte est retournée
     int is_activated;       //1 si l'effet de la carte a été activée ; 0 sinon
@@ -33,7 +34,8 @@ struct plateau_base {
     ddl_mere south;
 };
 
-/*----Fonctions----*/
+// ----Fonctions----
+
 plateau init_grille(carte c){
     plateau out = malloc(sizeof *out);
     ddl_fille ini = malloc(sizeof *out);
@@ -50,10 +52,10 @@ plateau init_grille(carte c){
     return out;    
 }
 
-/*Fonctions de base de liste chainee fille*/
-/*  @requires :
-    @assigns  :
-    @ensures  : */
+// --- Fonctions de base de liste chainee fille ---
+/*  @requires : l est une liste doublement chaînée (fille) valide
+    @assigns  : nothing
+    @ensures  : retourne 1 si l est vide et 0 sinon*/
 int test_colonne_vide(ddl_fille l){
     return (l==NULL);
 }
@@ -95,16 +97,14 @@ ddl_fille cons_colonne_east(carte c, ddl_fille l){
 /*  @requires : pl est un pointeur valide vers une liste doublement chaînée (fille) valide, c une carte valide
     @assigns  : *pl
     @ensures  : renvoie une nouvelle liste avec c à l'ouest de la liste *pl */
-//<=>push à l'ouest
-void add_west(carte c, ddl_fille *pl){
+void push_west(carte c, ddl_fille *pl){
     *pl = cons_colonne_west(c, *pl);
 }
 
 /*  @requires : pl est un pointeur valide vers une liste doublement chaînée (fille) valide, c une carte valide
     @assigns  : *pl
     @ensures  : renvoie une nouvelle liste avec c à l'est de la liste *pl */
-//<=>push à l'ouest
-void add_east(carte c, ddl_fille *pl){
+void push_east(carte c, ddl_fille *pl){
     *pl = cons_colonne_east(c, *pl);
 }
 
@@ -155,6 +155,23 @@ carte peek_east(ddl_fille l){
     return l->card;
 }
 
+// --- Fonctions de base de liste chainee mère ---
+
+// --- Fonctions utilitaires ---
+
+/*  @requires : pg est un pointeur valide vers un plateau valide, c est une cellule valide
+    @assigns  : *pg
+    @ensures  : place la cellule c sur la case (x,y) de la plateau si la case n'est pas occupée, retourne 1 le cas échéant. retourne 0 sinon */
+int placer_cell(cell c, plateau* pg, int x, int y);
+
+int deplacer_cell(plateau* pg, int x1, int y1, int x2, int y2){
+    cell c = get_cell(*pg, x1, y1); //Cellule à déplacer
+    if (supp_cell_plateau(pg, x1, y1) == 0)
+        return -1;
+    if (placer_cell(c, pg, x2, y2) == 0)
+        return 1;
+    return 0;
+}
 
 // --- TAILLES ---
 

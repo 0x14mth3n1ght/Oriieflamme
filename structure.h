@@ -5,7 +5,9 @@
 #include "carte.h"
 #include "plateau.h"
 
-/*----------- Plateau = Grille : liste doublement chainee imbriquee dans liste doublement chainee -----------*/
+/*----------- Plateau = Grille : liste doublement chainee imbriquee dans liste doublement chainee d'éléments de type cell -----------*/
+//Temporaire :
+typedef carte cell;
 
 /*  @requires : c est une carte valide
     @assigns  : nothing
@@ -17,28 +19,47 @@ plateau init_grille(carte c);
     @ensures  : retourne 1 si la case (x,y) n'est pas occupée, 0 sinon */
 int est_libre(plateau g, int x, int y);
 
-/*  @requires : pg est un pointeur valide vers un plateau valide, c est une carte valide
+//PLACEMENTS
+
+/*  @requires : pg est un pointeur valide vers un plateau valide, c est une cellule valide, (x,y) sont les coordonnées d'une case occupée
     @assigns  : *pg
-    @ensures  : place la carte c sur la case (x,y) de la plateau si la case n'est pas occupée, retourne 1 le cas échéant. retourne 0 sinon */
-int placer_carte(carte c, int x, int y, plateau* pg);
+    @ensures  : place, si la case n'est pas occupée, la cellule c à l'ouest de la cellule (non-nulle) en (x,y) du plateau *pg , retourne 1 le cas échéant. retourne 0 sinon */
+int placer_west(cell c, plateau* pg, int x, int y);
+
+/*  @requires : pg est un pointeur valide vers un plateau valide, c est une cellule valide, (x,y) sont les coordonnées d'une case occupée
+    @assigns  : *pg
+    @ensures  : place, si la case n'est pas occupée, la cellule c à l'est de la cellule (non-nulle) en (x,y) du plateau *pg , retourne 1 le cas échéant. retourne 0 sinon */
+int placer_east(cell c, plateau* pg, int x, int y);
+
+/*  @requires : pg est un pointeur valide vers un plateau valide, c est une cellule valide, (x,y) sont les coordonnées d'une case occupée
+    @assigns  : *pg
+    @ensures  : place, si la case n'est pas occupée, la cellule c au nord de la cellule (non-nulle) en (x,y) du plateau *pg , retourne 1 le cas échéant. retourne 0 sinon */
+int placer_north(cell c, plateau* pg, int x, int y);
+
+/*  @requires : pg est un pointeur valide vers un plateau valide, c est une cellule valide, (x,y) sont les coordonnées d'une case occupée
+    @assigns  : *pg
+    @ensures  : place, si la case n'est pas occupée, la cellule c au sud de la cellule (non-nulle) en (x,y) du plateau *pg , retourne 1 le cas échéant. retourne 0 sinon */
+int placer_south(cell c, plateau* pg, int x, int y);
+
+//INFO SUR LA CELLULE
 
 /*  @requires : g est un plateau valide
     @assigns  : nothing
     @ensures  : retourne la carte située aux coordonnées (x,y) du plateau g ; s'il n'y a pas de carte, renvoie la carte nulle*/
-carte get_carte(plateau g, int x, int y);
+cell get_cell(plateau g, int x, int y);
 
 /*  @requires : pg est un pointeur valide vers un plateau valide
     @assigns  : *pg
-    @ensures  : supprime la carte du plateau située aux coordonnées (x,y) du plateau *pg (remplacée par la carte nulle), retourne 1 le cas échéant. retourne 0 sinon (pas de carte ou carte déjà supprimée) */
-int supp_carte_plateau(plateau* pg, int x, int y);
+    @ensures  : supprime la carte du plateau située aux coordonnées (x,y) du plateau *pg (remplacée par la cellule nulle), retourne 1 le cas échéant. retourne 0 sinon (pas de carte ou carte déjà supprimée) */
+int supp_cell_plateau(plateau* pg, int x, int y);
 
 /*  @requires : pg est un pointeur valide vers un plateau valide
     @assigns  : *pg
-    @ensures  : déplace la carte du plateau située aux coordonnées (x1,y1) du plateau *pg (remplacée par la carte nulle) vers les coordonnées (x2, y2),
+    @ensures  : déplace la carte du plateau située aux coordonnées (x1,y1) du plateau *pg (remplacée par la cellule nulle) vers les coordonnées (x2, y2),
     retourne 0 le cas échéant.
     retourne -1 si problème sur la case de départ (x1, y1)
     retourne 1 si problème sur la case d'arrivée (x2, y2)*/
-int deplacer_carte(plateau* pg, int x1, int y1, int x2, int y2);
+int deplacer_cell(plateau* pg, int x1, int y1, int x2, int y2);
 
 /*  @requires : g est un plateau valide
     @assigns  : nothing
@@ -73,9 +94,6 @@ int taille_ligne_east(plateau g, int i);
 /*--------------------------------- Liste chainee de cartes ---------------------------------*/
 typedef struct bucket *liste;
 typedef carte elt; /*valeur des éléments de la liste*/
-/*Structures héritant de la structure de liste*/
-typedef liste pioche;
-typedef liste carteEnMain;
 
 /*  @requires : nothing
     @assigns  : nothing
