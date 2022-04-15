@@ -9,15 +9,20 @@
 //Temporaire :
 typedef carte cell;
 
-/*  @requires : c est une carte valide
+/*  @requires : c est une cellule valide
     @assigns  : nothing
-    @ensures  : retourne le plateau contenant la carte c au centre */
-plateau init_grille(carte c);
+    @ensures  : retourne le plateau contenant la cellule c au centre */
+plateau init_grille(cell c);
 
 /*  @requires : g est un plateau valide
     @assigns  : nothing
     @ensures  : retourne 1 si la case (x,y) n'est pas occupée, 0 sinon */
 int est_libre(plateau g, int x, int y);
+
+/*  @requires : pg est un pointeur valide vers un plateau valide
+    @assigns  : *pg
+    @ensures  : libère la mémoire associée au plateau *pg */
+void free_grille(plateau *pg);
 
 //PLACEMENTS
 
@@ -45,12 +50,12 @@ int placer_south(cell c, plateau* pg, int x, int y);
 
 /*  @requires : g est un plateau valide
     @assigns  : nothing
-    @ensures  : retourne la carte située aux coordonnées (x,y) du plateau g ; s'il n'y a pas de carte, renvoie la carte nulle*/
+    @ensures  : retourne la cellule située aux coordonnées (x,y) du plateau g ; s'il n'y a pas de cellule, renvoie la cellule nulle*/
 cell get_cell(plateau g, int x, int y);
 
 /*  @requires : pg est un pointeur valide vers un plateau valide
     @assigns  : *pg
-    @ensures  : supprime la carte du plateau située aux coordonnées (x,y) du plateau *pg (remplacée par la cellule nulle), retourne 1 le cas échéant. retourne 0 sinon (pas de carte ou carte déjà supprimée) */
+    @ensures  : supprime la cellule du plateau située aux coordonnées (x,y) du plateau *pg (remplacée par la cellule nulle), retourne 1 le cas échéant. retourne 0 sinon (pas de cellule ou cellule déjà supprimée) */
 int supp_cell_plateau(plateau* pg, int x, int y);
 
 /*  @requires : pg est un pointeur valide vers un plateau valide
@@ -91,7 +96,7 @@ int taille_ligne_west(plateau g, int i);
     @ensures  : retourne la coordonnée de la case située la plus à l'est de la ligne i du plateau*/
 int taille_ligne_east(plateau g, int i);
 
-/*--------------------------------- Liste chainee de cartes ---------------------------------*/
+/*--------------------------------- Liste chainée ---------------------------------*/
 typedef struct bucket *liste;
 typedef carte elt; /*valeur des éléments de la liste*/
 
