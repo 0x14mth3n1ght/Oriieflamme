@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "../header/structure.h"
 
-/*----------- Plateau = Grille : liste doublement chainee imbriquee dans liste doublement chainee -----------*/
+/*----------- Grille : liste doublement chainee imbriquee dans liste doublement chainee d'éléments de type cell -----------*/
 
 /*----Liste doublement chainee fille----*/
 typedef struct maillon * ddl_fille;
@@ -20,10 +20,10 @@ struct maillon {
 
 /*----Liste doublement chainee mere----*/
 //Liste doublement chaine mere = Pointeur vers un maillon "colonne"
-typedef struct plateau_base colonne;
-typedef colonne* ddl_mere; // == type plateau
+typedef struct grid_base colonne;
+typedef colonne* ddl_mere; // == type grid
 
-struct plateau_base {
+struct grid_base {
     //Element de la liste doublement chainee
     ddl_fille ligne;
     int y; //ordonnée de la colonne (offset_from_center : 0 si centre, 1 si colonne d'en dessous, -1 si colonne d'au dessus etc)
@@ -34,8 +34,8 @@ struct plateau_base {
 
 // ----Fonctions----
 
-plateau init_grille(cell c){
-    plateau out = malloc(sizeof *out);
+grid init_grille(cell c){
+    grid out = malloc(sizeof *out);
     ddl_fille ini = malloc(sizeof *out);
         ini->val = c;
         ini->x = 0;
@@ -96,14 +96,14 @@ void push_west(cell c, ddl_fille *pl){
 /*  @requires : pl est un pointeur valide vers une liste doublement chaînée (fille) valide, c une cellule valide
     @assigns  : *pl
     @ensures  : renvoie une nouvelle liste avec c à l'est de la liste *pl */
-void push_east(carte c, ddl_fille *pl){
+void push_east(cell c, ddl_fille *pl){
     *pl = cons_colonne_east(c, *pl);
 }
 
 /*  @requires : pl est un pointeur valide vers une liste doublement chaînée (fille) valide non-vide
     @assigns  : *pl
     @ensures  : retourne l'élément à l'ouest de la liste et le retire de la liste*/
-/*carte pop_west(ddl_fille* pl){
+/*cell pop_west(ddl_fille* pl){
     if (*pl == NULL){
         printf("Error pop_west : list is empty.\n");
         exit(EXIT_FAILURE);
@@ -112,7 +112,7 @@ void push_east(carte c, ddl_fille *pl){
     while ((*pl)->west != NULL){
         *pl = (*pl)->west;
     }
-    carte e = (*pl)->card; //On stocke l'élément à l'ouest de la liste
+    cell e = (*pl)->val; //On stocke l'élément à l'ouest de la liste
     *pl = (*pl)-> east; //On recule vers l'est dans la liste
     return e; //Comment retirer l'élément ??
 }*/
@@ -151,14 +151,14 @@ cell peek_east(ddl_fille l){
 
 // --- Fonctions utilitaires ---
 
-/*  @requires : pg est un pointeur valide vers un plateau valide, c est une cellule valide
+/*  @requires : pg est un pointeur valide vers une grille valide, c est une cellule valide
     @assigns  : *pg
-    @ensures  : place la cellule c sur la case (x,y) de la plateau si la case n'est pas occupée, retourne 1 le cas échéant. retourne 0 sinon */
-int placer_cell(cell c, plateau* pg, int x, int y);
+    @ensures  : place la cellule c sur la case (x,y) de la grille si la case n'est pas occupée, retourne 1 le cas échéant. retourne 0 sinon */
+int placer_cell(cell c, grid* pg, int x, int y);
 
-int deplacer_cell(plateau* pg, int x1, int y1, int x2, int y2){
+int deplacer_cell(grid* pg, int x1, int y1, int x2, int y2){
     cell c = get_cell(*pg, x1, y1); //Cellule à déplacer
-    if (supp_cell_plateau(pg, x1, y1) == 0)
+    if (supp_cell_grille(pg, x1, y1) == 0)
         return -1;
     if (placer_cell(c, pg, x2, y2) == 0)
         return 1;
@@ -167,7 +167,7 @@ int deplacer_cell(plateau* pg, int x1, int y1, int x2, int y2){
 
 // --- TAILLES ---
 
-int taille_north(plateau g){
+int taille_north(grid g){
     int out = g->y;
     //Accès à la case la plus au nord
     while (g->north != NULL){
@@ -177,7 +177,7 @@ int taille_north(plateau g){
     return out;
 }
 
-int taille_south(plateau g){
+int taille_south(grid g){
     int out = g->y;
     //Accès à la case la plus au nord
     while (g->south != NULL){
@@ -205,7 +205,7 @@ int taille_fille_west(ddl_fille l){
     @ensures  : retourne la coordonnée de la case située la plus à l'est de la liste*/
 int taille_fille_east(ddl_fille l){
     int out = l->x;
-    //Accès à la case la plus à l'ouest
+    //Accès à la case la plus à l'est
     while (l->east != NULL){
         l = l->east;
         out++; //décalage à gauche : -1
@@ -213,7 +213,7 @@ int taille_fille_east(ddl_fille l){
     return out;
 }
 
-int taille_west(plateau g){
+int taille_west(grid g){
     //Recherche de la taille de la ligne la plus petite
     int min = 0;
     ddl_mere l_north = g; //Parcourt la liste vers le nord
@@ -233,7 +233,7 @@ int taille_west(plateau g){
     return min;
 }
 
-int taille_east(plateau g){
+int taille_east(grid g){
     //Recherche de la taille de la ligne la plus grande
     int max = 0;
     ddl_mere l_north = g; //Parcourt la liste vers le nord
@@ -253,7 +253,7 @@ int taille_east(plateau g){
     return max;
 }
 
-int taille_ligne_west(plateau g, int i){
+int taille_ligne_west(grid g, int i){
     int offset = g->y;
     if (offset > i) //Cas où on est en dessous de la ligne i
         while(g->y != i) //On va vers le nord
@@ -264,7 +264,7 @@ int taille_ligne_west(plateau g, int i){
     return taille_fille_west(g->ligne);
 }
 
-int taille_ligne_east(plateau g, int i){
+int taille_ligne_east(grid g, int i){
     int offset = g->y;
     if (offset > i) //Cas où on est en dessous de la ligne i
         while(g->y != i) //On va vers le nord
