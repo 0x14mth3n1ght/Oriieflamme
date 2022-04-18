@@ -14,10 +14,10 @@ typedef struct grid_base * grid;
 typedef struct cell_base * cell;
 
 
-/*  @requires : c est une cellule valide
+/*  @requires : nothing
     @assigns  : nothing
-    @ensures  : retourne la grille contenant la cellule c au centre */
-grid init_grille(cell c);
+    @ensures  : retourne la grille vide */
+grid init_grille();
 
 /*  @requires : c est une cellule valide, pg est un pointeur valide vers une grille valide (vide au centre)
     @assigns  : *pg
