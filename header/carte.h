@@ -40,5 +40,8 @@ char* get_carte_description(carte c);
 */
 int get_carte_occurences(carte c);
 
+/* CONSTANTES */
+
+int nb_cartes_main_debut_manche = 8;
 
 #endif

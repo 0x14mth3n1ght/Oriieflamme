@@ -20,7 +20,7 @@ typedef struct faction_base *faction;
 * et repiocher 8 cartes
 * \param f une faction
 * \attention 1) la faction passee en parametre doit exister
-* si ce n'est pas le cas, une exception est renvoyee
+* si ce n'est pas le cas
 * \return la fonction retourne l'entier 1 si la faction 
 * a utilise l'option de remelanger sa main et 0 sinon
 */
@@ -74,8 +74,7 @@ void repiocher(faction *f);
 /**
 * \brief cette fonction permet de récupérer le nom d'une faction
 * \param f une faction
-* \attention la faction doit exister, si ce n'est pas le cas une 
-* exception est renvoyee
+* \attention la faction doit exister
 * \return le nom de la faction
 */
 char* get_faction_nom(faction f);
@@ -83,8 +82,7 @@ char* get_faction_nom(faction f);
 /**
 * \brief cette fonction permet de récupérer le nombre de points DDRS d'une faction
 * \param f une faction
-* \attention la faction doit exister, si ce n'est pas le cas une 
-* exception est renvoyee
+* \attention la faction doit exister
 * \return le nombre de points DDRS de la faction
 */
 int get_ptsddrs_faction(faction f);
@@ -102,15 +100,15 @@ void set_ptsddrs_faction(faction *f, int i);
 /**
 * \brief cette fonction permet de récupérer la main d'une faction 
 * \param f une faction
-* \attention la faction doit exister, si ce n'est pas le cas une exception est renvoyee 
+* \attention la faction doit exister
 * \return la main de la faction
 */
-carte* get_main_faction(faction f);
+liste get_main_faction(faction f);
 
 /**
 * \brief cette fonction permet d'obtenir le nombre de victoires d'une faction
 * \param f une faction
-* \attention la faction doit exister, si ce n'est pas le cas une exception est renvoyee 
+* \attention la faction doit exister
 * \return le nombre de victoires d'une faction
 */
 int get_nb_victoires(faction f);
@@ -128,10 +126,10 @@ void set_nb_victoires(faction *f, int i);
 /**
 * \brief cette fonction permet d'obtenir la pioche d'une faction
 * \param f une faction
-* \attention la faction doit exister, si ce n'est pas le cas une exception est renvoyee 
+* \attention la faction doit exister
 * \return la pioche d'une faction
 */  
-carte* get_pioche(faction f);
+liste get_pioche(faction f);
 
 /* fonctions supplémentaires que j'implémenterai si j'ai le temps */
 
