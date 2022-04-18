@@ -47,14 +47,19 @@ grid init_grille(){
 }
 
 void premiere_cellule(cell c, grid* pg){
-    ddl_fille ini = malloc(sizeof *ini);/*Première ligne*/
-        ini->val = c;
-        ini->x = 0;
-        ini->y = 0;
-        ini->west = NULL;
-        ini->east = NULL;
-    (*pg)->ligne = ini;
-    (*pg)->ligne->val = c;
+    if (((*pg)->ligne) == NULL){
+        ddl_fille ini = malloc(sizeof *ini);/*Première ligne*/
+            ini->val = c;
+            ini->x = 0;
+            ini->y = 0;
+            ini->west = NULL;
+            ini->east = NULL;
+        (*pg)->ligne = ini;
+        (*pg)->ligne->val = c;
+    }
+    else {
+        printf("Error premiere_cellule : grid already had the first cell\n");
+    }
 }
 
 int est_libre(grid g, int x, int y){
