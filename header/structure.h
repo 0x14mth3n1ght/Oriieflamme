@@ -63,6 +63,26 @@ int placer_south(cell c, grid* pg, int x, int y);
     @ensures  : retourne la cellule située aux coordonnées (x,y) de la grille g ; s'il n'y a pas de cellule, renvoie la cellule nulle*/
 cell get_cell(grid g, int x, int y);
 
+/*  @requires : g est une grille valide
+    @assigns  : nothing
+    @ensures  : retourne la cellule située à l'ouest de celle située aux coordonnées (x,y) de la grille g ; s'il n'y a pas de cellule, renvoie la cellule nulle */
+cell get_cell_west(grid g, int x, int y);
+
+/*  @requires : g est une grille valide
+    @assigns  : nothing
+    @ensures  : retourne la cellule située à l'est de celle située aux coordonnées (x,y) de la grille g ; s'il n'y a pas de cellule, renvoie la cellule nulle */
+cell get_cell_east(grid g, int x, int y);
+
+/*  @requires : g est une grille valide
+    @assigns  : nothing
+    @ensures  : retourne la cellule située au nord de celle située aux coordonnées (x,y) de la grille g ; s'il n'y a pas de cellule, renvoie la cellule nulle */
+cell get_cell_north(grid g, int x, int y);
+
+/*  @requires : g est une grille valide
+    @assigns  : nothing
+    @ensures  : retourne la cellule située au sud de celle située aux coordonnées (x,y) de la grille g ; s'il n'y a pas de cellule, renvoie la cellule nulle */
+cell get_cell_south(grid g, int x, int y);
+
 /*  @requires : pg est un pointeur valide vers une grille valide
     @assigns  : *pg
     @ensures  : supprime la cellule de la grille située aux coordonnées (x,y) de la grille *pg (remplacée par la cellule nulle), retourne 1 le cas échéant. retourne 0 sinon (pas de cellule ou cellule déjà supprimée) */
