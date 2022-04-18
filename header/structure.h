@@ -19,6 +19,11 @@ typedef struct cell_base * cell;
     @ensures  : retourne la grille contenant la cellule c au centre */
 grid init_grille(cell c);
 
+/*  @requires : c est une cellule valide, pg est un pointeur valide vers une grille valide (vide au centre)
+    @assigns  : *pg
+    @ensures  : ajoute à *pg la cellule c au centre (aux coordonnées (0,0)) */
+void premiere_cellule(cell c, grid* pg);
+
 /*  @requires : g est une grille valide
     @assigns  : nothing
     @ensures  : retourne 1 si la case (x,y) n'est pas occupée, 0 sinon */
@@ -27,7 +32,7 @@ int est_libre(grid g, int x, int y);
 /*  @requires : pg est un pointeur valide vers une grille valide
     @assigns  : *pg
     @ensures  : libère la mémoire associée à la grille *pg */
-void free_grille(grid *pg);
+void free_grille(grid* pg);
 
 //PLACEMENTS
 
