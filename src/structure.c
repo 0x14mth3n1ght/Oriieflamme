@@ -4,13 +4,16 @@
 
 /*----------- Grille : liste doublement chainee imbriquee dans liste doublement chainee d'éléments de type cell -----------*/
 
+//La grille pointera toujours hors des fonctions vers la ligne y=0
+//La ddl_fille pointera toujours hors des fonctions vers le maillon x=0
+
 /*----Liste doublement chainee fille----*/
 typedef struct maillon * ddl_fille;
 typedef struct maillon maillon2D;
 
 struct maillon {
     //Elements de la liste doublement chainee
-    cell val; //cellule posee sur ces coordonnees (x,y)
+    cell val; //cellule posee sur ces coordonnees (x,y) ; une case non occupée est caractérisée par une val = NULL
     int x; //abscisse de la ligne (offset_from_center : 0 si centre, 1 si case a droite, -1 si case a gauche etc)
     int y; //ordonnée de la case (egale à ddl_mere->y)
     //Pointeurs vers le "maillon" precedent ou suivant
@@ -19,14 +22,14 @@ struct maillon {
 };
 
 /*----Liste doublement chainee mere----*/
-//Liste doublement chaine mere = Pointeur vers un maillon "colonne"
 typedef struct grid_base colonne;
+//Liste doublement chaine mere = Pointeur vers un maillon "colonne"
 typedef colonne* ddl_mere; // == type grid
 
 struct grid_base {
     //Element de la liste doublement chainee
     ddl_fille ligne;
-    int y; //ordonnée de la colonne (offset_from_center : 0 si centre, 1 si colonne d'en dessous, -1 si colonne d'au dessus etc)
+    int y; //ordonnée de la colonne (offset_from_center : 0 si centre, -1 si colonne d'en dessous, 1 si colonne d'au dessus etc)
     //Pointeurs vers le "maillon" precedent ou suivant
     ddl_mere north;
     ddl_mere south;
@@ -34,22 +37,35 @@ struct grid_base {
 
 // ----Fonctions----
 
-grid init_grille(cell c){
+grid init_grille(){
     grid out = malloc(sizeof *out);
-    ddl_fille ini = malloc(sizeof *out);
+        out->ligne = NULL;
+        out->y = 0;
+        out->north = NULL;
+        out->south = NULL;
+    return out;    
+}
+
+void premiere_cellule(cell c, grid* pg){
+    ddl_fille ini = malloc(sizeof *ini);/*Première ligne*/
         ini->val = c;
         ini->x = 0;
         ini->y = 0;
         ini->west = NULL;
         ini->east = NULL;
-    out->ligne = ini;
-    out->y = 0;
-    out->north = NULL;
-    out->south = NULL;
-    return out;    
+    (*pg)->ligne = ini;
+    (*pg)->ligne->val = c;
 }
 
-// --- Fonctions de base de liste chainee fille ---
+int est_libre(grid g, int x, int y){
+    return (test_ligne_vide(get_ligne(y,g))==NULL || get_case(g, x, y)==NULL);
+}
+
+void free_grille(grid* pg);/*TODO*/
+int placer_cell(cell c, grid* pg, int x, int y);/*TODO*/
+
+// --- Fonctions de base de liste chainee mère ---
+
 /*  @requires : l est une liste doublement chaînée (fille) valide
     @assigns  : nothing
     @ensures  : retourne 1 si l est vide et 0 sinon*/
@@ -57,18 +73,114 @@ int test_ligne_vide(ddl_fille l){
     return (l==NULL);
 }
 
+/*  @requires : g est une liste doublement chaînée (mère) valide, c une cellule valide
+    @assigns  : nothing
+    @ensures  : renvoie une nouvelle liste avec c à au nord de la liste l */
+ddl_mere cons_ligne_north(cell c, ddl_mere l){
+    ddl_mere res = malloc(sizeof(ddl_mere));
+    res->ligne = NULL;
+    res->y = (l->y)+1; //décalage vers le nord : +1
+    res->north = NULL;
+    res->south = l;
+    return res;
+}
+
+/*  @requires : g est une liste doublement chaînée (mère) valide, c une cellule valide
+    @assigns  : nothing
+    @ensures  : renvoie une nouvelle liste avec c à au sud de la liste l */
+ddl_mere cons_ligne_south(cell c, ddl_mere l){
+    ddl_mere res = malloc(sizeof(ddl_mere));
+    res->ligne = NULL;
+    res->y = (l->y)-1; //décalage vers le sud : -1
+    res->north = l;
+    res->south = NULL;
+    return res;
+}
+
+/*  @requires : pl est un pointeur valide vers une liste doublement chaînée (mère) valide, c une cellule valide
+    @assigns  : *pl
+    @ensures  : renvoie une nouvelle liste avec c au nord de la liste *pl */
+void push_north(cell c, ddl_mere *pl){
+    ddl_mere start = pl; /*Pointeur vers le début de la liste mère*/
+    *pl = cons_ligne_north(c, *pl);
+    pl = start; /*Replace le pointeur de la liste mère au début*/
+}
+
+/*  @requires : pl est un pointeur valide vers une liste doublement chaînée (mère) valide, c une cellule valide
+    @assigns  : *pl
+    @ensures  : renvoie une nouvelle liste avec c au sud de la liste *pl */
+void push_south(cell c, ddl_mere *pl){
+    ddl_mere start = pl; /*Pointeur vers le début de la liste mère*/
+    *pl = cons_ligne_south(c, *pl);
+    pl = start; /*Replace le pointeur de la liste mère au début*/
+}
+
+/*  @requires : l est une liste doublement chaînée (mère) valide non-vide
+    @assigns  : nothing
+    @ensures  : retourne la liste fille au nord de la liste*/
+ddl_fille peek_most_north(ddl_mere l){
+    if (l == NULL){
+        printf("Error peek_most_orth : list is empty.\n");
+        exit(EXIT_FAILURE);
+    }
+    //Accès à la case la plus à l'ouest
+    while (l->north != NULL){
+        l = l->north;
+    }
+    return l->ligne;
+}
+
+/*  @requires : l est une liste doublement chaînée (mère) valide non-vide
+    @assigns  : nothing
+    @ensures  : retourne la liste fille au nord de la liste*/
+ddl_fille peek_most_south(ddl_mere l){
+    if (l == NULL){
+        printf("Error peek_most_south : list is empty.\n");
+        exit(EXIT_FAILURE);
+    }
+    //Accès à la case la plus à l'ouest
+    while (l->south != NULL){
+        l = l->south;
+    }
+    return l->ligne;
+}
+
+// --- Fonctions de base de liste chainee fille ---
+
+/*  @requires : g est une grille valide
+    @assigns  : nothing
+    @ensures  : retourne la ligne d'ordonnée y de g */
+ddl_fille get_ligne(int y, grid g){
+    int i = g->y;
+    if (y==i) return g->ligne;
+    if (y>0){//Si la ligne y est vers le nord
+        while (i<y && g->north != NULL){
+            i++;
+            g = g->north;
+        }
+    }
+    else{//Si la ligne est vers le sud
+        while (i>y && g->south != NULL){
+            i--;
+            g = g->south;
+        }
+    }
+    //g->y = y ou g = NULL
+    if (g==NULL) return NULL;
+    //g->y = y
+    return g->ligne; 
+}
+
 /*  @requires : l est une liste doublement chaînée (fille) valide, c une cellule valide
     @assigns  : nothing
     @ensures  : renvoie une nouvelle liste avec c à l'ouest de la liste l */
 ddl_fille cons_colonne_west(cell c, ddl_fille l){
-    ddl_fille start = l; //Pointeur vers le début de la ddl
     ddl_fille res = malloc(sizeof(ddl_fille));
     res->val = c;
     res->x = (l->x)-1; //décalage à gauche : -1
     res->y = l->y;
     res->west = NULL;
     res->east = l;
-    res = start;
     return res;
 }
 
@@ -76,13 +188,11 @@ ddl_fille cons_colonne_west(cell c, ddl_fille l){
     @assigns  : nothing
     @ensures  : renvoie une nouvelle liste avec c à l'est de la liste l */
 ddl_fille cons_colonne_east(cell c, ddl_fille l){
-    ddl_fille start = l; //Pointeur vers le début de la ddl
     ddl_fille res = malloc(sizeof(ddl_fille));
     res->val = c;
-    res->x = (l->x)+1;  //décalage à gauche : +1
+    res->x = (l->x)+1;  //décalage à droite : +1
     res->west = l;
     res->east = NULL;
-    res = start;
     return res;
 }
 
@@ -90,14 +200,18 @@ ddl_fille cons_colonne_east(cell c, ddl_fille l){
     @assigns  : *pl
     @ensures  : renvoie une nouvelle liste avec c à l'ouest de la liste *pl */
 void push_west(cell c, ddl_fille *pl){
+    ddl_fille start = pl; /*Pointeur vers le début de la liste fille*/
     *pl = cons_colonne_west(c, *pl);
+    pl = start; /*Replace le pointeur de la liste fille au début*/
 }
 
 /*  @requires : pl est un pointeur valide vers une liste doublement chaînée (fille) valide, c une cellule valide
     @assigns  : *pl
     @ensures  : renvoie une nouvelle liste avec c à l'est de la liste *pl */
 void push_east(cell c, ddl_fille *pl){
+    ddl_fille start = pl; /*Pointeur vers le début de la liste fille*/
     *pl = cons_colonne_east(c, *pl);
+    pl = start; /*Replace le pointeur de la liste fille au début*/
 }
 
 /*  @requires : pl est un pointeur valide vers une liste doublement chaînée (fille) valide non-vide
@@ -147,14 +261,37 @@ cell peek_east(ddl_fille l){
     return l->val;
 }
 
-// --- Fonctions de base de liste chainee mère ---
-
 // --- Fonctions utilitaires ---
 
-/*  @requires : pg est un pointeur valide vers une grille valide, c est une cellule valide
-    @assigns  : *pg
-    @ensures  : place la cellule c sur la case (x,y) de la grille si la case n'est pas occupée, retourne 1 le cas échéant. retourne 0 sinon */
-int placer_cell(cell c, grid* pg, int x, int y);
+/*  @requires : g est une grille valide
+    @assigns  : nothing
+    @ensures  : retourne la liste pointant vers la cellule située aux coordonnées (x,y) de la grille g ; s'il n'existe pas, renvoie null*/
+ddl_fille get_case(grid g, int x, int y){
+    ddl_fille ligne = get_ligne(y, g); //Ligne d'ordonnée y
+    int i = ligne->x;
+    if (x==i) return ligne;
+    if (x>i){//Si la case x est vers l'est
+        while (i<x && ligne->east != NULL){
+            i++;
+            ligne = ligne->east;
+        }
+    }
+    else{//Si la case x est vers l'ouest
+        while (i>x && ligne->west != NULL){
+            i--;
+            ligne = ligne->west;
+        }
+    }
+    //ligne->x = x ou ligne = NULL
+    if (ligne==NULL) return NULL;
+    //ligne->x = x
+    return NULL;
+}
+
+cell get_cell(grid g, int x, int y){
+    if (get_case(g,x,y) == NULL) return NULL;
+    return (get_case(g,x,y))->val;
+}
 
 int deplacer_cell(grid* pg, int x1, int y1, int x2, int y2){
     cell c = get_cell(*pg, x1, y1); //Cellule à déplacer
@@ -165,24 +302,50 @@ int deplacer_cell(grid* pg, int x1, int y1, int x2, int y2){
     return 0;
 }
 
+//S'il y a une rangée de NULL qui va jusqu'à l'extremité, alors supprime la rangée.
+int supp_cell_grille(grid* pg, int x, int y);/*TODO*/
+
 // --- TAILLES ---
 
+int taille_grille(direction d, grid g){
+    switch (d) {
+    case west:
+        return taille_west(g); break;
+    case north:
+        return taille_north(g); break;
+    case east:
+        return taille_east(g); break;
+    case south:
+        return taille_south(g); break;
+    default: 
+        printf("Error direction doesn't exist\n");
+        exit(EXIT_FAILURE);
+        break;
+    }
+}
+
+/*  @requires : g est une grille valide
+    @assigns  : nothing
+    @ensures  : retourne la coordonnée de la case située la plus au nord de la grille*/
 int taille_north(grid g){
     int out = g->y;
     //Accès à la case la plus au nord
     while (g->north != NULL){
         g = g->north;
-        out--; //décalage à "gauche" (haut) : -1
+        out++; //décalage en haut "augmentation" : +1
     }
     return out;
 }
 
+/*  @requires : g est une grille valide
+    @assigns  : nothing
+    @ensures  : retourne la coordonnée de la case située la plus au sud de la grille*/
 int taille_south(grid g){
     int out = g->y;
     //Accès à la case la plus au nord
     while (g->south != NULL){
         g = g->south;
-        out++; //décalage à "droite" (bas) : +1
+        out--; //décalage en bas "diminution" : -1
     }
     return out;
 }
@@ -195,7 +358,7 @@ int taille_fille_west(ddl_fille l){
     //Accès à la case la plus à l'ouest
     while (l->west != NULL){
         l = l->west;
-        out--; //décalage à gauche : +1
+        out--; //décalage à gauche : -1
     }
     return out;
 }
@@ -208,11 +371,14 @@ int taille_fille_east(ddl_fille l){
     //Accès à la case la plus à l'est
     while (l->east != NULL){
         l = l->east;
-        out++; //décalage à gauche : -1
+        out++; //décalage à droite : +1
     }
     return out;
 }
 
+/*  @requires : g est une grille valide
+    @assigns  : nothing
+    @ensures  : retourne la coordonnée de la case située la plus à l'ouest de la grille*/
 int taille_west(grid g){
     //Recherche de la taille de la ligne la plus petite
     int min = 0;
@@ -233,6 +399,9 @@ int taille_west(grid g){
     return min;
 }
 
+/*  @requires : g est une grille valide
+    @assigns  : nothing
+    @ensures  : retourne la coordonnée de la case située la plus à l'est de la grille*/
 int taille_east(grid g){
     //Recherche de la taille de la ligne la plus grande
     int max = 0;
@@ -253,30 +422,18 @@ int taille_east(grid g){
     return max;
 }
 
-int taille_ligne_west(grid g, int i){
-    int offset = g->y;
-    if (offset > i) //Cas où on est en dessous de la ligne i
-        while(g->y != i) //On va vers le nord
-            g = g->north;
-    if (offset < i) //Cas où on est au dessus de la ligne i
-        while(g->y != i) //On va vers le sud
-            g = g->south;
-    return taille_fille_west(g->ligne);
+int taille_ligne_direction(direction d, grid g, int i){
+    switch (d){
+        case west:
+            return taille_fille_west(get_ligne(i, g)); break;
+        case east:
+            return taille_fille_east(get_ligne(i, g)); break;
+        default: 
+            printf("taille_ligne_direction : direction must be west or east\n");
+            exit(EXIT_FAILURE);
+            break;
+    }
 }
-
-int taille_ligne_east(grid g, int i){
-    int offset = g->y;
-    if (offset > i) //Cas où on est en dessous de la ligne i
-        while(g->y != i) //On va vers le nord
-            g = g->north;
-    if (offset < i) //Cas où on est au dessus de la ligne i
-        while(g->y != i) //On va vers le sud
-            g = g->south;
-    return taille_fille_east(g->ligne);
-}
-
-
-/*wip*/
 
 /*--------------------------------- Liste chaînée ---------------------------------*/
 struct bucket {

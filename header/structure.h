@@ -5,14 +5,14 @@
 #include "carte.h"
 #include "plateau.h"
 
-//TEMPORAIRE
-typedef carte elt; /*valeur des éléments de la liste*/
-
 /*----------- Grille : liste doublement chainee imbriquee dans liste doublement chainee d'éléments de type cell -----------*/
-//Type abstrait des cases de la grille
 typedef struct grid_base * grid;
+//Type abstrait des cases de la grille
 typedef struct cell_base * cell;
 
+//Directions
+enum direction {west, north, east, south};
+typedef enum direction direction;
 
 /*  @requires : nothing
     @assigns  : nothing
@@ -34,59 +34,27 @@ int est_libre(grid g, int x, int y);
     @ensures  : libère la mémoire associée à la grille *pg */
 void free_grille(grid* pg);
 
-//PLACEMENTS
-
-/*  @requires : pg est un pointeur valide vers une grille valide, c est une cellule valide, (x,y) sont les coordonnées d'une case occupée
+/*  @requires : pg est un pointeur valide vers une grille valide, c est une cellule valide
     @assigns  : *pg
-    @ensures  : place, si la case n'est pas occupée, la cellule c à l'ouest de la cellule (non-nulle) en (x,y) de la grille *pg , retourne 1 le cas échéant. retourne 0 sinon */
-int placer_west(cell c, grid* pg, int x, int y);
-
-/*  @requires : pg est un pointeur valide vers une grille valide, c est une cellule valide, (x,y) sont les coordonnées d'une case occupée
-    @assigns  : *pg
-    @ensures  : place, si la case n'est pas occupée, la cellule c à l'est de la cellule (non-nulle) en (x,y) de la grille *pg , retourne 1 le cas échéant. retourne 0 sinon */
-int placer_east(cell c, grid* pg, int x, int y);
-
-/*  @requires : pg est un pointeur valide vers une grille valide, c est une cellule valide, (x,y) sont les coordonnées d'une case occupée
-    @assigns  : *pg
-    @ensures  : place, si la case n'est pas occupée, la cellule c au nord de la cellule (non-nulle) en (x,y) de la grille *pg , retourne 1 le cas échéant. retourne 0 sinon */
-int placer_north(cell c, grid* pg, int x, int y);
-
-/*  @requires : pg est un pointeur valide vers une grille valide, c est une cellule valide, (x,y) sont les coordonnées d'une case occupée
-    @assigns  : *pg
-    @ensures  : place, si la case n'est pas occupée, la cellule c au sud de la cellule (non-nulle) en (x,y) de la grille *pg , retourne 1 le cas échéant. retourne 0 sinon */
-int placer_south(cell c, grid* pg, int x, int y);
+    @ensures  : place la cellule c sur la case (x,y) de la grille si la case n'est pas occupée, retourne 1 le cas échéant. retourne 0 sinon */
+int placer_cell(cell c, grid* pg, int x, int y);
 
 //INFO SUR LA CELLULE
 
 /*  @requires : g est une grille valide
     @assigns  : nothing
-    @ensures  : retourne la cellule située aux coordonnées (x,y) de la grille g ; s'il n'y a pas de cellule, renvoie la cellule nulle*/
+    @ensures  : retourne la cellule située aux coordonnées (x,y) de la grille g ; s'il n'y a pas de cellule, renvoie la NULL*/
 cell get_cell(grid g, int x, int y);
 
 /*  @requires : g est une grille valide
     @assigns  : nothing
-    @ensures  : retourne la cellule située à l'ouest de celle située aux coordonnées (x,y) de la grille g ; s'il n'y a pas de cellule, renvoie la cellule nulle */
-cell get_cell_west(grid g, int x, int y);
+    @ensures  : retourne la coordonnée de la case le plus éloignée dans la direction d de la grille g*/
+int taille_direction(direction d, grid g);
 
-/*  @requires : g est une grille valide
+/*  @requires : g est une grille valide, d = west ou east
     @assigns  : nothing
-    @ensures  : retourne la cellule située à l'est de celle située aux coordonnées (x,y) de la grille g ; s'il n'y a pas de cellule, renvoie la cellule nulle */
-cell get_cell_east(grid g, int x, int y);
-
-/*  @requires : g est une grille valide
-    @assigns  : nothing
-    @ensures  : retourne la cellule située au nord de celle située aux coordonnées (x,y) de la grille g ; s'il n'y a pas de cellule, renvoie la cellule nulle */
-cell get_cell_north(grid g, int x, int y);
-
-/*  @requires : g est une grille valide
-    @assigns  : nothing
-    @ensures  : retourne la cellule située au sud de celle située aux coordonnées (x,y) de la grille g ; s'il n'y a pas de cellule, renvoie la cellule nulle */
-cell get_cell_south(grid g, int x, int y);
-
-/*  @requires : pg est un pointeur valide vers une grille valide
-    @assigns  : *pg
-    @ensures  : supprime la cellule de la grille située aux coordonnées (x,y) de la grille *pg (remplacée par la cellule nulle), retourne 1 le cas échéant. retourne 0 sinon (pas de cellule ou cellule déjà supprimée) */
-int supp_cell_grille(grid* pg, int x, int y);
+    @ensures  : retourne la coordonnée de la case sle plus éloignée dans la direction d de la ligne i de la grille*/
+int taille_ligne_direction(direction d, grid g, int i);
 
 /*  @requires : pg est un pointeur valide vers une grille valide
     @assigns  : *pg
@@ -96,35 +64,10 @@ int supp_cell_grille(grid* pg, int x, int y);
     retourne 1 si problème sur la case d'arrivée (x2, y2)*/
 int deplacer_cell(grid* pg, int x1, int y1, int x2, int y2);
 
-/*  @requires : g est une grille valide
-    @assigns  : nothing
-    @ensures  : retourne la coordonnée de la case située la plus au nord de la grille*/
-int taille_north(grid g);
-
-/*  @requires : g est une grille valide
-    @assigns  : nothing
-    @ensures  : retourne la coordonnée de la case située la plus au sud de la grille*/
-int taille_south(grid g);
-
-/*  @requires : g est une grille valide
-    @assigns  : nothing
-    @ensures  : retourne la coordonnée de la case située la plus à l'ouest de la grille*/
-int taille_west(grid g);
-
-/*  @requires : g est une grille valide
-    @assigns  : nothing
-    @ensures  : retourne la coordonnée de la case située la plus à l'est de la grille*/
-int taille_east(grid g);
-
-/*  @requires : g est une grille valide
-    @assigns  : nothing
-    @ensures  : retourne la coordonnée de la case située la plus à l'ouest de la ligne i de la grille*/
-int taille_ligne_west(grid g, int i);
-
-/*  @requires : g est une grille valide
-    @assigns  : nothing
-    @ensures  : retourne la coordonnée de la case située la plus à l'est de la ligne i de la grille*/
-int taille_ligne_east(grid g, int i);
+/*  @requires : pg est un pointeur valide vers une grille valide
+    @assigns  : *pg
+    @ensures  : supprime la cellule de la grille située aux coordonnées (x,y) de la grille *pg (remplacée par la cellule nulle), retourne 1 le cas échéant. retourne 0 sinon (pas de cellule ou cellule déjà supprimée) */
+int supp_cell_grille(grid* pg, int x, int y);
 
 /*--------------------------------- Liste chainée ---------------------------------*/
 typedef struct bucket *liste;
