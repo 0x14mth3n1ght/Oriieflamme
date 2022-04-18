@@ -6,6 +6,8 @@
 */
 typedef struct carte_base *carte;
 
+typedef carte elt;
+
 /**
 * \brief cette fonction permet de recuperer l'id d'une carte
 * \param c une carte 
@@ -37,5 +39,6 @@ char* get_carte_description(carte c);
 * \return retourne le nombre d'occurences de la carte
 */
 int get_carte_occurences(carte c);
+
 
 #endif

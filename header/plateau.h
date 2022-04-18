@@ -13,15 +13,14 @@ struct cell_base{
    faction f;
    /* indique si la carte est retournee */
    int retournee;
-}
-
+};
 
 /*
 @requires: nothing
 @assigns: nothing
 @ensures: Initialise un plateau vide
 */
-plateau creer_plateau();
+plateau cree_plateau();
 
 /*
 @requires: *p pointeur vers plateau valide
@@ -48,7 +47,7 @@ void retourne_factions(faction *f1,faction *f2);
 @assigns: *p et *f
 @ensures: place sur le plateau une carte à jouer (cachée) et renvoie 1 si le placement est effectué, 0 sinon
 */
-int pose_carte(plateau *p,faction *f,carte c,int *position);
+int pose_carte(plateau *p, faction *f, carte c, int *position);
 
 /*
 @requires: *p pointeur vers plateau valide
@@ -59,6 +58,37 @@ carte active_carte(plateau *p);
 
 /*
 @requires: *p pointeur vers plateau valide, *position pointeur valide vers tableau d'entier de taille 2
-@assigns: 
+@assigns: rien
+@ensures retourne 0 si la carte posee aux cooroonnees de position est face cachee, 1 si elle est face visible
+et enfin 2 s'il n'y a pas de carte a cet endroit
+*/
+int cachee_visible_existe(plateau *p, int *position);
+
+/*
+@requires une cellule de type struct cell_base
+@assigns rien
+@ensures retourne le nom de la carte posée à cette cellule, s'il n'y en n'a pas une exception est levée */
+char* get_name(struct cell_base cellule);
+
+/*
+@requires une cellule de type struct cell_base
+@assings rien
+@ensures retourne un int qui correspond à la faction à laquelle appartient la carte sur la cellule,
+s'il n'y a pas de carte sur la cellule une exception est renvoyée.*/
+int get_card_faction(struct cell_base cellule);
+
+/*
+@requires une cellule de type struct cell_base
+@assings rien
+@ensures retourne 1 si la carte sur cette cellule est face visible, 0 si face cachée, et renvoie une 
+exception s'il n'y a pas de carte sur cette cellule */
+int get_retournee(struct cell_base cellule);
+
+/*
+@requires une cellule de type struct cell_base
+@assings rien
+@ensures retourne la carte posee sur cette cellule et une exception 
+s'il n'y a pas de carte sur cette cellule */
+carte get_card(struct cell_base cellule);
 
 #endif

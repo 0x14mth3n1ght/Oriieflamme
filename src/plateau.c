@@ -1,5 +1,10 @@
-#include "plateau.h"
-#include "structure.h"
+#include "..\header\plateau.h"
+#include "..\header\structure.h"
 
 typedef struct plateau_base *plateau;
-typedef ??? struct plateau_base;
+
+struct plateau_base{
+    grid grille;
+    int* taille_plateau;
+    int nb_carte_posees;
+};

@@ -1,9 +1,8 @@
-#include "carte.h"
+#include "..\header\carte.h"
 
 struct carte_base {
     int id;
     char* nom;
     char* description;
     int occurences;
-}
-
+};
