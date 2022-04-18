@@ -58,7 +58,7 @@ void premiere_cellule(cell c, grid* pg){
         (*pg)->ligne->val = c;
     }
     else {
-        printf("Error premiere_cellule : grid already had the first cell\n");
+        printf("Error premiere_cellule : central column already initialized\n");
     }
 }
 
@@ -487,7 +487,7 @@ elt peek(liste l){
     return l->val;
 }
 
-int indice(elt e, liste l){
+int find(elt e, liste l){
     int i = 0;
     while (l!=NULL){
         if (l->val == e)

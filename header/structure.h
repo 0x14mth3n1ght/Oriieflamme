@@ -100,7 +100,7 @@ elt peek(liste l);
 /*  @requires : l est une liste valide, e est un élément valide
     @assigns  : nothing
     @ensures  : teste si e est dans la liste l et retourne son indice de première occurence (de 0 à len_liste(l)-1) dans la liste le cas échéant, -1 sinon */
-int indice(elt e, liste l);
+int find(elt e, liste l);
 
 /*  @requires : l est une liste valide
     @assigns  : nothing
