@@ -12,7 +12,8 @@ struct cell_base{
    carte c;
    faction f;
    /* indique si la carte est retournee */
-   int retournee;
+   int visible;
+   int activee;
 };
 
 /*
@@ -75,7 +76,14 @@ char* get_name(struct cell_base cellule);
 @assings rien
 @ensures retourne un int qui correspond à la faction à laquelle appartient la carte sur la cellule,
 s'il n'y a pas de carte sur la cellule une exception est renvoyée.*/
-int get_card_faction(struct cell_base cellule);
+int get_faction_int(struct cell_base cellule);
+
+/*
+@requires une cellule de type struct cell_base
+@assings rien
+@ensures retourne la faction à laquelle appartient la carte sur la cellule,
+s'il n'y a pas de carte sur la cellule une exception est renvoyée.*/
+faction get_faction(struct cell_base cellule);
 
 /*
 @requires une cellule de type struct cell_base
@@ -87,8 +95,22 @@ int get_retournee(struct cell_base cellule);
 /*
 @requires une cellule de type struct cell_base
 @assings rien
+@ensures retourne 1 si la carte sur cette cellule est activee, 0 sinon, et renvoie une 
+exception s'il n'y a pas de carte sur cette cellule */
+int get_activee(struct cell_base cellule);
+
+/*
+@requires une cellule de type struct cell_base
+@assings rien
 @ensures retourne la carte posee sur cette cellule et une exception 
 s'il n'y a pas de carte sur cette cellule */
 carte get_card(struct cell_base cellule);
+
+/*
+@requires un plateau p
+@assings rien
+@ensures retourne la grille correspondant au plateau
+*/
+grid get_grid(plateau p);
 
 #endif

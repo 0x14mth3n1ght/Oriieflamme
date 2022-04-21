@@ -1,4 +1,4 @@
-#include "..\header\carte.h"
+#include "../header/carte.h"
 
 struct carte_base {
     int id;

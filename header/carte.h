@@ -1,8 +1,9 @@
 #ifndef _CARTE_H
 #define _CARTE_H 
+#include "structure.h"
 
 /**
-* \struct ceci est une declaration d'un type abstrait carte
+* \struct ceci est un type abstrait pour carte
 */
 typedef struct carte_base *carte;
 
@@ -43,5 +44,9 @@ int get_carte_occurences(carte c);
 /* CONSTANTES */
 
 int nb_cartes_main_debut_manche = 8;
+
+/* const carte FISE;
+... 
+*/
 
 #endif

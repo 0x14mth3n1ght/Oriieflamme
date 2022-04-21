@@ -1,6 +1,6 @@
-#include "..\header\faction.h"
-#include "..\header\carte.h"
-#include "..\header\structure.h"
+#include "../header/faction.h"
+#include "../header/carte.h"
+#include "../header/structure.h"
 
 struct faction_base {
     char* nom;
@@ -28,10 +28,12 @@ void melanger_pioche(faction *f){
     (*f)->pioche = melanger((*f)->pioche);
 };
 
+/* modifier avec & lorsque la fonction prend un pointeur vers liste */
+
 void repiocher(faction *f){
     if (test_vide((*f)->main) != 1){
         while (len_liste((*f)->main) < 8){
-            push(pop((*f)->pioche), (*f)->main);
+            push(pop(&((*f)->pioche)), &((*f)->main));
         }
     }
 };
@@ -56,6 +58,10 @@ void set_ptsddrs_faction(faction *f, int i){
     (*f)->points_DDRS = i;
 };
 
+void add_ddrs(faction *f, int i){
+    (*f)->points_DDRS += i;
+};
+
 liste get_main_faction(faction f){
     return f->main;
 };
@@ -72,6 +78,19 @@ liste get_pioche(faction f){
     return f->pioche;
 };
 
+/* implémentation des const carte FISE
+FISE->nom =... */
+
+void set_pioche_defaut(faction *f){
+    liste pioche_defaut = cree_liste_vide(); 
+    /* ...
+    liste_add....
+    for i in (i=0; i < nb_occurences; i++){
+        ....
+    }
+     */
+    (*f)->pioche = pioche_defaut;
+};
 
 
 
