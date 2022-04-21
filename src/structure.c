@@ -1,31 +1,51 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "../header/structure.h"
+/**
+ * @file structure.c
+ * @brief Implémentation des fonctions de structures de grille infinie et de liste chaînée.
+ */
 
 /*----------- Grille : liste doublement chainee imbriquee dans liste doublement chainee d'éléments de type cell -----------*/
 
-//La grille pointera toujours hors des fonctions vers la ligne y=0
-//La ddl_fille pointera toujours hors des fonctions vers le maillon x=0
-
 /*----Liste doublement chainee fille----*/
+/**
+ * @typedef ddl_fille
+ * @brief liste doublement chaînée dite "fille", implémentant une ligne de cases de la grille.
+ * 
+ * Pour l'utilisateur, la liste pointera forcément vers le maillon ayant @b x=0.
+ * 
+ */
 typedef struct maillon * ddl_fille;
 typedef struct maillon maillon2D;
 
+/**
+ * @struct maillon
+ * @brief Type concret de maillon, représentant les cases de la grille, caractérisés par des coordonnées @b (x,y) et un élément de type @b cell .
+ */
 struct maillon {
-    //Elements de la liste doublement chainee
     cell val; //cellule posee sur ces coordonnees (x,y) ; une case non occupée est caractérisée par une val = NULL
     int x; //abscisse de la ligne (offset_from_center : 0 si centre, 1 si case a droite, -1 si case a gauche etc)
-    int y; //ordonnée de la case (egale à ddl_mere->y)
+    int y; //ordonnée de la case, hérit de l'attribut y de ddl_mere
     //Pointeurs vers le "maillon" precedent ou suivant
     ddl_fille west;
     ddl_fille east;
 };
 
 /*----Liste doublement chainee mere----*/
-typedef struct grid_base colonne;
-//Liste doublement chaine mere = Pointeur vers un maillon "colonne"
-typedef colonne* ddl_mere; // == type grid
+/**
+ * @typedef ddl_mere
+ * @brief Liste doublement chaînée dite "mère", implémentant les listes doublement chaînées filles, chacune implémentant une ligne de la grille
+ * 
+ * Pour l'utilisateur, la liste pointera forcément vers le maillon central de coordonnées @b (0,0) .
+ */
+typedef struct grid_base* ddl_mere;
 
+/**
+ * @struct grid_base
+ * @brief Type concret de l'élément de la liste doublement chaînée "mère", caractérisé par son ordonnée @b y. Ses valeurs sont des listes doublement chaînées filles.
+ * 
+ */
 struct grid_base {
     //Element de la liste doublement chainee
     ddl_fille ligne;
@@ -66,8 +86,17 @@ int est_libre(grid g, int x, int y){
     return (test_ligne_vide(get_ligne(y,g))==NULL || get_case(g, x, y)==NULL);
 }
 
-void free_grille(grid* pg);/*TODO*/
-int placer_cell(cell c, grid* pg, int x, int y);/*TODO*/
+void free_grille(grid* pg)
+/**
+ * @todo
+ */
+;
+
+int placer_cell(cell c, grid* pg, int x, int y)
+/**
+ * @todo
+ */
+;
 
 // --- Fonctions de base de liste chainee mère ---
 
@@ -234,7 +263,9 @@ void push_east(cell c, ddl_fille *pl){
     cell e = (*pl)->val; //On stocke l'élément à l'ouest de la liste
     *pl = (*pl)-> east; //On recule vers l'est dans la liste
     return e; //Comment retirer l'élément ??
-}*/
+}*//**
+ * @todo 
+ */
 
 /*  @requires : l est une liste doublement chaînée (fille) valide non-vide
     @assigns  : nothing
@@ -307,8 +338,14 @@ int deplacer_cell(grid* pg, int x1, int y1, int x2, int y2){
     return 0;
 }
 
-//S'il y a une rangée de NULL qui va jusqu'à l'extremité, alors supprime la rangée.
-int supp_cell_grille(grid* pg, int x, int y);/*TODO*/
+/**
+ * @attention S'il y a une rangée de @b NULL qui va jusqu'à l'extremité, alors supprime la rangée.
+ */
+int supp_cell_grille(grid* pg, int x, int y)
+/**
+ * @todo
+ */
+;
 
 // --- TAILLES ---
 
@@ -441,6 +478,10 @@ int taille_ligne_direction(direction d, grid g, int i){
 }
 
 /*--------------------------------- Liste chaînée ---------------------------------*/
+/**
+ * @struct bucket
+ * @brief Type concret de la structure de maillon de la liste chaînée. Ses éléments sont des @b elt, type abstrait.
+ */
 struct bucket {
     elt val;
     liste next;
@@ -535,8 +576,7 @@ int enlever(elt e, liste* pl){
 
 elt get_at(int pos, liste l){
     if (pos >= len_liste(l)){
-        printf("Error get_at : index pos out of range.\n");
-        exit(EXIT_FAILURE);
+        return NULL;
     }
     for (int i=0; i<pos; i++)
         pop(&l);
@@ -548,8 +588,8 @@ liste melanger(liste l){
     //On va choisir des elements restants au hasard dans l, on les ajoute à out et on les supprime de l 
     int n = len_liste(l);
     for (int i=0; i<n; i++){ //Itération sur la taille de la liste
-        int j = rand()%(n-i); //Choix d'un entier parmis les éléments restants de la liste l (entre 0 et n-i-1)
-        elt chosen = get_at(j, l); //Element choisi par l'aléatoire
+        int j = rand()%(n-i); //Choix d'un entier parmi les éléments restants de la liste l (entre 0 et n-i-1)
+        elt chosen = get_at(j, l); //Élement choisi par l'aléatoire
         push(chosen, &out);
         enlever(chosen, &l);
     }
