@@ -44,9 +44,39 @@ int get_carte_occurences(carte c);
 /* CONSTANTES */
 
 int nb_cartes_main_debut_manche = 8;
+int nb_manches_gagnantes = 2;
 
-/* const carte FISE;
-... 
-*/
+const carte FISE;
+const carte FISA;
+const carte FC;
+const carte ECOLO;
+const carte IIE;
+const carte SSALCOOL;
+const carte ALCOOL;
+const carte CAFE;
+const carte THE;
+const carte ECOC;
+const carte REPRO;
+const carte ISOL;
+const carte PSN;
+const carte HS;
+const carte KB;
+const carte KG;
+const carte MM;
+const carte VY;
+const carte JS;
+const carte FB;
+const carte CD;
+const carte ALL;
+const carte GB;
+const carte CM;
+const carte TL;
+const carte JF;
+const carte DW;
+const carte DADC;
+const carte EL;
+const carte LPACAV;
+const carte KS;
+const carte LP;
 
 #endif

@@ -19,7 +19,7 @@ int a_remelanger_main(faction f){
 void vider_main(faction *f){
     if (test_vide((*f)->main) != 1){
         while (test_vide((*f)->main) != 1){
-            push(pop((*f)->main), (*f)->pioche);
+            push(pop(&((*f)->main)), &((*f)->pioche));
         }
     }
 };
@@ -27,8 +27,6 @@ void vider_main(faction *f){
 void melanger_pioche(faction *f){
     (*f)->pioche = melanger((*f)->pioche);
 };
-
-/* modifier avec & lorsque la fonction prend un pointeur vers liste */
 
 void repiocher(faction *f){
     if (test_vide((*f)->main) != 1){
@@ -50,11 +48,11 @@ char* get_faction_nom(faction f){
     return f->nom;
 };
 
-int get_ptsddrs_faction(faction f){
+int get_ddrs(faction f){
     return f->points_DDRS;
 };
 
-void set_ptsddrs_faction(faction *f, int i){
+void set_ddrs(faction *f, int i){
     (*f)->points_DDRS = i;
 };
 
@@ -62,7 +60,7 @@ void add_ddrs(faction *f, int i){
     (*f)->points_DDRS += i;
 };
 
-liste get_main_faction(faction f){
+liste get_main(faction f){
     return f->main;
 };
 
@@ -78,9 +76,6 @@ liste get_pioche(faction f){
     return f->pioche;
 };
 
-/* implémentation des const carte FISE
-FISE->nom =... */
-
 void set_pioche_defaut(faction *f){
     liste pioche_defaut = cree_liste_vide(); 
     /* ...
@@ -91,6 +86,7 @@ void set_pioche_defaut(faction *f){
      */
     (*f)->pioche = pioche_defaut;
 };
+
 
 
 

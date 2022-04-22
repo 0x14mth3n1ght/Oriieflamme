@@ -23,3 +23,11 @@ int get_carte_occurences(carte c){
     return c->occurences;
 };
 
+/* implémentation des const carte FISE
+FISE->nom =... */
+
+FISE->id = 1;
+FISE->nom = "FISE";
+FISE->description = "La faction qui a posé cette carte gagne 1 point DDRS.";
+FISE->occurences = 4;
+

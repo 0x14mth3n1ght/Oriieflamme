@@ -85,7 +85,7 @@ char* get_faction_nom(faction f);
 * \attention la faction doit exister
 * \return le nombre de points DDRS de la faction
 */
-int get_ptsddrs_faction(faction f);
+int get_ddrs(faction f);
 
 /**
 * \brief cette procédure permet de modifier le nombre de points DDRS d'une faction
@@ -95,7 +95,17 @@ int get_ptsddrs_faction(faction f);
 * \attention le nombre passe en parametre est positif ou nul
 * \return rien
 */
-void set_ptsddrs_faction(faction *f, int i);
+void set_ddrs(faction *f, int i);
+
+/**
+* \brief cette procédure permet d'ajouter un nombre de points DDRS à une faction
+* \param fp un pointeur vers une faction
+* \param i un nombre de points a ajouter
+* \attention le pointeur doit pointer vers une faction existante
+* \attention le nombre passe en parametre est positif ou nul
+* \return rien
+*/
+void add_ddrs(faction *f, int i);
 
 /**
 * \brief cette fonction permet de récupérer la main d'une faction 
@@ -103,7 +113,7 @@ void set_ptsddrs_faction(faction *f, int i);
 * \attention la faction doit exister
 * \return la main de la faction
 */
-liste get_main_faction(faction f);
+liste get_main(faction f);
 
 /**
 * \brief cette fonction permet d'obtenir le nombre de victoires d'une faction
@@ -134,6 +144,16 @@ liste get_pioche(faction f);
 /* fonctions supplémentaires que j'implémenterai si j'ai le temps */
 
 /**
+* \brief cette procédure permet de modifier la pioche d'une
+* faction en la remplacant par une pioche par défault, dans laquelle 
+* toutes les cartes sont rangees "dans l'ordre"
+* \param fp un pointeur vers une faction
+* \attention le pointeur doit pointer vers une faction existante
+* \return 
+*/
+void set_pioche_defaut(faction *f);
+
+/**
 * \brief cette procédure permet de modifier la main d'une faction
 * \param cartes une liste de cartes
 * \param fp un pointeur vers une faction
@@ -147,8 +167,7 @@ void set_main(faction *f, liste cartes);
 * \brief cette procédure permet de modifier la pioche d'une faction
 * \param cartes une liste de cartes
 * \param fp un pointeur vers une faction
-* \attention le pointeur doit pointer vers une faction existante
-* \attention la main doit etre initialement vide 
+* \attention le pointeur doit pointer vers une faction existante 
 * \return rien 
 */
 void set_pioche(faction *f, liste cartes);
