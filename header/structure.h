@@ -42,11 +42,9 @@ typedef enum direction direction;
  */
 grid init_grille();
 
-/*  @requires : c est une cellule valide, pg est un pointeur valide vers une grille valide (vide au centre)
-    @assigns  : *pg
-    @ensures  : ajoute à *pg la cellule c au centre (aux coordonnées (0,0)) */
+
 /**
- * @brief Modifie *pg en ajoutant la cellule c au centre (aux coordonnées (0,0)).
+ * @brief Modifie @b *pg en ajoutant la cellule @b c au centre (aux coordonnées @b (0,0) ).
  * 
  * @param c une cellule valide
  * @param pg un pointeur vers une grille valide
@@ -54,9 +52,6 @@ grid init_grille();
  */
 void premiere_cellule(cell c, grid* pg);
 
-/*  @requires : g est une grille valide
-    @assigns  : nothing
-    @ensures  : retourne 1 si la case (x,y) n'est pas occupée, 0 sinon */
 /**
  * @brief Teste si la case (x,y) de la grille est occupée ou non.
  * 
@@ -68,21 +63,15 @@ void premiere_cellule(cell c, grid* pg);
  */
 int est_libre(grid g, int x, int y);
 
-/*  @requires : pg est un pointeur valide vers une grille valide
-    @assigns  : *pg
-    @ensures  : libère la mémoire associée à la grille *pg */
 /**
- * @brief Libère la mémoire associée à la grille *pg.
+ * @brief Libère la mémoire associée à la grille @b *pg.
  * 
  * @param pg est un pointeur valide vers une grille valide.
  */
 void free_grille(grid* pg);
 
-/*  @requires : pg est un pointeur valide vers une grille valide, c est une cellule valide
-    @assigns  : *pg
-    @ensures  : place la cellule c sur la case (x,y) de la grille si la case n'est pas occupée, retourne 1 le cas échéant. retourne 0 sinon */
 /**
- * @brief Modifie *pg en plaçant la cellule c sur la case (x,y) de la grille si la case n'est pas occupée.
+ * @brief Modifie @b *pg en plaçant la cellule @b c sur la case @b (x,y) de la grille si la case n'est pas occupée.
  * 
  * @param c est une cellule valide
  * @param pg est un pointeur valide vers une grille valide
@@ -95,23 +84,17 @@ int placer_cell(cell c, grid* pg, int x, int y);
 
 //INFO SUR LA CELLULE
 
-/*  @requires : g est une grille valide
-    @assigns  : nothing
-    @ensures  : retourne la cellule située aux coordonnées (x,y) de la grille g ; s'il n'y a pas de cellule, renvoie la NULL*/
 /**
- * @brief Obtention de la cellule aux coordonnées (x,y) de la grille g.
+ * @brief Obtention de la cellule aux coordonnées @b (x,y) de la grille @b g.
  * 
  * @param g une grille valide
  * @param x abscisse de la cellule à obtenir
  * @param y ordonnée de la cellule à obtenir
- * @return la cellule située aux coordonnées (x,y) de la grille g,
- *         s'il n'y a pas de cellule, renvoie la NULL
+ * @return la cellule située aux coordonnées @b (x,y) de la grille @b g,
+ *         s'il n'y a pas de cellule, renvoie @b NULL
  */
 cell get_cell(grid g, int x, int y);
 
-/*  @requires : g est une grille valide
-    @assigns  : nothing
-    @ensures  : retourne la coordonnée de la case le plus éloignée du centre dans la direction d de la grille g*/
 /**
  * @brief Permet de connaître la taille de la grille.
  * 
@@ -121,42 +104,30 @@ cell get_cell(grid g, int x, int y);
  */
 int taille_direction(direction d, grid g);
 
-/*  @requires : g est une grille valide, d = west ou east
-    @assigns  : nothing
-    @ensures  : retourne la coordonnée de la case la plus éloignée du centre dans la direction d de la ligne i de la grille g */
 /**
  * @brief Permet de connaître les coordonnées les plus extrêmes d'une ligne de la grille
  * 
- * @param d west ou east
+ * @param d @b west ou @b east
  * @param g une grille valide
  * @param i l'indice de la ligne
  * @return la coordonnée de la case la plus éloignée du centre dans la direction @b d de la ligne @b i de la grille @b g.
  */
 int taille_ligne_direction(direction d, grid g, int i);
 
-/*  @requires : pg est un pointeur valide vers une grille valide
-    @assigns  : *pg
-    @ensures  : déplace la cellule située aux coordonnées (x1,y1) de la grille *pg (remplacée par la cellule nulle) vers les coordonnées (x2, y2),
-    retourne 0 le cas échéant.
-    retourne -1 si problème sur la case de départ (x1, y1)
-    retourne 1 si problème sur la case d'arrivée (x2, y2)*/
 /**
- * @brief Modifie @b *pg en déplaçant la cellule de @b (x1,y1) en @b (x2, y2).
+ * @brief Modifie @b *pg en déplaçant la cellule de @b (x1,y1) en @b (x2,y2).
  * 
  * @param pg pointeur valide vers une grille valide
  * @param x1 abscisse de la cellule de départ
  * @param y1 ordonnée de la cellule de départ
  * @param x2 abscisse de la cellule d'arrivée
  * @param y2 ordonnée de la cellule d'arrivée
- * @return 0 en cas de succès,
- *         -1 s'il y a un problème sur la case de départ,
- *         1 s'il y a un problème sur la case d'arrivée.
+ * @return @b 0 en cas de succès,
+ *         @b -1 s'il y a un problème sur la case de départ,
+ *         @b 1 s'il y a un problème sur la case d'arrivée.
  */
 int deplacer_cell(grid* pg, int x1, int y1, int x2, int y2);
 
-/*  @requires : pg est un pointeur valide vers une grille valide
-    @assigns  : *pg
-    @ensures  : supprime la cellule de la grille située aux coordonnées (x,y) de la grille *pg (remplacée par la cellule nulle), retourne 1 le cas échéant. retourne 0 sinon (pas de cellule ou cellule déjà supprimée) */
 /**
  * @brief Modifie *pg en supprimant la cellule située aux coordonnées @b (x,y)
  * 
@@ -175,18 +146,12 @@ int supp_cell_grille(grid* pg, int x, int y);
  */
 typedef struct bucket *liste;
 
-/*  @requires : nothing
-    @assigns  : nothing
-    @ensures  : retourne une liste vide */
 /**
  * @brief Créé une liste vide.
  * @return Liste vide.
  */
 liste cree_liste_vide();
 
-/*  @requires : l est une liste valide
-    @assigns  : nothing
-    @ensures  : retourne 1 si l est vide et 0 sinon */
 /**
  * @brief Teste si la liste est vide.
  * 
@@ -196,20 +161,14 @@ liste cree_liste_vide();
  */
 int test_vide(liste l);
 
-/*  @requires : pl est un pointeur valide vers une liste valide
-    @assigns  : *pl
-    @ensures  : ajoute e au dessus de la liste *pl */
 /**
- * @brief Modifie *pl en ajoutant lui un élément @b e .
+ * @brief Modifie *pl en lui ajoutant un élément @b e .
  * 
  * @param e l'élément à ajouter
  * @param pl pointeur valide vers une liste valide, celle dont on veut ajouter l'élément.
  */
 void push(elt e, liste* pl);
 
-/*  @requires : pl est un pointeur valide vers une liste valide non-vide
-    @assigns  : *pl
-    @ensures  : retourne l'élément en haut de la liste et le retire de la liste*/
 /**
  * @brief Modifie @b *pl en retirant l'élément en haut de la liste.
  * 
@@ -219,34 +178,25 @@ void push(elt e, liste* pl);
  */
 elt pop(liste* pl); // = tirer une carte;
 
-/*  @requires : l est une liste valide non-vide
-    @assigns  : nothing
-    @ensures  : retourne l'élément en haut de la liste */
 /**
  * @brief Renvoie l'élément en haut de la liste
  * 
  * @param l liste valide non-vide.
- * @attention plante si @b *pl est vide.
+ * @attention plante si @b l est vide.
  * @return l'élément au dessus de la liste.
  */
 elt peek(liste l);
 
-/*  @requires : l est une liste valide, e est un élément valide
-    @assigns  : nothing
-    @ensures  : teste si e est dans la liste l et retourne son indice de première occurence (de 0 à len_liste(l)-1) dans la liste le cas échéant, -1 sinon */
 /**
  * @brief Recherche d'élément dans une liste
  * 
  * @param e l'élément à rechercher
  * @param l liste valide
- * @return l'indice de première occurence de @b e dans @b l (indexé de @a 0 à @a len_liste(l)-1 )
- *         -1 si @b e n'est pas dans @b l .
+ * @return l'indice de première occurence de @b e dans @b l (indexé de @a 0 à @a len_liste(l)-1 ),
+ *         @b -1 si @b e n'est pas dans @b l .
  */
 int find(elt e, liste l);
 
-/*  @requires : l est une liste valide
-    @assigns  : nothing
-    @ensures  : retourne le nombre d'éléments dans la liste */
 /**
  * @brief Longueur de liste
  * 
@@ -255,42 +205,39 @@ int find(elt e, liste l);
  */
 int len_liste(liste l);
 
-/*  @requires : pl est un pointeur valide vers une liste valide
-    @assigns  : *pl
-    @ensures  : supprime la première occurence de l'élément e de la liste, retourne 1 le cas échéant, 0 sinon*/
 /**
- * @brief Modifie @b *pl en retirant la première occurence de @b e dans @b l .
+ * @brief Modifie @b *pl en retirant la première occurence de @b e dans @b *pl .
  * 
  * @param e élément à supprimer de @b *pl .
  * @param pl pointeur valide vers une liste valide
- * @return 1 en cas de succès,
- *         0 en cas d'échec. 
+ * @return @b 1 en cas de succès,
+ *         @b 0 en cas d'échec. 
  */
 int enlever(elt e, liste* pl);
 
-/*  @requires : l est une liste valide, 0 <= pos < len_liste(l)
-    @assigns  : nothing
-    @ensures  : renvoie l'élement de la liste l situé à la position pos, l est indexé de 0 à len_liste(l)-1 */
 /**
  * @brief Obtention de l'élément à la position @b pos de la liste
  * 
  * @param pos position de la valeur voulu dans la liste, compris entre 0 (inclus) et @a len_liste(l) (exclus)
  * @param l liste valide
- * @return l'élement de la liste l situé à la position pos, (indexé de @a 0 à @a len_liste(l)-1 )
+ * @return l'élement de la liste @b l situé à la position @b pos, (indexé de @a 0 à @a len_liste(l)-1 )
  *         @b NULL si la valeur @b pos est trop grande.
  */
 elt get_at(int pos, liste l);
 
-/*  @requires : l est une liste valide
-    @assigns  : nothing
-    @ensures  : retourne une liste qui contient les éléments de l mais mélangées */
 /**
  * @brief Mélange des éléments d'une liste.
  * 
  * @param l liste valide.
- * @return une nouvelle liste qui contient les éléments de l mais mélangées.
+ * @return une nouvelle liste qui contient les éléments de @b l mais mélangées.
  */
 liste melanger(liste l);
 
+/**
+ * @brief Libère la mémoire allouée à la liste.
+ * 
+ * @param pl pointeur valide vers une liste valide, celle dont on cherche à allouer la mémoire.
+ */
+void free_liste(liste* pl);
 
 #endif

@@ -86,11 +86,52 @@ int est_libre(grid g, int x, int y){
     return (test_ligne_vide(get_ligne(y,g))==NULL || get_case(g, x, y)==NULL);
 }
 
-void free_grille(grid* pg)
 /**
- * @todo
+ * @brief Libère la mémoire associée à la liste doublement chaînée fille @b *pl.
+ * 
+ * @param pl est un pointeur valide vers une liste doublement chaînée fille valide.
  */
-;
+void free_ligne(ddl_fille *pl){
+    //Parcours de liste vers l'ouest et l'est
+    ddl_fille to_west = *pl;
+    ddl_fille to_east = *pl;
+    if (to_west == NULL)//Si la liste est déjà vide
+        return;
+    else
+        to_west = to_west->west;
+    while (to_west != NULL){
+        ddl_fille head = to_west;
+        to_west = to_west->west;
+        free(head);
+    }
+    while (to_east != NULL){ //S'effectue au moins une fois car to_west a commencé à supprimer un cran après vers l'ouest.
+        ddl_fille head = to_east;
+        to_east = to_east->east;
+        free(head);
+    }
+}
+
+void free_grille(grid* pg){
+    //Parcours de liste vers le nord et le sud
+    ddl_mere to_north = *pg;
+    ddl_mere to_south = *pg;
+    if (to_north == NULL)//Si la liste est déjà vide
+        return;
+    else
+        to_north = to_north->north;
+    while (to_north != NULL){
+        ddl_mere head = to_north;
+        to_north = to_north->north;
+        free_ligne(head->ligne);
+        free(head);
+    }
+    while (to_south != NULL){ //S'effectue au moins une fois car to_north a commencé à supprimer un cran après vers le nord.
+        ddl_mere head = to_south;
+        to_south = to_south->south;
+        free_ligne(head->ligne);
+        free(head);
+    }
+}
 
 int placer_cell(cell c, grid* pg, int x, int y)
 /**
@@ -269,33 +310,33 @@ void push_east(cell c, ddl_fille *pl){
 
 /*  @requires : l est une liste doublement chaînée (fille) valide non-vide
     @assigns  : nothing
-    @ensures  : retourne l'élément à l'ouest de la liste*/
-cell peek_west(ddl_fille l){
+    @ensures  : retourne l'élément à l'ouest ou à l'est de la liste*/
+cell peek_ligne(direction d, ddl_fille l){
     if (l == NULL){
-        printf("Error peek_west : list is empty.\n");
+        printf("Error peek_ligne : list is empty.\n");
         exit(EXIT_FAILURE);
     }
-    //Accès à la case la plus à l'ouest
-    while (l->west != NULL){
-        l = l->west;
+    switch (d)
+    {
+    case west:
+        //Accès à la case la plus à l'ouest
+        while (l->west != NULL)
+            l = l->west;
+        return l->val;
+        break;
+    case east:
+        //Accès à la case la plus à l'est
+        while (l->east != NULL)
+            l = l->east;
+        return l->val;
+        break;
+    default: 
+        printf("peek_ligne : direction must be west or east\n");
+        exit(EXIT_FAILURE);
+        break;
     }
-    return l->val;
 }
 
-/*  @requires : l est une liste doublement chaînée (fille) valide non-vide
-    @assigns  : nothing
-    @ensures  : retourne l'élément à l'est de la liste*/
-cell peek_east(ddl_fille l){
-    if (l == NULL){
-        printf("Error peek_east : list is empty.\n");
-        exit(EXIT_FAILURE);
-    }
-    //Accès à la case la plus à l'est
-    while (l->east != NULL){
-        l = l->east;
-    }
-    return l->val;
-}
 
 // --- Fonctions utilitaires ---
 
@@ -516,7 +557,9 @@ elt pop(liste* pl){
         exit(EXIT_FAILURE);
     }
     elt e = (*pl)->val; //On stocke l'élément en haut de la liste
+    liste head = *pl;
     *pl = (*pl)-> next; //On avance dans la liste
+    free(head);
     return e;
 }
 
@@ -594,4 +637,12 @@ liste melanger(liste l){
         enlever(chosen, &l);
     }
     return out;
+}
+
+void free_liste(liste* pl){
+    while (*pl != NULL){
+        liste tmp = *pl;
+        *pl = (*pl)->next;
+        free(tmp);
+    }
 }
