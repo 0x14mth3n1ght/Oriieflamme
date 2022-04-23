@@ -117,8 +117,7 @@ void activation(carte c, plateau* pp){
             /*Coordonnées de la cellule en haut à gauche*/
             int y_hg = taille_direction(north, g);
             int x_hg = taille_ligne_direction(west, g, y_hg);
-            int position_a_poser[2] = {x_hg-nb_posees, y_hg};
-            pose_carte(pp, &f, a_poser, position_a_poser);
+            pose_carte(pp, &f, a_poser, x_hg-nb_posees, y_hg);
         }
         break;
     case id_ssa:
