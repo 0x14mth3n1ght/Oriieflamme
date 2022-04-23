@@ -240,4 +240,12 @@ liste melanger(liste l);
  */
 void free_liste(liste* pl);
 
+/**
+ * @brief Nombre d'occurence de l'élément @b e dans @b l
+ * 
+ * @param l liste valide.
+ * @return le nombre d'occurence de l'élément @b e dans @b l
+ */
+int nb_elt(elt e, liste l);
+
 #endif

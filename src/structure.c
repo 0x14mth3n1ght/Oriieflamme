@@ -646,3 +646,13 @@ void free_liste(liste* pl){
         free(tmp);
     }
 }
+
+int nb_elt(elt e, liste l){
+    int n = 0;
+    while (l!=NULL){
+        if (l->val == e)
+            n++;
+        l = l->val;
+    }
+    return n;
+}
