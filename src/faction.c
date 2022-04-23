@@ -78,13 +78,62 @@ liste get_pioche(faction f){
 
 void set_pioche_defaut(faction *f){
     liste pioche_defaut = cree_liste_vide(); 
-    /* ...
-    liste_add....
-    for i in (i=0; i < nb_occurences; i++){
-        ....
-    }
-     */
+    push(FISE, &pioche_defaut);
+    push(FISE, &pioche_defaut);
+    push(FISE, &pioche_defaut);
+    push(FISE, &pioche_defaut);
+    push(FISA, &pioche_defaut);
+    push(FISA, &pioche_defaut);
+    push(FISA, &pioche_defaut);
+    push(FISA, &pioche_defaut);
+    push(FC, &pioche_defaut);
+    push(FC, &pioche_defaut);
+    push(FC, &pioche_defaut);
+    push(FC, &pioche_defaut);
+    push(ECOLO, &pioche_defaut);
+    push(ECOLO, &pioche_defaut);
+    push(IIE, &pioche_defaut);
+    push(IIE, &pioche_defaut);
+    push(SSALCOOL, &pioche_defaut);
+    push(ALCOOL, &pioche_defaut);
+    push(CAFE, &pioche_defaut);
+    push(CAFE, &pioche_defaut);
+    push(CAFE, &pioche_defaut);
+    push(THE, &pioche_defaut);
+    push(THE, &pioche_defaut);
+    push(THE, &pioche_defaut);
+    push(ECOC, &pioche_defaut);
+    push(REPRO, &pioche_defaut);
+    push(ISOL, &pioche_defaut);
+    push(PSN, &pioche_defaut);
+    push(HS, &pioche_defaut);
+    push(KB, &pioche_defaut);
+    push(KG, &pioche_defaut);
+    push(MM, &pioche_defaut);
+    push(VY, &pioche_defaut);
+    push(JS, &pioche_defaut);
+    push(FB, &pioche_defaut);
+    push(CD, &pioche_defaut);
+    push(ALL, &pioche_defaut);
+    push(GB, &pioche_defaut);
+    push(CM, &pioche_defaut);
+    push(TL, &pioche_defaut);
+    push(JF, &pioche_defaut);
+    push(DW, &pioche_defaut);
+    push(DADC, &pioche_defaut);
+    push(EL, &pioche_defaut);
+    push(LPACAV, &pioche_defaut);
+    push(KS, &pioche_defaut);
+    push(LP, &pioche_defaut);
     (*f)->pioche = pioche_defaut;
+};
+
+void set_pioche(faction *f, liste cartes){
+    (*f)->pioche = cartes;
+};
+
+void set_main(faction *f, liste cartes){
+    (*f)->main = cartes;
 };
 
 

@@ -13,6 +13,7 @@ struct cell_base{
    faction f;
    /* indique si la carte est retournee */
    int visible;
+   /* indique si l'effet de la carte est active */
    int activee;
 };
 

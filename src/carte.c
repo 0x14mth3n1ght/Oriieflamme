@@ -1,33 +1,24 @@
 #include "../header/carte.h"
-
-struct carte_base {
-    int id;
-    char* nom;
-    char* description;
-    int occurences;
-};
+#include <stdio.h>
+#include <stdlib.h>
 
 int get_carte_id(carte c){
-    return c->id;
+    return c.id;
 };
 
 char* get_carte_nom(carte c){
-    return c->nom;
+    return c.nom;
 };
 
 char* get_carte_description(carte c){
-    return c->description;
+    return c.description;
 };
 
 int get_carte_occurences(carte c){
-    return c->occurences;
+    return c.occurences;
 };
 
-/* implémentation des const carte FISE
-FISE->nom =... */
-
-FISE->id = 1;
-FISE->nom = "FISE";
-FISE->description = "La faction qui a posé cette carte gagne 1 point DDRS.";
-FISE->occurences = 4;
-
+int main(){
+    print("nom = %s", get_carte_nom(CD));
+    return 0;
+};

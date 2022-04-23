@@ -164,7 +164,8 @@ void set_pioche_defaut(faction *f);
 void set_main(faction *f, liste cartes);
 
 /**
-* \brief cette procédure permet de modifier la pioche d'une faction
+* \brief cette procédure permet de modifier la pioche d'une faction, plus precisement
+* la pioche prend comme valeur la liste de cartes passe en argument
 * \param cartes une liste de cartes
 * \param fp un pointeur vers une faction
 * \attention le pointeur doit pointer vers une faction existante 
