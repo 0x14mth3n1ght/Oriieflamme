@@ -401,7 +401,7 @@ int taille_grille(direction d, grid g){
     case south:
         return taille_south(g); break;
     default: 
-        printf("Error direction doesn't exist\n");
+        printf("Error : direction doesn't exist. \n");
         exit(EXIT_FAILURE);
         break;
     }
@@ -505,14 +505,18 @@ int taille_east(grid g){
     return max;
 }
 
-int taille_ligne_direction(direction d, grid g, int i){
+int taille_ligne_direction(direction d, grid g, int j){
     switch (d){
         case west:
-            return taille_fille_west(get_ligne(i, g)); break;
+            return taille_fille_west(get_ligne(j, g)); break;
         case east:
-            return taille_fille_east(get_ligne(i, g)); break;
+            return taille_fille_east(get_ligne(j, g)); break;
+        case north: /** @todo */
+            break;
+        case south: /** @todo */
+            break;
         default: 
-            printf("taille_ligne_direction : direction must be west or east\n");
+            printf("Error direction doesn't exist.\n");
             exit(EXIT_FAILURE);
             break;
     }

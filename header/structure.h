@@ -107,12 +107,12 @@ int taille_direction(direction d, grid g);
 /**
  * @brief Permet de connaître les coordonnées les plus extrêmes d'une ligne de la grille
  * 
- * @param d @b west ou @b east
+ * @param d direction
  * @param g une grille valide
- * @param i l'indice de la ligne
- * @return la coordonnée de la case la plus éloignée du centre dans la direction @b d de la ligne @b i de la grille @b g.
+ * @param j l'indice de la ligne
+ * @return la coordonnée de la case la plus éloignée du centre dans la direction @b d de la ligne @b j de la grille @b g.
  */
-int taille_ligne_direction(direction d, grid g, int i);
+int taille_ligne_direction(direction d, grid g, int j);
 
 /**
  * @brief Modifie @b *pg en déplaçant la cellule de @b (x1,y1) en @b (x2,y2).
