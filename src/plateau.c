@@ -24,6 +24,6 @@ void detruire_plateau(plateau *p){
     free(*p);
 };
 
-/* pose carte comme pose cellule askip */
+/* pose carte comme pose cellule aksip */
 
 

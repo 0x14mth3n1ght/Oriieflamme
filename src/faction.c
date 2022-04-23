@@ -42,6 +42,7 @@ void remelanger_main(faction *f){
         melanger_pioche(*f);
         repiocher(*f);
     }
+    (*f)->a_remelange = 1;
 };
 
 char* get_faction_nom(faction f){

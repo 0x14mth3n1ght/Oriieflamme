@@ -59,12 +59,12 @@ int pose_carte(plateau *p, faction *f, carte c, int *position);
 carte active_carte(plateau *p);
 
 /*
-@requires: *p pointeur vers plateau valide, *position pointeur valide vers tableau d'entier de taille 2
+@requires: *p pointeur vers plateau valide, x et y deux entiers réprésentant les coordonnées.
 @assigns: rien
 @ensures retourne 0 si la carte posee aux cooroonnees de position est face cachee, 1 si elle est face visible
 et enfin 2 s'il n'y a pas de carte a cet endroit
 */
-int cachee_visible_existe(plateau *p, int *position);
+int cachee_visible_existe(plateau *p, int x, int y);
 
 /*
 @requires une cellule de type struct cell_base
