@@ -3,7 +3,7 @@
 #include "structure.h"
 
 /**
-* \struct ceci est le type abstrait
+* \struct ceci est le type carte
 */
 struct carte {
     int id;
@@ -14,7 +14,7 @@ struct carte {
 
 typedef struct carte carte;
 
-typedef carte elt;
+typedef carte *elt;
 
 /**
 * \brief cette fonction permet de recuperer l'id d'une carte

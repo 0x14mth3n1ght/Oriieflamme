@@ -6,18 +6,26 @@
 /* vérifier qu'il n'y a pas de soucis avec le include "structure" */
 
 /**
-* \struct ceci est une declaration d'un type abstrait
-* faction, lors de l'implementation, il faudra specifier
-* les differents champs du type faction 
-* (une faction sera donc caracterisee par un tuple)
+* \struct ceci est le type faction
 */
-typedef struct faction_base *faction;
+
+struct faction_base {
+    char* nom;
+    int points_DDRS;
+    liste main;
+    liste pioche; 
+    int nb_manches_gagnees;
+    /* vaut 0 lorsque la faction est créee */
+    int a_remelange;
+};
+
+typedef struct faction_base faction;
 
 /**
 * \brief cette fonction permet de savoir si une faction
 * a utilise l'option de remelanger sa main, c'est a dire,
 * remettre sa main dans la boite a idee, la melanger, 
-* et repiocher 8 cartes
+* et repiocher le nombre de cartes autorisees
 * \param f une faction
 * \attention 1) la faction passee en parametre doit exister
 * si ce n'est pas le cas
@@ -30,7 +38,7 @@ int a_remelanger_main(faction f);
 * \brief cette procedure permet a une faction d'utiliser
 * l'option de remelanger sa main, c'est a dire, 
 * remettre sa main dans la boite a idee, la melanger,
-* et repiocher 8 cartes
+* et repiocher nb_cartes_main_debut_manche cartes
 * \param fp un pointeur vers une faction (ici il y aura
 * \a modification des champs de la faction)
 * \attention 1) le pointeur doit pointer vers une faction existante
@@ -157,7 +165,7 @@ void set_pioche_defaut(faction *f);
 * \brief cette procédure permet de modifier la main d'une faction
 * \param cartes une liste de cartes
 * \param fp un pointeur vers une faction
-* \attention la liste ne doit pas avoir plus de 8 cartes 
+* \attention la liste ne doit pas avoir plus de nb_cartes_main_debut_manche cartes 
 * \attention le pointeur doit pointer vers une faction existante
 * \return rien 
 */
@@ -172,5 +180,18 @@ void set_main(faction *f, liste cartes);
 * \return rien 
 */
 void set_pioche(faction *f, liste cartes);
+
+/**
+* \brief cette procédure permet de donner un nouveau nom a une faction
+* \param fp un pointeur vers une faction
+* \param n le nouveau nom de la faction
+* \return rien
+*/ 
+void set_name(faction *f, char* n);
+
+/* variables globales */
+
+faction faction_defaut_1 = {"faction1", 0, cree_liste_vide(), cree_liste_vide(), 0, 0};
+faction faction_defaut_2 = {"faction2", 0, cree_liste_vide(), cree_liste_vide(), 0, 0};
 
 #endif
