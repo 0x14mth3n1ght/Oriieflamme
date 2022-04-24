@@ -106,3 +106,31 @@ liste get_cartes_visibles(plateau p){
 liste get_cartes_activees(plateau p){
     return p->cartes_activees;
 };
+
+int reinitialisation(plateau *p){
+    /*on verifie si partie terminee*/
+    if (get_nb_victoires((*p)->faction1) == nb_manches_gagnantes || get_nb_victoires((*p)->faction2) == nb_manches_gagnantes)
+    {
+        return 0;
+    }
+    else{
+        /*recuperation du nom des deux factions*/
+        char* n_f1 = (*p)->faction1.nom;
+        char* n_f2 = (*p)->faction2.nom;
+        detruire_plateau(&p);
+        *p = cree_plateau();
+        set_name(&((*p)->faction1), n_f1);
+        set_name(&((*p)->faction2), n_f2);
+        set_pioche_defaut(&((*p)->faction1));
+        set_pioche_defaut(&((*p)->faction2));
+        melanger_pioche(&((*p)->faction1));
+        melanger_pioche(&((*p)->faction2));
+        repiocher(&((*p)->faction1));
+        repiocher(&((*p)->faction2));
+        return 1;
+    };
+};
+
+carte get_card(struct cell_base cellule){
+    return cellule.c;
+};
