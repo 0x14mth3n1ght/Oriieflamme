@@ -48,30 +48,31 @@ int reinitialisation(plateau *p);
 * \param p le plateau
 * \return retourne la liste composee des deux factions du jeu
 */
-liste retourne_factions(plateau p);
+liste_faction retourne_factions(plateau p);
 
 /**
-* \brief fonction qui place sur le plateau une carte à jouer face cachée
+* \brief fonction qui place sur le plateau une carte à jouer face cachée et retire cette carte 
+* de la main de la faction
+* \attention la faction doit posséder au moins un exemplaire de cette carte
 * \param pp pointeur valide vers le plateau 
-* \param fp pointeur valide vers la faction a qui appartient la carte a poser
-* \param c la carte a poser
+* \param fac pointeur valide vers la faction a qui appartient la carte a poser
+* \param car la carte a poser
 * \param x
 * \param y (x et y coordonnes valides de la case sur laquelle on pose la carte)
 * \attention la case doit etre inocuppee, la faction doit exister
 * \return 1 si le placement a bien ete effectue et 0 sinon
 */
-int pose_carte(plateau *p, faction *f, carte c, int x, int y);
+int pose_carte(plateau *p, carte car, int x, int y);
 
 /**
 * \brief fonction qui retourne sur le plateau une carte à jouer face visible sans l'activer
 * \param pp pointeur valide vers le plateau 
-* \param fp pointeur valide vers la faction a qui appartient la carte a poser
 * \param x
 * \param y (x et y coordonnes valides de la case sur laquelle on pose la carte)
-* \attention la case doit etre ocuppee, la faction doit exister
+* \attention la case doit etre occuppee, la faction doit exister
 * \return 1 si la carte a bien ete retournee et 0 sinon
 */
-int retourne_carte(plateau *p, faction *f, int x, int y);
+int retourne_carte(plateau *p, faction *fac, int x, int y);
 
 /**
 * \brief fonction pour retourner la carte la plus en haut à gauche face visible et activer son effet
@@ -168,5 +169,9 @@ liste get_cartes_visibles(plateau p);
 * \return la liste des cartes activees sur le plateau
 */
 liste get_cartes_activees(plateau p);
+
+/* declaration du type liste pour les factions */
+
+typedef struct node *liste_faction;
 
 #endif

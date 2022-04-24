@@ -46,7 +46,7 @@ int reinitialisation(plateau *p){
         return 0;
     }
     else{
-        /* recupertion du nom des deux factions */
+        /* recuperation du nom des deux factions */
         char* n_f1 = (*p)->faction1.nom;
         char* n_f2 = (*p)->faction2.nom;
         detruire_plateau(&p);
@@ -63,17 +63,46 @@ int reinitialisation(plateau *p){
     };  
 };
 
-/*
-liste retourne_factions(plateau p){
-    liste l = cree_liste_vide(); 
-}
-*/
+carte get_card(struct cell_base cellule){
+    return cellule.c;
+};
 
-/*
-int pose_carte(plateau *p, faction *f, carte c, int x, int y){
-}
-*/
+faction get_faction(struct cell_base cellule){
+    return cellule.f;
+};
 
-/* pose carte comme pose cellule aksip */
+int get_occupee(struct cell_base cellule){
+    return cellule.occupee;
+};
 
+int get_visible(struct cell_base cellule){
+    return cellule.visible;
+};
 
+int get_activee(struct cell_base cellule){
+    return cellule.activee;
+};
+
+grid get_grid(plateau p){
+    return p->grille;
+};
+
+int get_nb_cartes_posees(plateau p){
+    return p->nb_cartes_posees;
+};
+
+int get_nb_cartes_visibles(plateau p){
+    return p->nb_cartes_visibles;
+};
+
+int get_nb_cartes_activees(plateau p){
+    return p->nb_cartes_activees;
+};
+
+liste get_cartes_visibles(plateau p){
+    return p->cartes_visibles;
+};
+
+liste get_cartes_activees(plateau p){
+    return p->cartes_activees;
+};
