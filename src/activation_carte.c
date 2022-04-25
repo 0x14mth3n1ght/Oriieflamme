@@ -48,11 +48,11 @@ const int id_lp = 32;
  * @param p plateau valide
  * @return La cellule en haut à gauche du plateau
  */
-cell get_haut_gauche(plateau p){
+cell cell_haut_gauche(plateau p){
     grid g = get_grid(p);
-    int y_hg = taille_direction(north, g);
-    int x_hg = taille_ligne_direction(west, g, y_hg);
-    return get_cell(g, x_hg, y_hg);
+    int x = taille_grille(north, g);
+    int y = taille_ligne_direction(west, g, x);
+    return get_cell(g,x,y);
 }
 
 //Retourner la carte après l'activation.
@@ -68,7 +68,7 @@ void activation(carte c, plateau* pp, int x, int y){
     /*Avant la fonction*/
     grid g = get_grid(*pp);
     cell cellule = get_cell(g, x, y);
-    faction f = get_faction(*cellule); /*Faction qui a posé la carte*/
+    faction f = get_faction(cellule); /*Faction qui a posé la carte*/
     /*Dans la fonction*/
     faction adverse = ???; /** @todo : Faction adverse*/
     int ddrs = get_ddrs(f); /*nombre actuel de points ddrs de la faction f*/
@@ -97,16 +97,16 @@ void activation(carte c, plateau* pp, int x, int y){
         break;
     case id_liiens:
         liste tmp_pioche = cree_liste_vide();
-        while (find_carte_activee(FISE, *pp)!=NULL){
-            supp_carte(FISE, pp);
+        while (find_carte_activee(FISE, *pp)!=NULL){ /** @todo */
+            supp_carte(FISE, pp); /** @todo */
             push(FISE, &tmp_pioche);
         }
-        while (find_carte_activee(FISA, *pp)!=NULL){
-            supp_carte(FISA, pp);
+        while (find_carte_activee(FISA, *pp)!=NULL){ /** @todo */
+            supp_carte(FISA, pp); /** @todo */
             push(FISA, &tmp_pioche);
         }
-        while (find_carte_activee(FC, *pp)!=NULL){
-            supp_carte(FC, pp);
+        while (find_carte_activee(FC, *pp)!=NULL){ /** @todo */
+            supp_carte(FC, pp); /** @todo */
             push(FC, &tmp_pioche);
         }
         tmp_pioche = melanger(tmp_pioche);
@@ -115,13 +115,13 @@ void activation(carte c, plateau* pp, int x, int y){
             nb_posees++;
             carte a_poser = pop(&tmp_pioche);
             /*Coordonnées de la cellule en haut à gauche*/
-            int y_hg = taille_direction(north, g);
-            int x_hg = taille_ligne_direction(west, g, y_hg);
-            pose_carte(pp, &f, a_poser, x_hg-nb_posees, y_hg);
+            int x_hg = taille_grille(north, g);
+            int y_hg = taille_ligne_direction(west, g, x);
+            pose_carte(pp, &f, a_poser, x_hg, y_hg-nb_posees);
         }
         break;
     case id_ssa:
-        if (find_carte_activee(ALCOOL, *pp)!=NULL){//Si une carte alcool a été retournée
+        if (find(ALCOOL, hist_visible)!=-1){//Si une carte alcool a été retournée
             while ((supp_carte(FISE, pp) || supp_carte(FISA, pp) || supp_carte(FC, pp)) != 0); //Tant qu'il y a des cartes fise, fisa et fc retournées sur le plateau
             /** @todo supprimer la première et la dernière ligne du plateau*/
         }
@@ -135,14 +135,14 @@ void activation(carte c, plateau* pp, int x, int y){
         supp_cell_grille(&g, x-1, y+1);
         break;
     case id_cafe:
-        while ((supp_carte(THE, pp) || supp_carte(ALCOOL, pp)) != 0); //Supprime toutes les cartes thé et alcool du plateau
+        while ((supp_carte(THE, pp) || supp_carte(ALCOOL, pp)) != 0); /** @todo */ //Supprime toutes les cartes thé et alcool du plateau
         if (find(ECOC, hist_visible)!= -1)
             add_ddrs(&f, 1);
         else
             add_ddrs(&f, -1);
         break;
     case id_the:
-        while ((supp_carte(CAFE, pp) || supp_carte(ALCOOL, pp)) != 0); //Supprime toutes les cartes café et alcool du plateau
+        while ((supp_carte(CAFE, pp) || supp_carte(ALCOOL, pp)) != 0); /** @todo */ //Supprime toutes les cartes café et alcool du plateau
         if (find(ECOC, hist_visible)!= -1)
             add_ddrs(&f, 1);
         else
@@ -157,11 +157,11 @@ void activation(carte c, plateau* pp, int x, int y){
         /** @todo */
         break;
     case id_psn:
-        for (int j=taille_direction(south, g); j<=taille_direction(north, g); j++){
-            int gauche = taille_ligne_direction(west, g, j);
-            int droite = taille_ligne_direction(east, g, j);
-            set_visible(&g, gauche, j); /** @todo set_visible : retourne une carte sans l'activer */
-            set_visible(&g, droite, j); /** @todo set_visible : retourne une carte sans l'activer */
+        for (int i=taille_direction(north, g); i<=taille_direction(south, g); i++){/*Parcours de ligne*/
+            int gauche = taille_ligne_direction(west, g, i);
+            int droite = taille_ligne_direction(east, g, i);
+            retourne_carte(pp, &f, i, gauche);
+            retourne_carte(pp, &f, i, droite);
         }
         break;
     case id_heure_sup:
@@ -171,14 +171,13 @@ void activation(carte c, plateau* pp, int x, int y){
         /** @todo */
         break;
     case id_kg:
-        int nb_lignes = abs(taille_direction(south, g)) + abs(taille_direction(north, g)) + 1; //vérifier par calcul
+        int nb_lignes = abs(taille_grille(south, g) - taille_grille(north, g) +1); //vérifier par calcul
         int j = rand()%(nb_lignes); //Choix d'un entier positif sur le nombre de ligne
-        j = j + taille_direction(south, g); //Redécalage pour prendre en remettre les bons indices (peuvent être négatifs)
         /** @todo */
         break;
     case id_mm:
         carte dernier = peek(hist_visible);
-        activation(dernier, pp);
+        activation(dernier, pp, x, y);
         break;
     case id_vy:
         if (ddrs < get_ddrs(adverse))
@@ -188,26 +187,39 @@ void activation(carte c, plateau* pp, int x, int y){
         break;
     case id_js:
         /*Parcours de tout le plateau*/
-        for (int j=taille_direction(south, g); j<=taille_direction(north, g); j++){
-            for (int i=taille_ligne_direction(west, g, j); i<=taille_ligne_direction(east, g, j); i++){
+        for (int i=taille_direction(north, g); i<=taille_direction(south, g); i++){
+            for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
                 cell curr_cell = get_cell(g, i, j);
-                if ((get_carte_id(get_card(*curr_cell)) == id_heure_sup) && (cachee_visible_existe(pp, i, j)==1))
+                if ((get_carte_id(get_card(curr_cell)) == id_heure_sup) && (cachee_visible_existe(pp, i, j)==1))
                     supp_cell_grille(&g, i, j);
             }
         }
         break;
     case id_fb:
-        /** @todo */
+        if (find(HS, hist_visible)){
+            for (int j=taille_ligne_direction(west, g, x); j<=taille_ligne_direction(east, g, x); j++)
+                supp_cell_grille(&g, x, j);
+        }
+        else{
+            int n = nb_elt(CD, hist_visible)
+                +nb_elt(ALL, hist_visible)
+                +nb_elt(GB, hist_visible)
+                +nb_elt(CM, hist_visible)
+                +nb_elt(TL, hist_visible)
+                +nb_elt(JF, hist_visible)
+                +nb_elt(DW, hist_visible);
+            add_ddrs(&f, n);
+        }
         break;
     case id_cb:
-        int gauche = taille_ligne_direction(west, g, y);
-        int droite = taille_ligne_direction(east, g, y);
+        int gauche = taille_ligne_direction(west, g, x);
+        int droite = taille_ligne_direction(east, g, x);
         int haut = taille_ligne_direction(north, g, y);
         int bas = taille_ligne_direction(south, g, y);
-        supp_cell_grille(&g, gauche, y);
-        supp_cell_grille(&g, droite, y);
-        supp_cell_grille(&g, x, haut);
-        supp_cell_grille(&g, x, bas);
+        supp_cell_grille(&g, x, gauche);
+        supp_cell_grille(&g, x, droite);
+        supp_cell_grille(&g, haut, y);
+        supp_cell_grille(&g, bas, y);
         break;
     case id_all:
         /** @todo */
@@ -224,7 +236,7 @@ void activation(carte c, plateau* pp, int x, int y){
             for (int j=taille_direction(south, g); j<=taille_direction(north, g); j++){
                 for (int i=taille_ligne_direction(west, g, j); i<=taille_ligne_direction(east, g, j); i++){
                     cell curr_cell = get_cell(g, i, j);
-                    if (get_card(*curr_cell) != CM && get_card(*curr_cell) != HS)
+                    if (get_carte_id(get_card(curr_cell)) != id_cm && get_card_id(get_card(curr_cell)) != id_heure_sup)
                         supp_cell_grille(&g, i, j);
                 }
             }
@@ -258,8 +270,8 @@ void activation(carte c, plateau* pp, int x, int y){
         if (find(DADC, hist_visible)!=-1 && find(EL, hist_visible)!=-1 && find(LPACAV, hist_visible)!=-1)//Si ces cartes sont retournées sur le plateau
             add_ddrs(&f, 10);
         else {
-            for (int i=taille_ligne_direction(west, g, y); i<=taille_ligne_direction(east, g, y); i++)
-                set_visible(&g, i, y); /** @todo set_visible : retourne une carte sans l'activer */
+            for (int j=taille_ligne_direction(west, g, x); j<=taille_ligne_direction(east, g, x); j++)
+                retourne_carte(pp, &f, x, j);
         }
         break;
     case id_lp:
