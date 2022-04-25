@@ -158,13 +158,13 @@ int mulligan_main(faction f, int already){
     }
     printf("\nVous pouvez, si vous le souhaitez vider votre main, mélanger la pioche et repiocher une nouvelle main. \n");
     printf("Pour rappel, voux ne pouvez utiliser cette option qu'une seule fois dans toute la partie\n");
-    printf("Souhaitez vous utiliser cette option? (y/n)");
+    printf("Souhaitez vous utiliser cette option? (y/n)\n");
     char answer;
     scanf("%s",answer);
 
     while(!(answer=='y'|| answer=='n')){
-        printf("Souhaitez vous utiliser cette option? (y/n)");
-        scanf("%s",answer);
+        printf("Souhaitez vous utiliser cette option? (y/n) \n");
+        scanf("%c",answer);
     }
     if (answer=='n'){
         return 0;
@@ -177,24 +177,57 @@ int mulligan_main(faction f, int already){
 @ensures    : demande à f la carte qu'elle souhaite poser sur le plateau et la retourne*/
 carte choix_carte(faction f){
     liste main_f= get_main(f);
-
-    printf("\n Quelle carte voulez vous poser?");
-
+    int length_main= len_liste(main_f);
+    printf("\n Quelle carte voulez vous poser?[1,...,%i]\n",length_main);
+    int answer;
+    scanf("%i",answer);
+    while(answer<1|answer>length_main){
+        printf("\n Quelle carte voulez vous poser?[1,...,%i]\n",length_main);
+        scanf("%i",answer);
+    }
+    int i;
+    carte result;
+    for(i=1;i<=answer;i+=1) {
+        result= pop(main_f);
+    }
+    return result;
 }
 
 /*@requires : f est valide, pos est un tableau d'entiers positifs de taille 2
 @assigns    : pos
 @ensures    : demande à f les coordonnées (x,y) de l'endroit où elle souhaite poser la carte. Les coordonnées seront stockées dans le tableau pos = [x,y]*/
-void position_carte(faction f, int* pos);
+void position_carte(faction f, int* x,int* y){
+        printf("\n Où voulez vous poser votre carte? \n Rappel: la carte doit être adjacente à un autre carte déjà posée");
+        printf("Entrez la coordonée x:\n");
+        int answer_x;
+        scanf("%i",answer_x);
+        printf("\n Entrez la coordonée y:\n");
+        int answer_y;
+        scanf("%i",answer_y);
+        *x=answer_x;
+        *y=answer_y;
+}
 
 /*@requires : c est valide
 @assigns    : nothing
 @ensures    : affiche les effets d'une carte c (qui vient d'être retournée sur le plateau)*/
-void affiche_effet(carte c);
+void affiche_effet(carte c){
+    printf("Voici la description de la carte qui vient d'être retournée:\n%s",get_carte_description(c));
+}
 
 /*@requires : f1 et f2 valides
 @assigns    : nothing
 @ensures    : affiche le vainqueur de la partie et retourne 1 ou 2 le numéro de la faction gagnante*/
-int affiche_gagnant(faction f1, faction f2);
+int affiche_gagnant(faction f1, faction f2){
+    int ddrs1,ddrs2;
+    ddrs1=get_ddrs(f1);
+    ddrs2=get_ddrs(f2);
+    if (ddrs1 > ddrs2 ) {
+        printf("\n Le vainqueur de cette partie est la faction: %s avec %i points ddrs contre %i.", get_faction_nom(f1),ddrs1,ddrs2);
+    }
+    else{
+        printf("\n Le vainqueur de cette partie est la faction: %s avec %i points ddrs contre %i.", get_faction_nom(f2),ddrs2,ddrs1);
+    }
+}
 
 #endif
