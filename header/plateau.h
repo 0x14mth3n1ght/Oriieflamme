@@ -69,9 +69,11 @@ int pose_carte(plateau *p,faction *fac, carte car, int x, int y);
 /**
 * \brief fonction qui retourne sur le plateau une carte à jouer face visible sans l'activer
 * \param pp pointeur valide vers le plateau 
+* \param fp un pointeur vers la faction qui possède la carte 
 * \param x
-* \param y (x et y coordonnes valides de la case sur laquelle on pose la carte)
-* \attention la case doit etre occuppee, la faction doit exister
+* \param y (x et y coordonnes valides de la case sur laquelle se situe la carte à retourner)
+* \attention la case doit etre occuppee, la faction doit exister, la carte doit etre face cachée avant 
+* l'appel de la fonction 
 * \return 1 si la carte a bien ete retournee et 0 sinon
 */
 int retourne_carte(plateau *p, faction *fac, int x, int y);
