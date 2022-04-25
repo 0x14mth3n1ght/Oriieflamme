@@ -133,11 +133,54 @@ void free_grille(grid* pg){
     }
 }
 
-int placer_cell(cell c, grid* pg, int x, int y)
-/**
- * @todo
- */
-;
+int placer_cell(cell c, grid* pg, int x, int y){
+    //Accès à la ligne
+    while((*pg)->y > y){//Si trop au sud
+        //Création de nouvelle ligne ?
+        if ((*pg)->north == NULL)//Si la ligne n'existe pas encore
+            push_north(NULL, pg);
+        else
+            *pg = (*pg)->north;
+    }
+    while((*pg)->y <y){//Si trop au nord
+        //Création de nouvelle ligne ?
+        if ((*pg)->north == NULL)//Si la ligne n'existe pas encore
+            push_north(NULL, pg);
+        else
+            *pg = (*pg)->south;
+    }
+    if ((*pg)->y != y){
+        printf("Erreur placer_cell : Mauvaise ligne atteinte\n");
+        exit(EXIT_FAILURE);
+    }
+    ddl_fille ligne = (*pg)->ligne; //Ligne d'ordonnée y
+    //Accès à la case
+    while(ligne->x > x){//Si trop à l'ouest
+        //Création de nouvelle case ?
+        if (ligne->east == NULL)//Si la ligne n'existe pas encore
+            push_east(NULL, &ligne);
+        else
+            ligne = ligne->east;
+    }
+    while(ligne->x > x){//Si trop à l'est
+        //Création de nouvelle case ?
+        if (ligne->west == NULL)//Si la ligne n'existe pas encore
+            push_west(NULL, &ligne);
+        else
+            ligne = ligne->west;
+    }
+    if (ligne->x != x){
+        printf("Erreur placer_cell : Mauvaise colonne atteinte.\n");
+        exit(EXIT_FAILURE);
+    }
+    //ligne pointe vers la cellule (x,y)
+    if (ligne->val == NULL){
+        ligne->val = c;
+        return 1;
+    }
+    else //La case est occupée.
+        return 0;
+}
 
 // --- Fonctions de base de liste chainee mère ---
 
@@ -174,20 +217,16 @@ ddl_mere cons_ligne_south(cell c, ddl_mere l){
 
 /*  @requires : pl est un pointeur valide vers une liste doublement chaînée (mère) valide, c une cellule valide
     @assigns  : *pl
-    @ensures  : renvoie une nouvelle liste avec c au nord de la liste *pl */
+    @ensures  : ajoute c au nord de la liste *pl et avance le pointeur vers la case au nord */
 void push_north(cell c, ddl_mere *pl){
-    ddl_mere start = pl; /*Pointeur vers le début de la liste mère*/
     *pl = cons_ligne_north(c, *pl);
-    pl = start; /*Replace le pointeur de la liste mère au début*/
 }
 
 /*  @requires : pl est un pointeur valide vers une liste doublement chaînée (mère) valide, c une cellule valide
     @assigns  : *pl
-    @ensures  : renvoie une nouvelle liste avec c au sud de la liste *pl */
+    @ensures  : ajoute c au nord de la liste *pl et avance le pointeur vers la case au sud */
 void push_south(cell c, ddl_mere *pl){
-    ddl_mere start = pl; /*Pointeur vers le début de la liste mère*/
     *pl = cons_ligne_south(c, *pl);
-    pl = start; /*Replace le pointeur de la liste mère au début*/
 }
 
 /*  @requires : l est une liste doublement chaînée (mère) valide non-vide
@@ -273,18 +312,18 @@ ddl_fille cons_colonne_east(cell c, ddl_fille l){
 
 /*  @requires : pl est un pointeur valide vers une liste doublement chaînée (fille) valide, c une cellule valide
     @assigns  : *pl
-    @ensures  : renvoie une nouvelle liste avec c à l'ouest de la liste *pl */
+    @ensures  : ajoute c à l'ouest de la liste *pl et avance le pointeur vers la case à l'ouest */
 void push_west(cell c, ddl_fille *pl){
-    ddl_fille start = pl; /*Pointeur vers le début de la liste fille*/
+    ddl_fille start = *pl; /*Pointeur vers le début de la liste fille*/
     *pl = cons_colonne_west(c, *pl);
     pl = start; /*Replace le pointeur de la liste fille au début*/
 }
 
 /*  @requires : pl est un pointeur valide vers une liste doublement chaînée (fille) valide, c une cellule valide
     @assigns  : *pl
-    @ensures  : renvoie une nouvelle liste avec c à l'est de la liste *pl */
+    @ensures  : ajoute c à l'est de la liste *pl et avance le pointeur vers la case à l'est */
 void push_east(cell c, ddl_fille *pl){
-    ddl_fille start = pl; /*Pointeur vers le début de la liste fille*/
+    ddl_fille start = *pl; /*Pointeur vers le début de la liste fille*/
     *pl = cons_colonne_east(c, *pl);
     pl = start; /*Replace le pointeur de la liste fille au début*/
 }
@@ -292,7 +331,8 @@ void push_east(cell c, ddl_fille *pl){
 /*  @requires : pl est un pointeur valide vers une liste doublement chaînée (fille) valide non-vide
     @assigns  : *pl
     @ensures  : retourne l'élément à l'ouest de la liste et le retire de la liste*/
-/*cell pop_west(ddl_fille* pl){
+cell pop_west(ddl_fille* pl){
+    ddl_fille start = *pl; //Pointeur vers le centre de la liste doublement chainée (pointe vers la cellule avec x=0)
     if (*pl == NULL){
         printf("Error pop_west : list is empty.\n");
         exit(EXIT_FAILURE);
@@ -301,12 +341,36 @@ void push_east(cell c, ddl_fille *pl){
     while ((*pl)->west != NULL){
         *pl = (*pl)->west;
     }
-    cell e = (*pl)->val; //On stocke l'élément à l'ouest de la liste
+    ddl_fille case_west = *pl; //On stocke la case à l'ouest de la liste
+    cell e = case_west->val; //On stocke l'élément à l'ouest de la liste
     *pl = (*pl)-> east; //On recule vers l'est dans la liste
-    return e; //Comment retirer l'élément ??
-}*//**
- * @todo 
- */
+    (*pl)->west = NULL; //On supprime le pointeur vers l'ouest
+    free(case_west);
+    pl = start; //On remet le pointeur vers le centre
+    return e;
+}
+
+/*  @requires : pl est un pointeur valide vers une liste doublement chaînée (fille) valide non-vide
+    @assigns  : *pl
+    @ensures  : retourne l'élément à l'est de la liste et le retire de la liste*/
+cell pop_east(ddl_fille* pl){
+    ddl_fille start = *pl; //Pointeur vers le centre de la liste doublement chainée (pointe vers la cellule avec x=0)
+    if (*pl == NULL){
+        printf("Error pop_east : list is empty.\n");
+        exit(EXIT_FAILURE);
+    }
+    //Accès à la case la plus à l'est
+    while ((*pl)->east != NULL){
+        *pl = (*pl)->east;
+    }
+    ddl_fille case_east = *pl; //On stocke la case à l'est de la liste
+    cell e = case_east->val; //On stocke l'élément à l'est de la liste
+    *pl = (*pl)-> west; //On recule vers l'ouest dans la liste
+    (*pl)->east = NULL; //On supprime le pointeur vers l'est
+    free(case_east);
+    pl = start; //On remet le pointeur vers le centre
+    return e;
+}
 
 /*  @requires : l est une liste doublement chaînée (fille) valide non-vide
     @assigns  : nothing
@@ -382,11 +446,48 @@ int deplacer_cell(grid* pg, int x1, int y1, int x2, int y2){
 /**
  * @attention S'il y a une rangée de @b NULL qui va jusqu'à l'extremité, alors supprime la rangée.
  */
-int supp_cell_grille(grid* pg, int x, int y)
-/**
- * @todo
- */
-;
+int supp_cell_grille(grid* pg, int x, int y){
+    //Si pas de cellule en (x,y)
+    if (get_cell(*pg, x, y) == NULL)
+        return 0;
+    /*Recherche de la ligne*/
+    ddl_fille ligne = get_ligne(y, *pg); //Ligne d'ordonnée y, pointe vers la case x=0
+    ddl_fille start = ligne;
+    /*Recherche de la colonne*/
+    int i = ligne->x;
+    if (x > i){//Si on est trop à droite de la colonne
+        //Déplacement vers la gauche
+        i--;
+        ligne = ligne->west;
+    }
+    if (x < i){//Si on est trop à gauche de la colonne
+        //Déplacement vers la droite
+        i++;
+        ligne = ligne->east;
+    }
+    //ligne pointe vers le maillon (x,y)
+    ligne->val = NULL;
+    //test si extrémité ouest
+    if (ligne->west == NULL){
+        while (ligne->val == NULL){//Nettoyage de cellules nulles au bord gauche de la grille
+            ddl_fille to_clean = ligne;
+            ligne = ligne->east; //Déplacement vers la droite
+            ligne->west = NULL; //Suppression en mémoire de la cellule nulle
+            free(to_clean); //Suppression en mémoire de la cellule nulle
+        }
+    }
+    //test si extrémité est
+    if (ligne->east == NULL){
+        while (ligne->val == NULL){//Nettoyage de cellules nulles au bord droit de la grille
+            ddl_fille to_clean = ligne;
+            ligne = ligne->west; //Déplacement vers la gauche
+            ligne->east = NULL; //Suppression en mémoire de la cellule nulle
+            free(to_clean); //Suppression en mémoire de la cellule nulle
+        }
+    }
+    ligne = start; //remise du pointeur de ligne vers le début
+    return 1;
+}
 
 // --- TAILLES ---
 
@@ -511,9 +612,13 @@ int taille_ligne_direction(direction d, grid g, int j){
             return taille_fille_west(get_ligne(j, g)); break;
         case east:
             return taille_fille_east(get_ligne(j, g)); break;
-        case north: /** @todo */
+        case north:/** @todo */
+            printf("taille_ligne_north TODO\n");
+            return -1;
             break;
         case south: /** @todo */
+            printf("taille_ligne_south TODO\n");
+            return -1;
             break;
         default: 
             printf("Error direction doesn't exist.\n");
