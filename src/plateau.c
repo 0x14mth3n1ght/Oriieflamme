@@ -65,11 +65,6 @@ int reinitialisation(plateau *p){
 
 /* listes pour les factions */
 
-struct node{
-    faction val;
-    liste_faction next;
-};
-
 liste_faction cons_faction(faction f, liste_faction n){
     liste_faction res = malloc(sizeof(liste_faction));
     res->val = f;
@@ -105,7 +100,7 @@ int pose_carte(plateau *p, faction *f, carte car, int x, int y){
 
 int retourne_carte(plateau *p, int x, int y){
     if (get_cell((*p)->grille, x, y) != NULL){
-        if (get_occupee(get_cell((*p)->grille, x, y)) == 1){
+        if (get_occupee(get_cell((*p)->grille, x, y)) == 1 && get_visible(get_cell((*p)->grille, x, y)) == 0){
             get_cell((*p)->grille, x, y)->visible = 1;
             (*p)->nb_cartes_visibles += 1;
         }

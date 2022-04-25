@@ -64,14 +64,16 @@ liste_faction retourne_factions(plateau p);
 * \attention la case doit etre inocuppee, la faction doit exister
 * \return 1 si le placement a bien ete effectue et 0 sinon
 */
-int pose_carte(plateau *p, carte car, int x, int y);
+int pose_carte(plateau *p,faction *fac, carte car, int x, int y);
 
 /**
 * \brief fonction qui retourne sur le plateau une carte à jouer face visible sans l'activer
 * \param pp pointeur valide vers le plateau 
+* \param fp un pointeur vers la faction qui possède la carte 
 * \param x
-* \param y (x et y coordonnes valides de la case sur laquelle on pose la carte)
-* \attention la case doit etre occuppee, la faction doit exister
+* \param y (x et y coordonnes valides de la case sur laquelle se situe la carte à retourner)
+* \attention la case doit etre occuppee, la faction doit exister, la carte doit etre face cachée avant 
+* l'appel de la fonction 
 * \return 1 si la carte a bien ete retournee et 0 sinon
 */
 int retourne_carte(plateau *p, faction *fac, int x, int y);
@@ -174,6 +176,10 @@ liste get_cartes_activees(plateau p);
 
 /* declaration du type liste pour les factions */
 
+struct node{
+    faction val;
+    liste_faction next;
+};
 typedef struct node *liste_faction;
 
 #endif
