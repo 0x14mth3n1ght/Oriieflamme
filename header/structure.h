@@ -11,19 +11,20 @@
 #include "carte.h"
 #include "plateau.h"
 
-/*----------- Grille : liste doublement chainee imbriquee dans liste doublement chainee d'éléments de type cell -----------*/
-/**
- * @typedef grid
- * @brief Pointeur vers la structure de liste chaînée mère, chaque maillon représentant une ligne de la grille
- */
-typedef struct grid_base * grid;
-
+/*----------- Grille du plateau -----------*/
 /**
  * @typedef cell
  * @brief Type abstrait des cases de la grille
  * 
  */
 typedef struct cell_base * cell;
+
+/**
+ * @typedef grid
+ * @brief Pointeur vers la structure de grille
+ */
+typedef cell** grid;
+
 
 //Directions
 
@@ -38,7 +39,7 @@ typedef enum direction direction;
 /**
  * @brief Permet la création et l'allocation mémoire d'une grille vide.
  * 
- * @return une grille vide.
+ * @return une grille vide (toutes les cellules sont nulles).
  */
 grid init_grille();
 
@@ -102,7 +103,7 @@ cell get_cell(grid g, int x, int y);
  * @param g une grille valide
  * @return la coordonnée de la case la plus éloignée du centre dans une direction @b d de la grille @b g.
  */
-int taille_direction(direction d, grid g);
+int taille_grille(direction d, grid g);
 
 /**
  * @brief Permet de connaître les coordonnées les plus extrêmes d'une ligne de la grille
@@ -110,9 +111,9 @@ int taille_direction(direction d, grid g);
  * @param d direction
  * @param g une grille valide
  * @param j l'indice de la ligne
- * @return la coordonnée de la case la plus éloignée du centre dans la direction @b d de la ligne @b j de la grille @b g.
+ * @return la coordonnée de la case la plus éloignée du centre dans la direction @b d de la ligne ou colonne @b n de la grille @b g.
  */
-int taille_ligne_direction(direction d, grid g, int j);
+int taille_ligne_direction(direction d, grid g, int n);
 
 /**
  * @brief Modifie @b *pg en déplaçant la cellule de @b (x1,y1) en @b (x2,y2).
@@ -124,7 +125,8 @@ int taille_ligne_direction(direction d, grid g, int j);
  * @param y2 ordonnée de la cellule d'arrivée
  * @return @b 0 en cas de succès,
  *         @b -1 s'il y a un problème sur la case de départ,
- *         @b 1 s'il y a un problème sur la case d'arrivée.
+ *         @b 1 s'il y a un problème sur la case d'arrivée,
+ *         @b 2 s'il y a un problème sur la case de départ et d'arrivée.
  */
 int deplacer_cell(grid* pg, int x1, int y1, int x2, int y2);
 

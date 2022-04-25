@@ -61,18 +61,18 @@ cell get_haut_gauche(plateau p){
  * 
  * @param c la carte activée
  * @param pp pointeur valide vers un plateau valide
+ * @param x abscisse de la cellule
+ * @param y ordonnée de la cellule
  */
-void activation(carte c, plateau* pp){
+void activation(carte c, plateau* pp, int x, int y){
     /*Avant la fonction*/
-    int x;
-    int y;
     grid g = get_grid(*pp);
     cell cellule = get_cell(g, x, y);
-    faction f = get_card_faction(*cellule); /*Faction qui a posé la carte*/
+    faction f = get_faction(*cellule); /*Faction qui a posé la carte*/
     /*Dans la fonction*/
     faction adverse = ???; /** @todo : Faction adverse*/
     int ddrs = get_ddrs(f); /*nombre actuel de points ddrs de la faction f*/
-    liste hist_visible = ??? ; /** @todo : liste des cartes retournées*/
+    liste hist_visible = get_cartes_visibles(*pp);
     int nb_retournees = len_liste(hist_visible);
     cell haut_gauche = get_haut_gauche(*pp);
 

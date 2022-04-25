@@ -19,6 +19,8 @@ struct cell_base{
    int activee;
 };
 
+struct cell_base * cell;
+
 /**
 * \brief une fonction sans argument
 * \attention alloue de la memoire
@@ -98,35 +100,35 @@ int cachee_visible_existe(plateau *p, int x, int y);
 * \param cellule la cellule en question
 * \attention ne retourne une carte que s'il existe effectivement une carte sur cette cellule
 */
-carte get_card(struct cell_base cellule);
+carte get_card(cell cellule);
 
 /**
 * \brief fonction permettant de connaitre la faction a laquelle appartient une carte posee sur une cellule
 * \param cellule la cellule
 * \return la faction a laquelle appartient la carte posee sur la cellule
 */
-faction get_faction(struct cell_base cellule);
+faction get_faction(cell cellule);
 
 /**
 * \brief fonction qui permet de savoir si une cellule donne est occupee par une carte
 * \param cellule la cellule
 * \return retourne 1 si la cellule est occupee et 0 sinon
 */
-int get_occupee(struct cell_base cellule); 
+int get_occupee(cell cellule); 
 
 /**
 * \brief fonction qui permet de savoir si une carte sur une cellule donnee est face visible
 * \param cellule la cellule en question 
 * \return 1 si la carte a cet endroit est visible, 0 sinon
 */
-int get_visible(struct cell_base cellule);
+int get_visible(cell cellule);
 
 /**
 * \brief fonction qui permet de savoir si une carte sur une cellule donnee est face visible et activee
 * \param cellule la cellule en question 
 * \return 1 si la carte a cet endroit est visible et activee, 0 sinon
 */
-int get_activee(struct cell_base cellule);
+int get_activee(cell cellule);
 
 /**
 * \brief fonction retournant la grille associee a un plateau
