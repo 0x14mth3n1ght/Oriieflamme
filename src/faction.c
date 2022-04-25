@@ -69,53 +69,103 @@ liste get_pioche(faction f){
 
 void set_pioche_defaut(faction *f){
     liste pioche_defaut = cree_liste_vide(); 
-    push(FISE, &pioche_defaut);
-    push(FISE, &pioche_defaut);
-    push(FISE, &pioche_defaut);
-    push(FISE, &pioche_defaut);
-    push(FISA, &pioche_defaut);
-    push(FISA, &pioche_defaut);
-    push(FISA, &pioche_defaut);
-    push(FISA, &pioche_defaut);
-    push(FC, &pioche_defaut);
-    push(FC, &pioche_defaut);
-    push(FC, &pioche_defaut);
-    push(FC, &pioche_defaut);
-    push(ECOLO, &pioche_defaut);
-    push(ECOLO, &pioche_defaut);
-    push(IIE, &pioche_defaut);
-    push(IIE, &pioche_defaut);
-    push(SSALCOOL, &pioche_defaut);
-    push(ALCOOL, &pioche_defaut);
-    push(CAFE, &pioche_defaut);
-    push(CAFE, &pioche_defaut);
-    push(CAFE, &pioche_defaut);
-    push(THE, &pioche_defaut);
-    push(THE, &pioche_defaut);
-    push(THE, &pioche_defaut);
-    push(ECOC, &pioche_defaut);
-    push(REPRO, &pioche_defaut);
-    push(ISOL, &pioche_defaut);
-    push(PSN, &pioche_defaut);
-    push(HS, &pioche_defaut);
-    push(KB, &pioche_defaut);
-    push(KG, &pioche_defaut);
-    push(MM, &pioche_defaut);
-    push(VY, &pioche_defaut);
-    push(JS, &pioche_defaut);
-    push(FB, &pioche_defaut);
-    push(CD, &pioche_defaut);
-    push(ALL, &pioche_defaut);
-    push(GB, &pioche_defaut);
-    push(CM, &pioche_defaut);
-    push(TL, &pioche_defaut);
-    push(JF, &pioche_defaut);
-    push(DW, &pioche_defaut);
-    push(DADC, &pioche_defaut);
-    push(EL, &pioche_defaut);
-    push(LPACAV, &pioche_defaut);
-    push(KS, &pioche_defaut);
-    push(LP, &pioche_defaut);
+    int i;
+    for (i = 1; i <= FISE.occurences; i++){
+        push(FISE, &pioche_defaut);
+    }
+    for (i = 1; i <= FISA.occurences; i++){
+        push(FISA, &pioche_defaut);
+    }
+    for (i = 1; i <= FC.occurences; i++){
+        push(FC, &pioche_defaut);
+    }
+    for (i = 1; i <= ECOLO.occurences; i++){
+        push(ECOLO, &pioche_defaut);
+    }
+    for (i = 1; i <= IIE.occurences; i++){
+        push(IIE, &pioche_defaut);
+    }
+    for (i = 1; i <= SSALCOOL.occurences; i++){
+        push(SSALCOOL, &pioche_defaut);
+    }
+    for (i = 1; i <= ALCOOL.occurences; i++){
+        push(ALCOOL, &pioche_defaut);
+    }
+    for (i = 1; i <= CAFE.occurences; i++){
+        push(CAFE, &pioche_defaut);
+    }
+    for (i = 1; i <= THE.occurences; i++){
+        push(THE, &pioche_defaut);
+    }
+    for (i = 1; i <= ECOC.occurences; i++){
+        push(ECOC, &pioche_defaut);
+    }
+    for (i = 1; i <= REPRO.occurences; i++){
+        push(REPRO, &pioche_defaut);
+    }
+    for (i = 1; i <= ISOL.occurences; i++){
+        push(ISOL, &pioche_defaut);
+    }
+    for (i = 1; i <= PSN.occurences; i++){
+        push(PSN, &pioche_defaut);
+    }
+    for (i = 1; i <= HS.occurences; i++){
+        push(HS, &pioche_defaut);
+    }
+    for (i = 1; i <= KB.occurences; i++){
+        push(KB, &pioche_defaut);
+    }
+    for (i = 1; i <= KG.occurences; i++){
+        push(KG, &pioche_defaut);
+    }
+    for (i = 1; i <= MM.occurences; i++){
+        push(MM, &pioche_defaut);
+    }
+    for (i = 1; i <= VY.occurences; i++){
+        push(VY, &pioche_defaut);
+    }
+    for (i = 1; i <= JS.occurences; i++){
+        push(JS, &pioche_defaut);
+    }
+    for (i = 1; i <= FB.occurences; i++){
+        push(FB, &pioche_defaut);
+    }
+    for (i = 1; i <= CD.occurences; i++){
+        push(CD, &pioche_defaut);
+    }
+    for (i = 1; i <= ALL.occurences; i++){
+        push(ALL, &pioche_defaut);
+    }
+    for (i = 1; i <= GB.occurences; i++){
+        push(GB, &pioche_defaut);
+    }
+    for (i = 1; i <= CM.occurences; i++){
+        push(CM, &pioche_defaut);
+    }
+    for (i = 1; i <=TL.occurences; i++){
+        push(TL, &pioche_defaut);
+    }
+    for (i = 1; i <=JF.occurences; i++){
+        push(JF, &pioche_defaut);
+    }
+    for (i = 1; i <=DW.occurences; i++){
+        push(DW, &pioche_defaut);
+    }
+    for (i = 1; i <=DADC.occurences; i++){
+        push(DADC, &pioche_defaut);
+    }
+    for (i = 1; i <=EL.occurences; i++){
+        push(EL, &pioche_defaut);
+    }
+    for (i = 1; i <=LPACAV.occurences; i++){
+        push(LPACAV, &pioche_defaut);
+    }
+    for (i = 1; i <=KS.occurences; i++){
+        push(KS, &pioche_defaut);
+    }
+    for (i = 1; i <=LP.occurences; i++){
+        push(LP, &pioche_defaut);
+    }
     (*f).pioche = pioche_defaut;
 };
 
@@ -133,4 +183,96 @@ void set_name(faction *f, char* n){
 
 
 
-
+    for (i = 1; i <= FISA.occurences; i++){
+        push(FISA, &pioche_defaut);
+    }
+    for (i = 1; i <= FC.occurences; i++){
+        push(FC, &pioche_defaut);
+    }
+    for (i = 1; i <= ECOLO.occurences; i++){
+        push(ECOLO, &pioche_defaut);
+    }
+    for (i = 1; i <= IIE.occurences; i++){
+        push(IIE, &pioche_defaut);
+    }
+    for (i = 1; i <= SSALCOOL.occurences; i++){
+        push(SSALCOOL, &pioche_defaut);
+    }
+    for (i = 1; i <= ALCOOL.occurences; i++){
+        push(ALCOOL, &pioche_defaut);
+    }
+    for (i = 1; i <= CAFE.occurences; i++){
+        push(CAFE, &pioche_defaut);
+    }
+    for (i = 1; i <= THE.occurences; i++){
+        push(THE, &pioche_defaut);
+    }
+    for (i = 1; i <= ECOC.occurences; i++){
+        push(ECOC, &pioche_defaut);
+    }
+    for (i = 1; i <= REPRO.occurences; i++){
+        push(REPRO, &pioche_defaut);
+    }
+    for (i = 1; i <= ISOL.occurences; i++){
+        push(ISOL, &pioche_defaut);
+    }
+    for (i = 1; i <= PSN.occurences; i++){
+        push(PSN, &pioche_defaut);
+    }
+    for (i = 1; i <= HS.occurences; i++){
+        push(HS, &pioche_defaut);
+    }
+    for (i = 1; i <= KB.occurences; i++){
+        push(KB, &pioche_defaut);
+    }
+    for (i = 1; i <= KG.occurences; i++){
+        push(KG, &pioche_defaut);
+    }
+    for (i = 1; i <= MM.occurences; i++){
+        push(MM, &pioche_defaut);
+    }
+    for (i = 1; i <= VY.occurences; i++){
+        push(VY, &pioche_defaut);
+    }
+    for (i = 1; i <= JS.occurences; i++){
+        push(JS, &pioche_defaut);
+    }
+    for (i = 1; i <= FB.occurences; i++){
+        push(FB, &pioche_defaut);
+    }
+    for (i = 1; i <= CD.occurences; i++){
+        push(CD, &pioche_defaut);
+    }
+    for (i = 1; i <= ALL.occurences; i++){
+        push(ALL, &pioche_defaut);
+    }
+    for (i = 1; i <= GB.occurences; i++){
+        push(GB, &pioche_defaut);
+    }
+    for (i = 1; i <= CM.occurences; i++){
+        push(CM, &pioche_defaut);
+    }
+    for (i = 1; i <=TL.occurences; i++){
+        push(TL, &pioche_defaut);
+    }
+    for (i = 1; i <=JF.occurences; i++){
+        push(JF, &pioche_defaut);
+    }
+    for (i = 1; i <=DW.occurences; i++){
+        push(DW, &pioche_defaut);
+    }
+    for (i = 1; i <=DADC.occurences; i++){
+        push(DADC, &pioche_defaut);
+    }
+    for (i = 1; i <=EL.occurences; i++){
+        push(EL, &pioche_defaut);
+    }
+    for (i = 1; i <=LPACAV.occurences; i++){
+        push(LPACAV, &pioche_defaut);
+    }
+    for (i = 1; i <=KS.occurences; i++){
+        push(KS, &pioche_defaut);
+    }
+    for (i = 1; i <=LP.occurences; i++){
+        push(LP, &pioche_defaut);
+    }

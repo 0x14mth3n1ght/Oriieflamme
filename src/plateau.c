@@ -130,23 +130,23 @@ int cachee_visible_existe(plateau *p, int x, int y){
     }
 };
 
-carte get_card(struct cell_base cellule){
+carte get_card(cell cellule){
     return cellule.c;
 };
 
-faction get_faction(struct cell_base cellule){
+faction get_faction(cell cellule){
     return cellule.f;
 };
 
-int get_occupee(struct cell_base cellule){
+int get_occupee(cell cellule){
     return cellule.occupee;
 };
 
-int get_visible(struct cell_base cellule){
+int get_visible(cell cellule){
     return cellule.visible;
 };
 
-int get_activee(struct cell_base cellule){
+int get_activee(cell cellule){
     return cellule.activee;
 };
 

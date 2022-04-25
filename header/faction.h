@@ -191,7 +191,7 @@ void set_name(faction *f, char* n);
 
 /* variables globales */
 
-faction faction_defaut_1 = {"faction1", 0, cree_liste_vide(), cree_liste_vide(), 0, 0};
-faction faction_defaut_2 = {"faction2", 0, cree_liste_vide(), cree_liste_vide(), 0, 0};
+faction faction_defaut_1 = {"faction1", 0, NULL, NULL, 0, 0};
+faction faction_defaut_2 = {"faction2", 0, NULL, NULL, 0, 0};
 
 #endif
