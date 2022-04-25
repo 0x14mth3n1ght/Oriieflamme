@@ -102,7 +102,7 @@ cell get_cell(grid g, int x, int y);
  * @param g une grille valide
  * @return la coordonnée de la case la plus éloignée du centre dans une direction @b d de la grille @b g.
  */
-int taille_direction(direction d, grid g);
+int taille_grille(direction d, grid g);
 
 /**
  * @brief Permet de connaître les coordonnées les plus extrêmes d'une ligne de la grille
