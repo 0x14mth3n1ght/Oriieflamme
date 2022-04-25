@@ -10,25 +10,47 @@
  * @brief Implémentation des fonctions de structures de grille du plateau et de liste chaînée.
  */
 
+/**
+ * @brief nulle est la cellule nulle
+ * 
+ */
+const cell nulle = NULL;
+
 /*--------------------------------- Grille : tableau 2D ---------------------------------*/
-grid init_grille(){
-    grid out = malloc(N*sizeof(cell*));
-    for (int i=0; i<N; i++){
-        out[i] = calloc(P, sizeof(cell));
-        for (int j=0; j<P; j++)
-            out[i][j] = NULL;
+
+/**
+ * @brief Construction d'une grille de n lignes et p colonnes
+ * 
+ * @param n nombre de lignes de la grille
+ * @param p nombre de colonnes de la grille
+ * @return Grille de @b n lignes et @b p colonnes, contenant la cellule vide sur chaque case
+ */
+grid new_grille(int n, int p){
+    grid out = malloc(n*sizeof(cell*));
+    for (int i=0; i<n; i++){
+        out[i] = calloc(p, sizeof(cell));
+        for (int j=0; j<p; j++)
+            out[i][j] = nulle;
     }
     return out;
+}
+
+grid init_grille(){
+    return new_grille(N, P);
 }
 
 void premiere_cellule(cell c, grid* pg){
     int x_center = N / 2;
     int y_center = P / 2;
+    if ((*pg)[x_center][y_center] != nulle){
+        printf("warning premiere_cellule : la grille n'est pas vide au centre.\n");
+        return;
+    }
     (*pg)[x_center][y_center] = c;
 }
 
 int est_libre(grid g, int x, int y){
-    return (g[x][y] != NULL);
+    return (g[x][y] != nulle);
 }
 
 void free_grille(grid* pg){
@@ -38,34 +60,8 @@ void free_grille(grid* pg){
     free(*pg);
 }
 
-/**
- * @brief Permet de convertir les coodonnées relatives d'une grille de centre (0,0) en des coordonnées positifs d'une grille de centre (N/2, P/2);
- * 
- * @param x abscisse de coordonnées dans le système de grilles centrées en (0,0)
- * @param y ordonnée de coordonnées dans le système de grilles centrées en (0,0)
- * @return modifie les paramètres @b x et @b y en des indices utilisables par l'implémentation (indices positifs)
- */
-void coords_tableaux(int x, int y){
-    x = x + N / 2;
-    y = y + P / 2;
-}
-
-/**
- * @brief Permet de convertir les coodonnées positifs d'une grille de centre (N/2, P/2) en des coordonnées relatives d'une grille de centre (0,0);
- * 
- * @param x abscisse de coordonnées dans le système de grilles centrées en (N/2, P/2)
- * @param y ordonnée de coordonnées dans le système de grilles centrées en (N/2, P/2)
- * @return modifie les paramètres @b x et @b y en des indices relatifs d'une grille centrée en (0,0) (indices relatifs)
- */
-void coords_grille(int x, int y){
-    x = x - N / 2;
-    y = y - P / 2;
-}
-
 int placer_cell(cell c, grid* pg, int x, int y){
-    //On recentre x et y en le centre de *pg
-    coords_tableaux(x,y);
-    if ((*pg)[x][y]==NULL){//Si la case n'est pas occupée
+    if ((*pg)[x][y] == nulle){//Si la case n'est pas occupée
         (*pg)[x][y] = c;
         return 1;
     }
@@ -73,100 +69,113 @@ int placer_cell(cell c, grid* pg, int x, int y){
 }
 
 cell get_cell(grid g, int x, int y){
-    //On recentre x et y en le centre de g
-    coords_tableaux(x,y);
     return g[x][y];
+}
+
+int taille_ligne_direction(direction d, grid g, int n){
+    switch (d){
+    case north:
+        for (int i=0; i<N; i++){
+            if (g[i][n] != nulle)
+                return i;
+        }
+        return N-1; //si la colonne est nulle
+        break;
+    case south:
+        for (int i=0; i<N; i++){
+            if (g[N-1-i][n] != nulle)
+                return N-1-i;
+        }
+        return 0; //si la colonne est nulle
+        break;
+    case west:
+        for (int j=0; j<P; j++){
+            if (g[n][j] != nulle)
+                return j;
+        }
+        return P-1; //si la ligne est nulle
+        break;
+    case east:
+        for (int j=0; j<P; j++){
+            if (g[n][P-1-j] != nulle)
+                return P-1-j;
+        }
+        return 0; //si la ligne est nulle
+        break;   
+    default:
+        break;
+    }
+    return -1;
 }
 
 int taille_grille(direction d, grid g){
     int max = 0; //Recherche de max parmi toutes les lignes ou colonnes
+    int min = (N>P)?N:P; //Recherche de min parmi toutes les lignes ou colonnes
     switch (d){
-    case west:
-        for (int j=0; j<P; j++){
-            int val = taille_ligne_direction(west, g, j);
-            max = (max > val)?max:val;
-        }
-        return max;
-        break;
-    case east:
-        for (int j=0; j<P; j++){
-            int val = taille_ligne_direction(east, g, j);
-            max = (max > val)?max:val;
-        }
-        return max;
-        break;
     case north:
-        for (int i=0; i<N; i++){
-            int val = taille_ligne_direction(north, g, i);
-            max = (max > val)?max:val;
+        for (int j=0; j<P; j++){
+            int val = taille_ligne_direction(north, g, j);
+            min = (min < val)?min:val;
         }
-        return max;
+        return min;
         break;
     case south:
+        for (int j=0; j<P; j++){
+            int val = taille_ligne_direction(south, g, j);
+            max = (max > val)?max:val;
+        }
+        return max;
+        break;
+    case west:
         for (int i=0; i<N; i++){
-            int val = taille_ligne_direction(north, g, i);
+            int val = taille_ligne_direction(west, g, i);
+            min = (min < val)?min:val;
+        }
+        return min;
+        break;
+    case east:
+        for (int i=0; i<N; i++){
+            int val = taille_ligne_direction(east, g, i);
             max = (max > val)?max:val;
         }
         return max;
         break;
     default:
         return -1;
-        break;
-    }
-}
-
-int taille_ligne_direction(direction d, grid g, int n){
-    switch (d){
-    case west:
-        for (int i=0; i<N; i++){
-            if (g[i][n] != NULL)
-                return N/2 - i;
-        }
-        break;
-    case east:
-        for (int i=0; i<N; i++){
-            if (g[N-1-i][n] != NULL)
-                return N/2 - i;
-        }
-        break;
-    case north:
-        for (int j=0; j<P; j++){
-            if (g[n][j] != NULL)
-                return P/2 - j;
-        }
-        break;
-    case south:
-        for (int j=0; j<P; j++){
-            if (g[n][P-1-j] != NULL)
-                return P/2 - j;
-        }
-        break;   
-    default:
         break;
     }
 }
 
 int deplacer_cell(grid* pg, int x1, int y1, int x2, int y2){
-    coords_tableaux(x1,y1);
-    coords_tableaux(x2,y2);
-    if ((*pg)[x1][y1] == NULL && (*pg)[x2][y2] == NULL)
+    if ((*pg)[x1][y1] == nulle && (*pg)[x2][y2] != nulle)
         return 2;
-    if ((*pg)[x1][y1] == NULL)
+    if ((*pg)[x1][y1] == nulle)
         return -1;
-    if ((*pg)[x2][y2] == NULL)
-        return -1;
+    if ((*pg)[x2][y2] != nulle)
+        return 1;
     cell c = (*pg)[x1][y1]; //On stocke la cellule à déplacer
     (*pg)[x2][y2] = c;
-    (*pg)[x1][y1] = NULL;
+    (*pg)[x1][y1] = nulle;
     return 0;
 }
 
 int supp_cell_grille(grid* pg, int x, int y){
-    coords_tableaux(x,y);
-    if ((*pg)[x][y] == NULL) //S'il n'y a pas de cellule sur la case
+    if ((*pg)[x][y] == nulle) //S'il n'y a pas de cellule sur la case
         return 0;
-    (*pg)[x][y] = NULL;
+    (*pg)[x][y] = nulle;
     return 1;
+}
+
+grid sous_grille(grid g, int x1, int y1, int x2, int y2){
+    int n = abs(x2 - x1);
+    int p = abs(y2 - y1);
+    grid out = new_grille(n+1, p+1);
+    for (int i=0; i<=n; i++){
+        for (int j=0; j<=p; j++){
+            out[i][j] = g[x1+i][y1+j];
+        }
+    }
+    return out;
 }
 
 /*--------------------------------- Liste chaînée ---------------------------------*/

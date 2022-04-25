@@ -6,7 +6,6 @@
  * 
  */
 
-
 /*Obtention des types*/
 #include "carte.h"
 #include "plateau.h"
@@ -24,7 +23,6 @@ typedef struct cell_base * cell;
  * @brief Pointeur vers la structure de grille
  */
 typedef cell** grid;
-
 
 //Directions
 
@@ -101,7 +99,7 @@ cell get_cell(grid g, int x, int y);
  * 
  * @param d une direction
  * @param g une grille valide
- * @return la coordonnée de la case la plus éloignée du centre dans une direction @b d de la grille @b g.
+ * @return l'indice d'une case remplie, celle située la plus loin dans la direction @b d de la grille @b g.
  */
 int taille_grille(direction d, grid g);
 
@@ -111,7 +109,7 @@ int taille_grille(direction d, grid g);
  * @param d direction
  * @param g une grille valide
  * @param j l'indice de la ligne
- * @return la coordonnée de la case la plus éloignée du centre dans la direction @b d de la ligne ou colonne @b n de la grille @b g.
+ * @return l'indice d'une case remplie, celle située la plus loin dans la direction @b d de la ligne (si @a d = west ou east) ou colonne (si @a d = north ou south) @b n de la grille @b g.
  */
 int taille_ligne_direction(direction d, grid g, int n);
 
@@ -124,9 +122,9 @@ int taille_ligne_direction(direction d, grid g, int n);
  * @param x2 abscisse de la cellule d'arrivée
  * @param y2 ordonnée de la cellule d'arrivée
  * @return @b 0 en cas de succès,
- *         @b -1 s'il y a un problème sur la case de départ,
- *         @b 1 s'il y a un problème sur la case d'arrivée,
- *         @b 2 s'il y a un problème sur la case de départ et d'arrivée.
+ *         @b -1 si la case de départ est vide,
+ *         @b 1 si la case d'arrivée est non-vide,
+ *         @b 2 si la case de départ est vide et la case d'arrivée est non-vide.
  */
 int deplacer_cell(grid* pg, int x1, int y1, int x2, int y2);
 
@@ -140,6 +138,21 @@ int deplacer_cell(grid* pg, int x1, int y1, int x2, int y2);
  *         0 sinon (pas de cellule ou cellule déjà supprimée)
  */
 int supp_cell_grille(grid* pg, int x, int y);
+
+/**
+ * @brief Met dans @b *p_out la sous-grille de g,
+ * où le bord haut-gauche était de coordonnée @b [x1,y1] dans @b g
+ * et le bord bas-droit était de coordonnée @b [x2,y2] dans @b g
+ * 
+ * @param g grille valide, celle qu'on cherche à extraire
+ * @param x1 abscisse de la cellule supérieure gauche de la sous-grille
+ * @param y1 ordonnée de la cellule supérieure gauche de la sous-grille
+ * @param x2 abscisse de la cellule inférieure droite de la sous-grille, x2 > x1
+ * @param y2 ordonnée de la cellule inférieure droite de la sous-grille, y2 > y1
+ * @return sous-grille bordé par le point (inclus) supérieur gauche @b (x1,y1) et le point (inclus) inférieur droit @b (x2,y2)
+ * @attention la sous-grille ne peut pas utiliser les autres fonctions de structure et n'est qu'à but démonstratif
+ */
+grid sous_grille(grid g, int x1, int y1, int x2, int y2);
 
 /*--------------------------------- Liste chainée ---------------------------------*/
 /**
