@@ -134,26 +134,28 @@ void free_grille(grid* pg){
 }
 
 int placer_cell(cell c, grid* pg, int x, int y){
+    grid start = *pg;
     //Accès à la ligne
-    while((*pg)->y > y){//Si trop au sud
+    while((*pg)->y > y){//Si trop au nord
         //Création de nouvelle ligne ?
-        if ((*pg)->north == NULL)//Si la ligne n'existe pas encore
-            push_north(NULL, pg);
+        if ((*pg)->south == NULL)//Si la ligne n'existe pas encore
+            push_south(NULL, pg);
         else
-            *pg = (*pg)->north;
+            *pg = (*pg)->south;
     }
     while((*pg)->y <y){//Si trop au nord
         //Création de nouvelle ligne ?
         if ((*pg)->north == NULL)//Si la ligne n'existe pas encore
             push_north(NULL, pg);
         else
-            *pg = (*pg)->south;
+            *pg = (*pg)->north;
     }
     if ((*pg)->y != y){
         printf("Erreur placer_cell : Mauvaise ligne atteinte\n");
         exit(EXIT_FAILURE);
     }
     ddl_fille ligne = (*pg)->ligne; //Ligne d'ordonnée y
+    ddl_fille start_ligne = ligne;
     //Accès à la case
     while(ligne->x > x){//Si trop à l'ouest
         //Création de nouvelle case ?
@@ -176,10 +178,15 @@ int placer_cell(cell c, grid* pg, int x, int y){
     //ligne pointe vers la cellule (x,y)
     if (ligne->val == NULL){
         ligne->val = c;
+        *pg = start;
+        ligne = start_ligne;
         return 1;
     }
-    else //La case est occupée.
+    else{ //La case est occupée.
+        *pg = start;
+        ligne = start_ligne;
         return 0;
+    }
 }
 
 // --- Fonctions de base de liste chainee mère ---
@@ -487,7 +494,7 @@ int supp_cell_grille(grid* pg, int x, int y){
     }
     ligne = start; //remise du pointeur de ligne vers le début
     //test si la ligne est extremité nord
-    if (ligne)
+    if (ligne) /** @todo */
     return 1;
 }
 
