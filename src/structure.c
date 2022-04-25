@@ -83,7 +83,7 @@ void premiere_cellule(cell c, grid* pg){
 }
 
 int est_libre(grid g, int x, int y){
-    return (test_ligne_vide(get_ligne(y,g))==NULL || get_case(g, x, y)==NULL);
+    return (test_ligne_vide(get_ligne(y,g))==1 || get_case(g, x, y)==NULL);
 }
 
 /**
@@ -122,13 +122,13 @@ void free_grille(grid* pg){
     while (to_north != NULL){
         ddl_mere head = to_north;
         to_north = to_north->north;
-        free_ligne(head->ligne);
+        free_ligne(&head->ligne);
         free(head);
     }
     while (to_south != NULL){ //S'effectue au moins une fois car to_north a commencé à supprimer un cran après vers le nord.
         ddl_mere head = to_south;
         to_south = to_south->south;
-        free_ligne(head->ligne);
+        free_ligne(&head->ligne);
         free(head);
     }
 }
@@ -316,7 +316,7 @@ ddl_fille cons_colonne_east(cell c, ddl_fille l){
 void push_west(cell c, ddl_fille *pl){
     ddl_fille start = *pl; /*Pointeur vers le début de la liste fille*/
     *pl = cons_colonne_west(c, *pl);
-    pl = start; /*Replace le pointeur de la liste fille au début*/
+    *pl = start; /*Replace le pointeur de la liste fille au début*/
 }
 
 /*  @requires : pl est un pointeur valide vers une liste doublement chaînée (fille) valide, c une cellule valide
@@ -325,7 +325,7 @@ void push_west(cell c, ddl_fille *pl){
 void push_east(cell c, ddl_fille *pl){
     ddl_fille start = *pl; /*Pointeur vers le début de la liste fille*/
     *pl = cons_colonne_east(c, *pl);
-    pl = start; /*Replace le pointeur de la liste fille au début*/
+    *pl = start; /*Replace le pointeur de la liste fille au début*/
 }
 
 /*  @requires : pl est un pointeur valide vers une liste doublement chaînée (fille) valide non-vide
@@ -346,7 +346,7 @@ cell pop_west(ddl_fille* pl){
     *pl = (*pl)-> east; //On recule vers l'est dans la liste
     (*pl)->west = NULL; //On supprime le pointeur vers l'ouest
     free(case_west);
-    pl = start; //On remet le pointeur vers le centre
+    *pl = start; //On remet le pointeur vers le centre
     return e;
 }
 
@@ -368,7 +368,7 @@ cell pop_east(ddl_fille* pl){
     *pl = (*pl)-> west; //On recule vers l'ouest dans la liste
     (*pl)->east = NULL; //On supprime le pointeur vers l'est
     free(case_east);
-    pl = start; //On remet le pointeur vers le centre
+    *pl = start; //On remet le pointeur vers le centre
     return e;
 }
 
@@ -486,6 +486,8 @@ int supp_cell_grille(grid* pg, int x, int y){
         }
     }
     ligne = start; //remise du pointeur de ligne vers le début
+    //test si la ligne est extremité nord
+    if (ligne)
     return 1;
 }
 
