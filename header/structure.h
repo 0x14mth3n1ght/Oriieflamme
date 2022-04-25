@@ -11,10 +11,10 @@
 #include "carte.h"
 #include "plateau.h"
 
-/*----------- Grille : liste doublement chainee imbriquee dans liste doublement chainee d'éléments de type cell -----------*/
+/*----------- Grille du plateau -----------*/
 /**
  * @typedef grid
- * @brief Pointeur vers la structure de liste chaînée mère, chaque maillon représentant une ligne de la grille
+ * @brief Pointeur vers la structure de grille
  */
 typedef struct grid_base * grid;
 
