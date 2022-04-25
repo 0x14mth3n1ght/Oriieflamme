@@ -65,11 +65,6 @@ int reinitialisation(plateau *p){
 
 /* listes pour les factions */
 
-struct node{
-    faction val;
-    liste_faction next;
-};
-
 liste_faction cons_faction(faction f, liste_faction n){
     liste_faction res = malloc(sizeof(liste_faction));
     res->val = f;
