@@ -1,6 +1,5 @@
 #ifndef _CARTE_H
 #define _CARTE_H 
-#include "structure.h"
 
 /**
 * \struct ceci est le type carte
