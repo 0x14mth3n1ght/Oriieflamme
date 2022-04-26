@@ -97,17 +97,25 @@ void activation(carte c, plateau* pp, int x, int y){
         break;
     case id_liiens:
         liste tmp_pioche = cree_liste_vide();
-        while (find_carte_activee(FISE, *pp)!=NULL){ /** @todo */
-            supp_carte(FISE, pp); /** @todo */
-            push(FISE, &tmp_pioche);
-        }
-        while (find_carte_activee(FISA, *pp)!=NULL){ /** @todo */
-            supp_carte(FISA, pp); /** @todo */
-            push(FISA, &tmp_pioche);
-        }
-        while (find_carte_activee(FC, *pp)!=NULL){ /** @todo */
-            supp_carte(FC, pp); /** @todo */
-            push(FC, &tmp_pioche);
+        //Parcours de grille
+        for (int i=taille_grille(west, g); i<=taille_grille(east, g); i++){
+            for (int j=taille_grille(north, g); j<=taille_grille(south, g); j++){
+                cell c_parcours = get_cell(g,i,j);
+                if (c_parcours != NULL && cachee_visible_existe(pp, i, j) == 1){//S'il y a une carte sur la case et qu'elle est visible
+                    if (get_card_id(get_card(c_parcours)) == id_fise){//si la carte en (i,j) est FISE
+                        supp_cell_grille(&g, i, j);
+                        push(FISE, &tmp_pioche);
+                    }
+                    if (get_card_id(get_card(c_parcours)) == id_fisa){//si la carte en (i,j) est FISA
+                        supp_cell_grille(&g, i, j);
+                        push(FISA, &tmp_pioche);
+                    }
+                    if (get_card_id(get_card(c_parcours)) == id_fise){//si la carte en (i,j) est FC
+                        supp_cell_grille(&g, i, j);
+                        push(FISE, &tmp_pioche);
+                    }
+                }
+            }
         }
         tmp_pioche = melanger(tmp_pioche);
         int nb_posees = 0; //Nombre de cartes qu'on repose
@@ -157,7 +165,7 @@ void activation(carte c, plateau* pp, int x, int y){
         /** @todo */
         break;
     case id_psn:
-        for (int i=taille_direction(north, g); i<=taille_direction(south, g); i++){/*Parcours de ligne*/
+        for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){/*Parcours de ligne*/
             int gauche = taille_ligne_direction(west, g, i);
             int droite = taille_ligne_direction(east, g, i);
             retourne_carte(pp, &f, i, gauche);
@@ -187,7 +195,7 @@ void activation(carte c, plateau* pp, int x, int y){
         break;
     case id_js:
         /*Parcours de tout le plateau*/
-        for (int i=taille_direction(north, g); i<=taille_direction(south, g); i++){
+        for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
             for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
                 cell curr_cell = get_cell(g, i, j);
                 if ((get_carte_id(get_card(curr_cell)) == id_heure_sup) && (cachee_visible_existe(pp, i, j)==1))
@@ -233,7 +241,7 @@ void activation(carte c, plateau* pp, int x, int y){
     case id_cm:
         if (find(HS, hist_visible)!=-1){
             /*Parcours de tout le plateau*/
-            for (int j=taille_direction(south, g); j<=taille_direction(north, g); j++){
+            for (int j=taille_grille(south, g); j<=taille_grille(north, g); j++){
                 for (int i=taille_ligne_direction(west, g, j); i<=taille_ligne_direction(east, g, j); i++){
                     cell curr_cell = get_cell(g, i, j);
                     if (get_carte_id(get_card(curr_cell)) != id_cm && get_card_id(get_card(curr_cell)) != id_heure_sup)
