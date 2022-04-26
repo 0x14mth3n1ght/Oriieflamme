@@ -19,7 +19,7 @@ struct cell_base{
    int activee;
 };
 
-struct cell_base * cell;
+typedef struct cell_base * cell;
 
 /**
 * \brief une fonction sans argument

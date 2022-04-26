@@ -13,7 +13,7 @@ struct carte {
 
 typedef struct carte carte;
 
-typedef carte *elt;
+typedef carte elt;
 
 /**
 * \brief cette fonction permet de recuperer l'id d'une carte
