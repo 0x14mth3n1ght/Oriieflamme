@@ -190,7 +190,11 @@ void set_name(faction *f, char* n);
 
 /* variables globales */
 
-faction faction_defaut_1 = {"faction1", 0, NULL, NULL, 0, 0};
-faction faction_defaut_2 = {"faction2", 0, NULL, NULL, 0, 0};
+/**
+* \brief cette fonction retourne une faction par défaut et ne prend aucun arguement
+* \return une faction
+*/ 
+faction set_faction_defaut();
+
 
 #endif

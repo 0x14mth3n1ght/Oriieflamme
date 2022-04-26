@@ -12,6 +12,7 @@ struct plateau_base{
     int nb_cartes_activees;
     liste cartes_visibles;
     liste cartes_activees;
+    int nb_ALL_retournee;
 };
 
 plateau cree_plateau(){
@@ -146,26 +147,30 @@ int get_activee(cell cellule){
 };
 
 grid get_grid(plateau p){
-    return p->grille;
+    return p.grille;
 };
 
 int get_nb_cartes_posees(plateau p){
-    return p->nb_cartes_posees;
+    return p.nb_cartes_posees;
 };
 
 int get_nb_cartes_visibles(plateau p){
-    return p->nb_cartes_visibles;
+    return p.nb_cartes_visibles;
 };
 
 int get_nb_cartes_activees(plateau p){
-    return p->nb_cartes_activees;
+    return p.nb_cartes_activees;
 };
 
 liste get_cartes_visibles(plateau p){
-    return p->cartes_visibles;
+    return p.cartes_visibles;
 };
 
 liste get_cartes_activees(plateau p){
-    return p->cartes_activees;
+    return p.cartes_activees;
 };
+
+int get_ALL(plateau p){
+    return p->nb_ALL_retournee;
+}
 

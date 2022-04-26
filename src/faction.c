@@ -180,3 +180,8 @@ void set_main(faction *f, liste cartes){
 void set_name(faction *f, char* n){
     (*f).nom = n;
 };
+
+faction set_faction_defaut(){
+    faction f = {"sans nom", 0, NULL, NULL, 0, 0};
+    return f;
+};

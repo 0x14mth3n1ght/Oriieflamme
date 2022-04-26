@@ -3,6 +3,8 @@
 
 #include "carte.h"
 #include "faction.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 /* Type abstrait d'un plateau de jeu */
 typedef struct plateau_base *plateau;
@@ -173,6 +175,13 @@ liste get_cartes_visibles(plateau p);
 * \return la liste des cartes activees sur le plateau
 */
 liste get_cartes_activees(plateau p);
+
+/**
+* \brief fonction permettant de savoir le nombre de fois où la carte ALL a été retournéee
+* \param p le plateau 
+* \return le nombre de fois où la carte ALL a été retournéee
+*/
+int get_ALL(plateau p);
 
 /* declaration du type liste pour les factions */
 
