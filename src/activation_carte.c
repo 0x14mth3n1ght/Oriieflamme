@@ -97,17 +97,25 @@ void activation(carte c, plateau* pp, int x, int y){
         break;
     case id_liiens:
         liste tmp_pioche = cree_liste_vide();
-        while (find_carte_activee(FISE, *pp)!=NULL){ /** @todo */
-            supp_carte(FISE, pp); /** @todo */
-            push(FISE, &tmp_pioche);
-        }
-        while (find_carte_activee(FISA, *pp)!=NULL){ /** @todo */
-            supp_carte(FISA, pp); /** @todo */
-            push(FISA, &tmp_pioche);
-        }
-        while (find_carte_activee(FC, *pp)!=NULL){ /** @todo */
-            supp_carte(FC, pp); /** @todo */
-            push(FC, &tmp_pioche);
+        //Parcours de grille
+        for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
+            for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
+                cell c_parcours = get_cell(g,i,j);
+                if (get_visible(c_parcours) == 1){//S'il y a une carte sur la case et qu'elle est visible
+                    if (get_card_id(get_card(c_parcours)) == id_fise){//si la carte en (i,j) est FISE
+                        supp_cell_grille(&g, i, j);
+                        push(FISE, &tmp_pioche);
+                    }
+                    if (get_card_id(get_card(c_parcours)) == id_fisa){//si la carte en (i,j) est FISA
+                        supp_cell_grille(&g, i, j);
+                        push(FISA, &tmp_pioche);
+                    }
+                    if (get_card_id(get_card(c_parcours)) == id_fise){//si la carte en (i,j) est FC
+                        supp_cell_grille(&g, i, j);
+                        push(FISE, &tmp_pioche);
+                    }
+                }
+            }
         }
         tmp_pioche = melanger(tmp_pioche);
         int nb_posees = 0; //Nombre de cartes qu'on repose
@@ -122,8 +130,23 @@ void activation(carte c, plateau* pp, int x, int y){
         break;
     case id_ssa:
         if (find(ALCOOL, hist_visible)!=-1){//Si une carte alcool a été retournée
-            while ((supp_carte(FISE, pp) || supp_carte(FISA, pp) || supp_carte(FC, pp)) != 0); //Tant qu'il y a des cartes fise, fisa et fc retournées sur le plateau
-            /** @todo supprimer la première et la dernière ligne du plateau*/
+            //Parcours de grille
+            for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
+                for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
+                    cell c_parcours = get_cell(g,i,j);
+                    if (get_visible(c_parcours) == 1){//S'il y a une carte sur la case et qu'elle est visible
+                        int card_id = get_card_id(get_card(c_parcours));
+                        if (card_id == id_fise || card_id == id_fisa || card_id == id_fc)//si la carte en (i,j) est FISE, ou FISA, ou FC
+                            supp_cell_grille(&g, i, j);
+                    }
+                }
+            }
+            int prem_ligne = taille_grille(north, g);
+            int dern_ligne = taille_grille(south, g);
+            for (int j=taille_grille(west, g); j<=taille_grille(east, g); j++){
+                supp_cell_grille(&g, prem_ligne, j); //Suppression de la première ligne
+                supp_cell_grille(&g, dern_ligne, j); //Suppression de la dernière ligne
+            }
         }
         else
             add_ddrs(&f, 5);
@@ -135,14 +158,34 @@ void activation(carte c, plateau* pp, int x, int y){
         supp_cell_grille(&g, x-1, y+1);
         break;
     case id_cafe:
-        while ((supp_carte(THE, pp) || supp_carte(ALCOOL, pp)) != 0); /** @todo */ //Supprime toutes les cartes thé et alcool du plateau
+        //Parcours de grille
+        for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
+            for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
+                cell c_parcours = get_cell(g,i,j);
+                if (get_visible(c_parcours) == 1){//S'il y a une carte sur la case et qu'elle est visible
+                    int card_id = get_card_id(get_card(c_parcours));
+                    if (card_id == id_the || card_id == id_alcool)//si la carte en (i,j) est Thé ou Alcool
+                        supp_cell_grille(&g, i, j);
+                }
+            }
+        }
         if (find(ECOC, hist_visible)!= -1)
             add_ddrs(&f, 1);
         else
             add_ddrs(&f, -1);
         break;
     case id_the:
-        while ((supp_carte(CAFE, pp) || supp_carte(ALCOOL, pp)) != 0); /** @todo */ //Supprime toutes les cartes café et alcool du plateau
+        //Parcours de grille
+        for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
+            for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
+                cell c_parcours = get_cell(g,i,j);
+                if (get_visible(c_parcours) == 1){//S'il y a une carte sur la case et qu'elle est visible
+                    int card_id = get_card_id(get_card(c_parcours));
+                    if (card_id == id_cafe || card_id == id_alcool)//si la carte en (i,j) est Café ou Alcool
+                        supp_cell_grille(&g, i, j);
+                }
+            }
+        }
         if (find(ECOC, hist_visible)!= -1)
             add_ddrs(&f, 1);
         else
@@ -157,7 +200,7 @@ void activation(carte c, plateau* pp, int x, int y){
         /** @todo */
         break;
     case id_psn:
-        for (int i=taille_direction(north, g); i<=taille_direction(south, g); i++){/*Parcours de ligne*/
+        for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){/*Parcours de ligne*/
             int gauche = taille_ligne_direction(west, g, i);
             int droite = taille_ligne_direction(east, g, i);
             retourne_carte(pp, &f, i, gauche);
@@ -187,7 +230,7 @@ void activation(carte c, plateau* pp, int x, int y){
         break;
     case id_js:
         /*Parcours de tout le plateau*/
-        for (int i=taille_direction(north, g); i<=taille_direction(south, g); i++){
+        for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
             for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
                 cell curr_cell = get_cell(g, i, j);
                 if ((get_carte_id(get_card(curr_cell)) == id_heure_sup) && (cachee_visible_existe(pp, i, j)==1))
@@ -222,7 +265,12 @@ void activation(carte c, plateau* pp, int x, int y){
         supp_cell_grille(&g, bas, y);
         break;
     case id_all:
-        /** @todo */
+        int n = nb_elt(ECOLO, hist_visible)
+                +nb_elt(ECOC, hist_visible)
+                +nb_elt(ISOL, hist_visible)
+                +nb_elt(PSN, hist_visible);
+        add_ddrs(&f, 3*n);
+        /** @todo suppression de la derniere carte non-retournée du plateau*/
         break;
     case id_gb:
         if (get_ddrs(adverse) > ddrs){
@@ -233,8 +281,8 @@ void activation(carte c, plateau* pp, int x, int y){
     case id_cm:
         if (find(HS, hist_visible)!=-1){
             /*Parcours de tout le plateau*/
-            for (int j=taille_direction(south, g); j<=taille_direction(north, g); j++){
-                for (int i=taille_ligne_direction(west, g, j); i<=taille_ligne_direction(east, g, j); i++){
+            for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
+                for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
                     cell curr_cell = get_cell(g, i, j);
                     if (get_carte_id(get_card(curr_cell)) != id_cm && get_card_id(get_card(curr_cell)) != id_heure_sup)
                         supp_cell_grille(&g, i, j);
@@ -243,7 +291,12 @@ void activation(carte c, plateau* pp, int x, int y){
         }
         break;
     case id_tl:
-        /** @todo */
+        if (find(JF, hist_visible)!=-1){//Si Julien Forest n'est pas retourné
+            int n = nb_elt(FISE, hist_visible);
+            add_ddrs(&f, 3*n);
+        }
+        else
+            add_ddrs(&f, -nb_elt(FISE, hist_visible));
         break;
     case id_jf:
         if (find(CAFE, hist_visible)!= -1){
@@ -258,13 +311,37 @@ void activation(carte c, plateau* pp, int x, int y){
         }
         break;
     case id_dadc:
-        /** @todo */
+        int nb_ret = 0; //Nombre de carte retournées
+        for (int j=taille_ligne_direction(west, g, x); j<=taille_ligne_direction(east, g, x); j++){//Parcours de ligne
+            cell c_parcours = get_cell(g, x, j);
+            if (get_visible(c_parcours)==1)
+                nb_ret++;
+        }
+        if (nb_ret >= 3) //S'il y a plus de 3 cartes retournées sur la ligne x
+            add_ddrs(&f, 5);
         break;
     case id_el:
         /** @todo */
         break;
     case id_lpacav:
-        /** @todo */
+        for (int j=taille_ligne_direction(west, g, x); j<=taille_ligne_direction(east, g, x); j++){//Parcours de ligne
+            cell c_parcours = get_cell(g, x, j);
+            if (get_visible(c_parcours)){
+                int c_id = get_card_id(get_card(c_parcours));
+                if (c_id == id_fisa){
+                    add_ddrs(&f, 5);
+                    return; //Fin
+                }
+            }
+        for (int i=taille_ligne_direction(north, g, y); i<=taille_ligne_direction(south, g, y); i++){//Parcours de colonne
+            cell c_parcours = get_cell(g, i, y);
+            if (get_visible(c_parcours)){
+                int c_id = get_card_id(get_card(c_parcours));
+                if (c_id == id_fisa){
+                    add_ddrs(&f, 5);
+                    return; //Fin
+                }
+            }
         break;
     case id_ks:
         if (find(DADC, hist_visible)!=-1 && find(EL, hist_visible)!=-1 && find(LPACAV, hist_visible)!=-1)//Si ces cartes sont retournées sur le plateau
