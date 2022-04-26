@@ -19,6 +19,8 @@ struct cell_base{
    int activee;
 };
 
+struct cell_base * cell;
+
 /**
 * \brief une fonction sans argument
 * \attention alloue de la memoire
@@ -62,14 +64,16 @@ liste_faction retourne_factions(plateau p);
 * \attention la case doit etre inocuppee, la faction doit exister
 * \return 1 si le placement a bien ete effectue et 0 sinon
 */
-int pose_carte(plateau *p, carte car, int x, int y);
+int pose_carte(plateau *p,faction *fac, carte car, int x, int y);
 
 /**
 * \brief fonction qui retourne sur le plateau une carte à jouer face visible sans l'activer
 * \param pp pointeur valide vers le plateau 
+* \param fp un pointeur vers la faction qui possède la carte 
 * \param x
-* \param y (x et y coordonnes valides de la case sur laquelle on pose la carte)
-* \attention la case doit etre occuppee, la faction doit exister
+* \param y (x et y coordonnes valides de la case sur laquelle se situe la carte à retourner)
+* \attention la case doit etre occuppee, la faction doit exister, la carte doit etre face cachée avant 
+* l'appel de la fonction 
 * \return 1 si la carte a bien ete retournee et 0 sinon
 */
 int retourne_carte(plateau *p, faction *fac, int x, int y);
@@ -98,35 +102,35 @@ int cachee_visible_existe(plateau *p, int x, int y);
 * \param cellule la cellule en question
 * \attention ne retourne une carte que s'il existe effectivement une carte sur cette cellule
 */
-carte get_card(struct cell_base cellule);
+carte get_card(cell cellule);
 
 /**
 * \brief fonction permettant de connaitre la faction a laquelle appartient une carte posee sur une cellule
 * \param cellule la cellule
 * \return la faction a laquelle appartient la carte posee sur la cellule
 */
-faction get_faction(struct cell_base cellule);
+faction get_faction(cell cellule);
 
 /**
 * \brief fonction qui permet de savoir si une cellule donne est occupee par une carte
 * \param cellule la cellule
 * \return retourne 1 si la cellule est occupee et 0 sinon
 */
-int get_occupee(struct cell_base cellule); 
+int get_occupee(cell cellule); 
 
 /**
 * \brief fonction qui permet de savoir si une carte sur une cellule donnee est face visible
 * \param cellule la cellule en question 
 * \return 1 si la carte a cet endroit est visible, 0 sinon
 */
-int get_visible(struct cell_base cellule);
+int get_visible(cell cellule);
 
 /**
 * \brief fonction qui permet de savoir si une carte sur une cellule donnee est face visible et activee
 * \param cellule la cellule en question 
 * \return 1 si la carte a cet endroit est visible et activee, 0 sinon
 */
-int get_activee(struct cell_base cellule);
+int get_activee(cell cellule);
 
 /**
 * \brief fonction retournant la grille associee a un plateau
@@ -172,6 +176,10 @@ liste get_cartes_activees(plateau p);
 
 /* declaration du type liste pour les factions */
 
+struct node{
+    faction val;
+    liste_faction next;
+};
 typedef struct node *liste_faction;
 
 #endif
