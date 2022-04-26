@@ -10,7 +10,7 @@
 #include "../header/faction.h"
 #include "../header/plateau.h"
 #include "../header/structure.h"
-
+#include "../header/interface.h"
 
 /*@requires : line_length >0
 @assigns    : nothing
