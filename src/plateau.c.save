@@ -111,6 +111,45 @@ int cachee_visible_existe(plateau *p, int x, int y){
     }
 };
 
+/**
+ * @brief Supprime la case @b (x,y) du plateau @b *pp et modifie les bons compteurs de cartes sur le plateau
+ * 
+ * @param pp pointeur valide vers un plateau valide
+ * @param x abscisse de la case à supprimer
+ * @param y ordonnée de la case à supprimer
+ * @return 1 s'il y avait une carte en @b (x,y) et qu'elle a été supprimée, 0 s'il n'y avait pas de carte en @b (x,y), -1 si autre erreur inconnue
+ */
+int supp_case(plateau* pp, int x, int y){
+    grid g = get_grid(*pp);
+    cell c = get_cell(g, x, y);
+    switch (cachee_visible_existe(pp, x, y)){
+        case 0: //carte face cachée
+            supp_cell_grille(&g, x, y);
+            ((*pp).nb_cartes_posees)--;
+            return 1;
+            break;
+        case 1: //carte face visible
+            supp_cell_grille(&g, x, y);
+            ((*pp).nb_cartes_visibles)--;
+            ((*pp).nb_cartes_posees)--;
+            return 1;
+            break;
+        case 2: //carte face visible et activée
+            supp_cell_grille(&g, x, y);
+            ((*pp).nb_cartes_activees)--;
+            ((*pp).nb_cartes_visibles)--;
+            ((*pp).nb_cartes_posees)--;
+            return 1;
+            break;
+        case 3: //pas de carte
+            return 0;
+            break;
+        default: //erreur
+            return -1;
+            break;
+    }
+}
+
 carte get_card(cell cellule){
     return cellule.c;
 };
