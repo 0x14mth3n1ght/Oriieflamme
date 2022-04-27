@@ -263,4 +263,12 @@ void free_liste(liste* pl);
  */
 int nb_elt(elt e, liste l);
 
+/**
+ * @brief Copie de liste
+ * 
+ * @param l liste valide, celle dont on veut copier
+ * @return une copie de la liste (à l'envers)
+ */
+liste deepcopy(liste l);
+
 #endif

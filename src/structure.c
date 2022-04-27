@@ -316,3 +316,10 @@ int nb_elt(elt e, liste l){
     }
     return n;
 }
+
+liste deepcopy(liste l){
+    liste out = cree_liste_vide();
+    while (l!=NULL)
+        push(pop(&l), &out);
+    return out;
+}
