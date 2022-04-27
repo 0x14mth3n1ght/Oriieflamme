@@ -9,6 +9,7 @@
 */
 
 struct faction_base {
+    int id;
     char* nom;
     int points_DDRS;
     liste main;
@@ -77,6 +78,23 @@ void melanger_pioche(faction *f);
 * \return la procedure ne retourne rien
 */
 void repiocher(faction *f);
+
+/**
+* \brief fonction qui permet de récupérer l'id d'une faction
+* \param f une faction
+* \attention la faction doit exister
+* \return un entier correspondant à l'id de la faction
+*/
+int get_id(faction f);
+
+/**
+* \brief procédure qui permet de fixer l'id d'une faction
+* \param fp un pointeur valide vers une faction
+* \param n entier positif ou nul, l'id de la faction prendra cette valeur 
+* \attention la faction doit exister
+* \return rien
+*/
+void set_id(faction *f, int n);
 
 /**
 * \brief cette fonction permet de récupérer le nom d'une faction

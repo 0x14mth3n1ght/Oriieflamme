@@ -181,7 +181,15 @@ void set_name(faction *f, char* n){
     (*f).nom = n;
 };
 
+int get_id(faction f){
+    return f.id;
+};
+
+void set_id(faction *f, int n){
+    (*f).id = n;
+}
+
 faction set_faction_defaut(){
-    faction f = {"sans nom", 0, NULL, NULL, 0, 0};
+    faction f = {0, "sans nom", 0, NULL, NULL, 0, 0};
     return f;
 };

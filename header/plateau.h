@@ -185,4 +185,13 @@ liste get_cartes_activees(plateau p);
 */
 int get_ALL(plateau p);
 
+/**
+* \brief procédure permettant de fixer une certaine valeur pour le nombre 
+* de fois où la carte ALL a été retournée 
+* \param fp un pointeur vers le plateau 
+* \param n nombre de fois où la carte ALL a été retournée (positif ou nul)
+* \return rien
+*/
+void set_ALL(plateau *p, int n);
+
 #endif

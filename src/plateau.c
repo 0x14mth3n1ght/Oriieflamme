@@ -160,6 +160,10 @@ liste get_cartes_activees(plateau p){
 };
 
 int get_ALL(plateau p){
-    return p->nb_ALL_retournee;
-}
+    return p.nb_ALL_retournee;
+};
+
+void set_ALL(plateau *p, int n){
+    (*p).nb_ALL_retournee = n;
+};
 
