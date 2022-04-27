@@ -483,8 +483,10 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
         add_ddrs(pf, 2*nb);
         break;
     case id_mm:
-        carte dernier = peek(hist_visible);
-        activation(dernier, pp, pf, p_adv, x, y);
+        if (test_vide(hist_visible)!=0){
+            carte dernier = peek(hist_visible);
+            activation(dernier, pp, pf, p_adv, x, y);
+        }
         break;
     case id_vy:
         if (ddrs < get_ddrs(*p_adv))
