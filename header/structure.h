@@ -2,13 +2,12 @@
 #define STRUCTURE_H
 /**
  * @file structure.h
- * @brief Mise en place de structures de grille infinie et de liste chaînée.
+ * @brief Mise en place de structures de grille et de liste chaînée.
  * 
  */
 
 /*Obtention des types*/
 #include "carte.h"
-#include "plateau.h"
 
 /*----------- Grille du plateau -----------*/
 /**
