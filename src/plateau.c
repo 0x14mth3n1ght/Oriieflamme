@@ -167,3 +167,14 @@ void set_ALL(plateau *p, int n){
     (*p).nb_ALL_retournee = n;
 };
 
+void set_nb_cartes_posees(plateau *p, int n){
+    (*p)->nb_cartes_posees = n;
+};
+
+void set_nb_cartes_visibles(plateau *p, int n){
+    (*p)->nb_cartes_visibles = n;
+};
+
+void set_nb_cartes_activees(plateau *p, int n){
+    (*p)->nb_cartes_activees = n;
+};
