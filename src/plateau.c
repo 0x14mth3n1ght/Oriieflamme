@@ -10,6 +10,7 @@ struct plateau_base{
     int nb_cartes_posees;
     int nb_cartes_visibles;
     int nb_cartes_activees;
+    int nb_ALL_retournee;
     liste cartes_visibles;
     liste cartes_activees;
 };
@@ -33,10 +34,10 @@ void detruire_plateau(plateau *p){
     free_grille(&(*p)->grille);
     free_liste(&(*p)->nb_cartes_visibles);
     free_liste(&(*p)->nb_cartes_activees);
-    free_liste(&(*p)->faction1.main);
-    free_liste(&(*p)->faction1.pioche);
-    free_liste(&(*p)->faction2.main);
-    free_liste(&(*p)->faction2.pioche);
+    free_liste(&(*p)->faction1->main);
+    free_liste(&(*p)->faction1->pioche);
+    free_liste(&(*p)->faction2->main);
+    free_liste(&(*p)->faction2->pioche);
     free(*p);
 };
 
@@ -48,8 +49,8 @@ int reinitialisation(plateau *p){
     }
     else{
         /* recuperation du nom des deux factions */
-        char* n_f1 = (*p)->faction1.nom;
-        char* n_f2 = (*p)->faction2.nom;
+        char* n_f1 = (*p)->faction1->nom;
+        char* n_f2 = (*p)->faction2->nom;
         detruire_plateau(&p);
         *p = cree_plateau();
         set_name(&((*p)->faction1), n_f1);
@@ -66,7 +67,9 @@ int reinitialisation(plateau *p){
 
 void retourne_factions(plateau p, faction *pf1, faction *pf2){
   set_name(&pf1, "nom1");
-  set_name(&pf2, "nom2"); 
+  set_name(&pf2, "nom2");
+  set_id(&pf1, 1);
+  set_id(&pf2, 2); 
   *pf1 = p->faction1;
   *pf2 = p->faction2;
 }
@@ -194,3 +197,22 @@ liste get_cartes_activees(plateau p){
     return p->cartes_activees;
 };
 
+void set_nb_cartes_posees(plateau *p, int n){
+    (*p)->nb_cartes_posees = n;
+};
+
+void set_nb_cartes_visibles(plateau *p, int n){
+    (*p)->nb_cartes_visibles = n;
+};
+
+void set_nb_cartes_activees(plateau *p, int n){
+    (*p)->nb_cartes_activees = n;
+};
+
+int get_ALL(plateau p){
+    return p->nb_ALL_retournee;
+};
+
+void set_ALL(plateau *p, int n){
+    (*p)->nb_ALL_retournee = n;
+};
