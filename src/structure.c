@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include "../header/structure.h"
 
-#define N 50 //Nombre de lignes
-#define P 50 //Nombre de colonnes
+#define N 100 //Nombre de lignes
+#define P 100 //Nombre de colonnes
 
 /**
  * @file structure.c
