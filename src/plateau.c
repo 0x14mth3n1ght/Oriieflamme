@@ -1,5 +1,6 @@
 #include "../header/plateau.h"
 #include "../header/structure.h"
+#include <limits.h>
 
 typedef struct plateau_base *plateau;
 
@@ -216,3 +217,518 @@ int get_ALL(plateau p){
 void set_ALL(plateau *p, int n){
     (*p)->nb_ALL_retournee = n;
 };
+
+//id des cartes
+const int id_fise = 1;
+const int id_fisa = 2;
+const int id_fc = 3;
+const int id_ecologiie = 4;
+const int id_liiens = 5;
+const int id_ssa = 6;
+const int id_alcool = 7;
+const int id_cafe = 8;
+const int id_the = 9;
+const int id_ecocup = 10;
+const int id_reprographie = 11;
+const int id_idb = 12;
+const int id_psn = 13;
+const int id_heure_sup = 14;
+const int id_kb = 15;
+const int id_kg = 16;
+const int id_mm = 17;
+const int id_vy = 18;
+const int id_js = 19;
+const int id_fb = 20;
+const int id_cd = 21;
+const int id_all = 22;
+const int id_gb = 23;
+const int id_cm = 24;
+const int id_tl = 25;
+const int id_jf = 26;
+const int id_dw = 27;
+const int id_dadc = 28;
+const int id_el = 29;
+const int id_lpacav = 30;
+const int id_ks = 31;
+const int id_lp = 32;
+
+/**
+ * @brief Teste si @b c est dans les @b n premières cases de @b t
+ * 
+ * @param c cellule
+ * @param t tableau de cellules
+ * @param n inférieur à la longueur de @b t
+ * @return 1 s'il y a @b c dans @b t , 0 sinon
+ */
+int mem_cell_table(cell c, cell t[], int n){
+    for (int i=0; i<n; i++){
+        if (c==t[i])
+            return 1;
+    }
+    return 0;
+}
+
+/**
+ * @brief Active la carte située en @b (x,y) du plateau @b *pp
+ * 
+ * @param c la carte activée
+ * @param pp pointeur valide vers un plateau valide
+ * @param pf pointeur valide vers une faction valide, celle qui a posé la carte
+ * @param p_adv pointeur valide vers une faction valide, celle adverse à celle qui a posé la carte
+ * @param x abscisse de la cellule
+ * @param y ordonnée de la cellule
+ */
+void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y){
+    grid g = get_grid(*pp);
+    int ddrs = get_ddrs(*pf); /*nombre actuel de points ddrs de la faction *pf*/
+    liste hist_visible = get_cartes_visibles(*pp);
+    int nb_retournees = len_liste(hist_visible);
+
+    switch (get_carte_id(c)){
+    case id_fise:
+        add_ddrs(pf, 1);
+        break;
+    case id_fisa:
+        if (nb_retournees%2==0)
+            add_ddrs(pf, 2);
+        break;
+    case id_fc:
+        if (find(FC, hist_visible)!=-1)
+            add_ddrs(pf, 2);
+        break;
+    case id_ecologiie:
+        int nb = 0; /*nombre de carte fise, fisa, fc retournées*/
+        nb += nb_elt(FISE, hist_visible);
+        nb += nb_elt(FISA, hist_visible);
+        nb += nb_elt(FC, hist_visible);
+        add_ddrs(pf, nb);
+        break;
+    case id_liiens:
+        liste tmp_pioche = cree_liste_vide();
+        //Parcours de grille
+        for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
+            for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
+                cell c_parcours = get_cell(g,i,j);
+                if (get_visible(c_parcours) == 1){//S'il y a une carte sur la case et qu'elle est visible
+                    if (get_carte_id(get_card(c_parcours)) == id_fise){//si la carte en (i,j) est FISE
+                        supp_case(pp, i, j);
+                        push(FISE, &tmp_pioche);
+                    }
+                    if (get_carte_id(get_card(c_parcours)) == id_fisa){//si la carte en (i,j) est FISA
+                        supp_case(pp, i, j);
+                        push(FISA, &tmp_pioche);
+                    }
+                    if (get_carte_id(get_card(c_parcours)) == id_fise){//si la carte en (i,j) est FC
+                        supp_case(pp, i, j);
+                        push(FISE, &tmp_pioche);
+                    }
+                }
+            }
+        }
+        tmp_pioche = melanger(tmp_pioche);
+        int nb_posees = 0; //Nombre de cartes qu'on repose
+        while (test_vide(tmp_pioche)!= 1){//Tant que la tmp_pioche n'est pas vide
+            nb_posees++;
+            carte a_poser = pop(&tmp_pioche);
+            /*Coordonnées de la cellule en haut à gauche*/
+            int x_hg = taille_grille(north, g);
+            int y_hg = taille_ligne_direction(west, g, x);
+            pose_carte(pp, pf, a_poser, x_hg, y_hg-nb_posees);
+        }
+        break;
+    case id_ssa:
+        if (find(ALCOOL, hist_visible)!=-1){//Si une carte alcool a été retournée
+            //Parcours de grille
+            for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
+                for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
+                    cell c_parcours = get_cell(g,i,j);
+                    if (get_visible(c_parcours) == 1){//S'il y a une carte sur la case et qu'elle est visible
+                        int card_id = get_carte_id(get_card(c_parcours));
+                        if (card_id == id_fise || card_id == id_fisa || card_id == id_fc)//si la carte en (i,j) est FISE, ou FISA, ou FC
+                            supp_case(pp, i, j);
+                    }
+                }
+            }
+            int prem_ligne = taille_grille(north, g);
+            int dern_ligne = taille_grille(south, g);
+            for (int j=taille_grille(west, g); j<=taille_grille(east, g); j++){
+                supp_case(pp, prem_ligne, j); //Suppression de la première ligne
+                supp_case(pp, dern_ligne, j); //Suppression de la dernière ligne
+            }
+        }
+        else
+            add_ddrs(pf, 5);
+        break;
+    case id_alcool: //Supprimez du plateau toutes les cartes qui touchent cette carte-ci (mais laissez la carte Alcool sur le plateau).
+        supp_case(pp, x+1, y+1);
+        supp_case(pp, x+1, y-1);
+        supp_case(pp, x-1, y-1);
+        supp_case(pp, x-1, y+1);
+        break;
+    case id_cafe:
+        //Parcours de grille
+        for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
+            for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
+                cell c_parcours = get_cell(g,i,j);
+                if (get_visible(c_parcours) == 1){//S'il y a une carte sur la case et qu'elle est visible
+                    int card_id = get_carte_id(get_card(c_parcours));
+                    if (card_id == id_the || card_id == id_alcool)//si la carte en (i,j) est Thé ou Alcool
+                        supp_case(pp, i, j);
+                }
+            }
+        }
+        if (find(ECOC, hist_visible)!= -1)
+            add_ddrs(pf, 1);
+        else
+            add_ddrs(pf, -1);
+        break;
+    case id_the:
+        //Parcours de grille
+        for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
+            for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
+                cell c_parcours = get_cell(g,i,j);
+                if (get_visible(c_parcours) == 1){//S'il y a une carte sur la case et qu'elle est visible
+                    int card_id = get_carte_id(get_card(c_parcours));
+                    if (card_id == id_cafe || card_id == id_alcool)//si la carte en (i,j) est Café ou Alcool
+                        supp_case(pp, i, j);
+                }
+            }
+        }
+        if (find(ECOC, hist_visible)!= -1)
+            add_ddrs(pf, 1);
+        else
+            add_ddrs(pf, -1);
+        break;
+    case id_ecocup:
+        break;
+    case id_reprographie:
+        int compteur = 0; //Compteur de cartes paires
+        liste tmp = deepcopy(hist_visible);
+        while (test_vide(tmp)!=1){
+            elt e = pop(tmp);
+            int n = nb_elt(e, tmp); //Le nombre de paires dans m cartes identiques est égal au nombre d'arrêtes dans un graphe complet d'ordre m
+            int nb_pair = n*(n-1)/2; //Compteur de paires de cartes pour n cartes identiques
+            compteur = compteur + nb_pair;
+            enlever(e, &tmp);
+        }
+        add_ddrs(pf, compteur);
+        free(tmp);
+        break;
+    case id_idb:
+        int nb_f=0; //Nombre de carte non retournées et non supprimée posées par *pf
+        int nb_adv=0; //Nombre de carte non retournées et non supprimée posées par *p_adv
+        
+        /*Parcours de tout le plateau*/
+        for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
+            for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
+                cell curr_cell = get_cell(g, i, j);
+                if (cachee_visible_existe(pp, i, j) == 0){//Si la carte en (i,j) est face cachée
+                    if (get_faction_id(get_faction(curr_cell)) == get_faction_id(*pf))//Si la carte a été posée par *pf
+                        nb_f++;
+                    else if (get_faction_id(get_faction(curr_cell)) == get_faction_id(*p_adv))//Si la carte a été posée par *p_adv
+                        nb_adv++;
+                }
+            }
+        }
+        add_ddrs(pf, nb_f);
+        add_ddrs(pf, nb_adv);
+        break;
+    case id_psn:
+        for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){/*Parcours de ligne*/
+            int gauche = taille_ligne_direction(west, g, i);
+            int droite = taille_ligne_direction(east, g, i);
+            retourne_carte(pp, pf, i, gauche);
+            retourne_carte(pp, pf, i, droite);
+        }
+        break;
+    case id_heure_sup:
+        int nb = nb_elt(HS, hist_visible) + 1; //La carte qui vient d'être retournée n'est pas dans l'historique des cartes retournées
+        add_ddrs(p_adv, -3*nb);
+        break;
+    case id_kb:
+        int nb_non_retournees = 0; //Compteur de cartes non retournées
+        /*Parcours de tout le plateau*/
+        for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
+            for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
+                if (cachee_visible_existe(pp, i, j) == 0)//S'il y a une carte face cachée
+                    nb_non_retournees++;
+            }
+        }
+        int random_carte_num = rand()%(nb_non_retournees); //Choix au hasard d'une carte non-retournée
+        int compteur_carte_rand = 0;
+        /*Parcours de tout le plateau*/
+        for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
+            for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
+                if (cachee_visible_existe(pp, i, j) == 0){//On regarde les cartes face cachées
+                    if (compteur_carte_rand == random_carte_num){//Si on tombe sur la carte choisie
+                        supp_case(pp, i, j);
+                        return;
+                    }
+                    random_carte_num++;
+                }
+            }
+        }
+        break;
+    case id_kg:
+        int nb_lignes = abs(taille_grille(south, g) - taille_grille(north, g) +1); //vérifier par calcul
+        int i = rand()%(nb_lignes); //Choix d'un entier positif sur le nombre de ligne
+        int nb = 0; //Nombre de cartes sur la ligne
+        for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){//Parcours de ligne
+            cell curr_cell = get_cell(g, i, j);
+            if (get_occupee(curr_cell)==1){//S'il y a une carte sur la cellule
+                nb++;
+                supp_case(pp, i, j);
+            }
+        }
+        add_ddrs(pf, 2*nb);
+        break;
+    case id_mm:
+        carte dernier = peek(hist_visible);
+        activation(dernier, pp, pf, p_adv, x, y);
+        break;
+    case id_vy:
+        if (ddrs < get_ddrs(*p_adv))
+            add_ddrs(pf, 3);
+        else if (ddrs > get_ddrs(*p_adv))
+            add_ddrs(p_adv, 3);
+        break;
+    case id_js:
+        /*Parcours de tout le plateau*/
+        for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
+            for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
+                cell curr_cell = get_cell(g, i, j);
+                if (get_visible(curr_cell)==1){
+                    if (get_carte_id(get_card(curr_cell)) == id_heure_sup)
+                        supp_case(pp, i, j);
+                }
+            }
+        }
+        break;
+    case id_fb:
+        if (find(HS, hist_visible)!=-1){//Si la carte HS est visible
+            for (int j=taille_ligne_direction(west, g, x); j<=taille_ligne_direction(east, g, x); j++)
+                supp_case(pp, x, j);
+        }
+        else{
+            int nb = nb_elt(CD, hist_visible)
+                +nb_elt(ALL, hist_visible)
+                +nb_elt(GB, hist_visible)
+                +nb_elt(CM, hist_visible)
+                +nb_elt(TL, hist_visible)
+                +nb_elt(JF, hist_visible)
+                +nb_elt(DW, hist_visible);
+            add_ddrs(pf, nb);
+        }
+        break;
+    case id_cd:
+        int gauche = taille_ligne_direction(west, g, x);
+        int droite = taille_ligne_direction(east, g, x);
+        int haut = taille_ligne_direction(north, g, y);
+        int bas = taille_ligne_direction(south, g, y);
+        supp_case(pp, x, gauche);
+        supp_case(pp, x, droite);
+        supp_case(pp, haut, y);
+        supp_case(pp, bas, y);
+        break;
+    case id_all:
+        int nb = nb_elt(ECOLO, hist_visible)
+                +nb_elt(ECOC, hist_visible)
+                +nb_elt(ISOL, hist_visible)
+                +nb_elt(PSN, hist_visible);
+        add_ddrs(pf, 3*nb);
+        set_ALL(pp, get_ALL(*pp) + 1);
+        break;
+    case id_gb:
+        if (get_ddrs(*p_adv) > ddrs){
+            add_ddrs(p_adv, -3);
+            add_ddrs(pf, 3);
+        }
+        break;
+    case id_cm:
+        if (find(HS, hist_visible)!=-1){
+            /*Parcours de tout le plateau*/
+            for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
+                for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
+                    cell curr_cell = get_cell(g, i, j);
+                    if (get_carte_id(get_card(curr_cell)) != id_cm && get_carte_id(get_card(curr_cell)) != id_heure_sup)
+                        supp_case(pp, i, j);
+                }
+            }
+        }
+        break;
+    case id_tl:
+        int nb = nb_elt(FISE, hist_visible);
+        if (find(JF, hist_visible)!=-1){//Si Julien Forest n'est pas retourné
+            add_ddrs(pf, 3*nb);
+        }
+        else
+            add_ddrs(p_adv, -nb);
+        break;
+    case id_jf:
+        if (find(CAFE, hist_visible)!= -1){//Si une carte café est retournée
+            int nb = nb_elt(FISE, hist_visible);
+            add_ddrs(pf, 6*nb);
+        }
+        break;
+    case id_dw:
+        if (find(THE, hist_visible)!= -1){//Si une carte thé est retournée
+            int nb = nb_elt(FISA, hist_visible) + nb_elt(FC, hist_visible);
+            add_ddrs(pf, 3*nb);
+        }
+        break;
+    case id_dadc:
+        int nb_ret = 0; //Nombre de carte retournées
+        for (int j=taille_ligne_direction(west, g, x); j<=taille_ligne_direction(east, g, x); j++){//Parcours de ligne
+            cell c_parcours = get_cell(g, x, j);
+            if (get_visible(c_parcours)==1)
+                nb_ret++;
+        }
+        if (nb_ret >= 3) //S'il y a plus de 3 cartes retournées sur la ligne x
+            add_ddrs(pf, 5);
+        break;
+    case id_el:
+        liste tmp = cree_liste_vide();
+        cell choix_cellules[5]; //tableau des cellules choisies
+        int choix_cartes_id[5]; //tableau des id des cartes choisies
+        for (int n=0; n<5; n++){
+            int nb_lignes = abs(taille_grille(south, g) - taille_grille(north, g) +1);
+            int nb_colonnes = abs(taille_grille(east, g) - taille_grille(west, g) +1);
+
+            //Choix de la cellule
+            int i = rand()%(nb_lignes);
+            int j = rand()%(nb_colonnes);
+            cell cell_choisie = get_cell(g, i, j);
+            while (get_visible(cell_choisie)!=1 || mem_cell_table(cell_choisie, choix_cellules, n) == 1){//Si la carte choisie est visible, ou si la cellule a déjà été choisie (déjà dans les n premières cases de choix_cellules), on recommence
+                i = rand()%(nb_lignes);
+                j = rand()%(nb_colonnes);
+                cell_choisie = get_cell(g, i, j);
+            }
+            
+            //on a choisi une cellule ayant une carte visible et pas encore choisie
+            choix_cellules[n] = cell_choisie;
+            choix_cartes_id[n] = get_carte_id(get_card(cell_choisie));
+            
+            switch (choix_cartes_id[n]){
+                case id_cd: push(CD, &tmp); break;
+                case id_all: push(ALL, &tmp); break;
+                case id_gb: push(GB, &tmp); break;
+                case id_cm: push(CM, &tmp); break;
+                case id_tl: push(TL, &tmp); break;
+                case id_jf: push(JF, &tmp); break;
+                case id_dw: push(DW, &tmp); break;
+                default: supp_case(pp, i, j); break;
+            }
+        }
+        tmp = melanger(tmp);
+        int prem_ligne = taille_grille(north, g);
+        int y_carte_hg = taille_ligne_direction(west, g, prem_ligne);
+        int compteur = 0; //Décalage vers la gauche par rapport à la carte en haut a gauche
+        while (test_vide(tmp)!=1){//On pose les cartes
+            elt c_mel = pop(&tmp);
+            compteur++;
+            pose_carte(pp, pf, c_mel, prem_ligne, y_carte_hg -compteur);
+        }
+        free(tmp);
+        break;
+    case id_lpacav:
+        for (int j=taille_ligne_direction(west, g, x); j<=taille_ligne_direction(east, g, x); j++){//Parcours de ligne
+            cell curr_cell = get_cell(g, x, j);
+            if (get_visible(curr_cell)){ //Si la cellule est visible
+                if (get_carte_id(get_card(curr_cell)) == id_fisa){ //Si la carte sur la cellule est FISA
+                    add_ddrs(pf, 5);
+                    return; //Fin
+                }
+            }
+        }
+        for (int i=taille_ligne_direction(north, g, y); i<=taille_ligne_direction(south, g, y); i++){//Parcours de colonne
+            cell curr_cell = get_cell(g, i, y);
+            if (get_visible(curr_cell)){ //Si la cellule est visible
+                if (get_carte_id(get_card(curr_cell)) == id_fisa){ //Si la carte sur la cellule est FISA
+                    add_ddrs(pf, 5);
+                    return; //Fin
+                }
+            }
+        }
+        break;
+    case id_ks:
+        if (find(DADC, hist_visible)!=-1 && find(EL, hist_visible)!=-1 && find(LPACAV, hist_visible)!=-1)//Si ces cartes sont retournées sur le plateau
+            add_ddrs(pf, 10);
+        else {
+            for (int j=taille_ligne_direction(west, g, x); j<=taille_ligne_direction(east, g, x); j++)
+                retourne_carte(pp, pf, x, j);
+        }
+        break;
+    case id_lp:
+        int compteur = 0; //Nombre de cartes non-retournées
+        if ((*pp)->nb_cartes_visibles + 1 == (*pp)->nb_cartes_posees){ //S'il n'y a plus qu'une carte non-visible sur le plateau (Laurent Prével, qui va être retournée après..)
+            set_ddrs(pf, INT_MAX -100);
+            set_ddrs(p_adv, 0);
+            reinitialisation(pp);
+        }
+        break;
+    default:
+        printf("Warning : activated unknown card.\n");
+        break;
+    }
+}
+
+/**
+ * @brief Renvoie la cellule non-activée en haut à gauche de la grille et stocke ses coordonnées dans les paramètres @b *px et @b *py
+ * 
+ * @param g grille valide
+ * @param px pointeur valide, qui renverra vers l'abscisse de la cellule renvoyée
+ * @param py pointeur valide, qui renverra vers l'ordonnée de la cellule renvoyée
+ * @return la première cellule non-activée en haut à gauche de @b g
+ */
+cell non_visible_hg(plateau p, int* px, int* py){
+    grid g = get_grid(p);
+    /*Parcours de tout le plateau*/
+    for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
+        for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
+            if (cachee_visible_existe(&p, i, j) == 0){
+                *px = i;
+                *py = j;
+                return get_cell(g, i, j);
+            }
+        }
+    }
+}
+
+carte active_carte(plateau *pp){
+    grid g = get_grid(*pp);
+
+    //Cellule non-visible en haut à gauche
+    int x_hg;
+    int y_hg;
+    cell hg = non_visible_hg(*pp, &x_hg, &y_hg);
+    carte c = get_card(hg);
+
+    //Attribution des factions, celle qui a posé la carte, et son adversaire
+    faction f = get_faction(hg); /*Faction qui a posé la carte*/
+    faction f1;
+    faction f2;
+    faction adversaire;
+    retourne_factions(*pp, &f1, &f2);
+    if (get_faction_id(f) == get_faction_id(f1))
+        adversaire = f2;
+    else if (get_faction_id(f) == get_faction_id(f2))
+        adversaire = f1;
+    
+    int nb_non_retournee = abs(get_nb_cartes_posees(*pp) - get_nb_cartes_visibles(*pp));
+    activation(c, pp, &f, &adversaire, x_hg, y_hg);
+    
+    //Modification de la cellule
+    hg->visible = 1;
+    hg->activee = 1;
+    ((*pp)->nb_cartes_visibles)++;
+    ((*pp)->nb_cartes_activees)++;
+    push(c, &(*pp)->cartes_visibles);
+    push(c, &(*pp)->cartes_activees);
+
+    //Test de fin de manche
+    if ((*pp)->nb_cartes_visibles == (*pp)->nb_cartes_posees - (*pp)->nb_ALL_retournee){//Si toutes les cartes posées ont été retournées, moins les dernières cartes du plateau affectés par l'effet de la carte Anne-Laure Ligozat, qu'on ignorera
+        reinitialisation(pp); //Termine la manche
+    }
+
+    return c;
+}
