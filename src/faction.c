@@ -181,11 +181,11 @@ void set_name(faction *f, char* n){
     (*f).nom = n;
 };
 
-int get_id(faction f){
+int get_faction_id(faction f){
     return f.id;
 };
 
-void set_id(faction *f, int n){
+void set_faction_id(faction *f, int n){
     (*f).id = n;
 }
 
