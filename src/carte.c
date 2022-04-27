@@ -15,3 +15,8 @@ char* get_carte_description(carte c){
 int get_carte_occurences(carte c){
     return c.occurences;
 };
+
+int equals(carte c, carte d){
+  return (c.id == d.id);
+};
+
