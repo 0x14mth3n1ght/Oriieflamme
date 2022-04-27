@@ -217,9 +217,7 @@ elt pop(liste* pl){
         exit(EXIT_FAILURE);
     }
     elt e = (*pl)->val; //On stocke l'élément en haut de la liste
-    liste head = *pl;
     *pl = (*pl)-> next; //On avance dans la liste
-    free(head);
     return e;
 }
 
@@ -263,7 +261,7 @@ int enlever(elt e, liste* pl){
     liste curr = (*pl)->next; //Pointeur vers la case courante
     liste prec = *pl; //Pointeur vers la case précédente
     //Tant que l'on a pas trouvé e
-    while (curr->val != e){
+    while ((curr->val) != e){
         prec = prec->next; //le pointeur du précédent avance
         curr = curr->next; //le pointeur du courant avance
     }
@@ -312,7 +310,7 @@ int nb_elt(elt e, liste l){
     while (l!=NULL){
         if (l->val == e)
             n++;
-        l = l->val;
+        l = l->next;
     }
     return n;
 }
