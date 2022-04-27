@@ -165,6 +165,30 @@ int get_nb_cartes_visibles(plateau p);
 int get_nb_cartes_activees(plateau p);
 
 /**
+* \brief procédure initialisant nb_cartes_posees à une certaine valeur
+* \param pp pointeur valide vers plateau
+* \param n la nouvelle valeur positive ou nulle
+* \return rien 
+*/
+void set_nb_cartes_posees(plateau *p, int n);
+
+/**
+* \brief procédure initialisant nb_cartes_visibles à une certaine valeur
+* \param pp pointeur valide vers plateau
+* \param n la nouvelle valeur positive ou nulle
+* \return rien 
+*/
+void set_nb_cartes_visibles(plateau *p, int n);
+
+/**
+* \brief procédure initialisant nb_cartes_activees à une certaine valeur
+* \param pp pointeur valide vers plateau
+* \param n la nouvelle valeur positive ou nulle
+* \return rien 
+*/
+void set_nb_cartes_activees(plateau *p, int n);
+
+/**
 * \brief fonction permettant de récupérer les cartes visibles sur le plateau
 * \param p le plateau 
 * \return la liste des cartes visibles sur le plateau
