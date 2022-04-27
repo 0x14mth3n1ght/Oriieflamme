@@ -48,11 +48,13 @@ void detruire_plateau(plateau *p);
 int reinitialisation(plateau *p);
 
 /**
-* \brief procedure qui renvoie les deux factions du jeu 
+* \brief procedure permettant de connaitre les deux factions du jeu 
 * \param p le plateau
-* \return retourne la liste composee des deux factions du jeu
+* \param pf1 pointeur vers une faction valide
+* \param pf2 pointeur vers une faction valide
+* \return rien
 */
-liste_faction retourne_factions(plateau p);
+void retourne_factions(plateau p, faction *pf1, faction *pf2);
 
 /**
 * \brief fonction qui place sur le plateau une carte à jouer face cachée et retire cette carte 
@@ -182,13 +184,5 @@ liste get_cartes_activees(plateau p);
 * \return le nombre de fois où la carte ALL a été retournéee
 */
 int get_ALL(plateau p);
-
-/* declaration du type liste pour les factions */
-
-struct node{
-    faction val;
-    liste_faction next;
-};
-typedef struct node *liste_faction;
 
 #endif
