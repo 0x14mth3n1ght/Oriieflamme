@@ -232,7 +232,7 @@ elt peek(liste l){
 int find(elt e, liste l){
     int i = 0;
     while (l!=NULL){
-        if (l->val == e)
+        if (equals(l->val,e)==1)
             return i;
         i++;
         l = l->next;
@@ -252,7 +252,7 @@ int len_liste(liste l){
 
 int enlever(elt e, liste* pl){
     //Cas initial
-    if ((*pl)->val == e){ //Si la première case contient e
+    if (equals((*pl)->val,e)==1){ //Si la première case contient e
         liste first = *pl;
         *pl = (*pl)->next; //On commence par la case suivante
         free(first);
@@ -261,7 +261,7 @@ int enlever(elt e, liste* pl){
     liste curr = (*pl)->next; //Pointeur vers la case courante
     liste prec = *pl; //Pointeur vers la case précédente
     //Tant que l'on a pas trouvé e
-    while ((curr->val) != e){
+    while (equals(curr->val,e)==0){
         prec = prec->next; //le pointeur du précédent avance
         curr = curr->next; //le pointeur du courant avance
     }
@@ -277,7 +277,8 @@ int enlever(elt e, liste* pl){
 
 elt get_at(int pos, liste l){
     if (pos >= len_liste(l)){
-        return NULL;
+        printf("Error get_at : index out of range.\n");
+        exit(EXIT_FAILURE);
     }
     for (int i=0; i<pos; i++)
         pop(&l);
@@ -308,7 +309,7 @@ void free_liste(liste* pl){
 int nb_elt(elt e, liste l){
     int n = 0;
     while (l!=NULL){
-        if (l->val == e)
+        if (equals(l->val,e)==1)
             n++;
         l = l->next;
     }

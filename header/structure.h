@@ -157,7 +157,7 @@ grid sous_grille(grid g, int x1, int y1, int x2, int y2);
 /*--------------------------------- Liste chainée ---------------------------------*/
 /**
  * @typedef liste 
- * @brief Structure de liste chaînée. Pointeur vers la structure de maillons. Ses éléments sont de type abstrait @b elt , 
+ * @brief Structure de liste chaînée. Pointeur vers la structure de maillons. Ses éléments sont de type abstrait @b elt 
  */
 typedef struct bucket *liste;
 
@@ -191,7 +191,7 @@ void push(elt e, liste* pl);
  * @attention plante si @b *pl est vide.
  * @return l'élément au dessus de la liste.
  */
-elt pop(liste* pl); // = tirer une carte;
+elt pop(liste* pl);
 
 /**
  * @brief Renvoie l'élément en haut de la liste
@@ -236,7 +236,7 @@ int enlever(elt e, liste* pl);
  * @param pos position de la valeur voulu dans la liste, compris entre 0 (inclus) et @a len_liste(l) (exclus)
  * @param l liste valide
  * @return l'élement de la liste @b l situé à la position @b pos, (indexé de @a 0 à @a len_liste(l)-1 )
- *         @b NULL si la valeur @b pos est trop grande.
+ *         termine avec une erreur si la valeur @b pos est trop grande.
  */
 elt get_at(int pos, liste l);
 
