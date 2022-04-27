@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <stdio.h>
 #include "../header/structure.h"
 
 #define N 100 //Nombre de lignes
