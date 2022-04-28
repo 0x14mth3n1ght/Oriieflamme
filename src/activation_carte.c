@@ -228,8 +228,8 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
         for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){/*Parcours de ligne*/
             int gauche = taille_ligne_direction(west, g, i);
             int droite = taille_ligne_direction(east, g, i);
-            retourne_carte(pp, pf, i, gauche);
-            retourne_carte(pp, pf, i, droite);
+            retourne_carte(pp, i, gauche);
+            retourne_carte(pp, i, droite);
         }
         break;
     case id_heure_sup:
@@ -409,8 +409,9 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
                 case id_tl: push(TL, &tmp); break;
                 case id_jf: push(JF, &tmp); break;
                 case id_dw: push(DW, &tmp); break;
-                default: supp_case(pp, i, j); break;
+                default: break;
             }
+            supp_case(pp, i, j); //On supprime la carte du plateau (si c'est une des cartes citées, elle sera déplacée, sinon simplement supprimée)
         }
         tmp = melanger(tmp);
         int prem_ligne = taille_grille(north, g);
@@ -448,7 +449,7 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
             add_ddrs(pf, 10);
         else {
             for (int j=taille_ligne_direction(west, g, x); j<=taille_ligne_direction(east, g, x); j++)
-                retourne_carte(pp, pf, x, j);
+                retourne_carte(pp, x, j);
         }
         break;
     case id_lp:
