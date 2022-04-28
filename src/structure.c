@@ -321,3 +321,15 @@ liste deepcopy(liste l){
         push(pop(&l), &out);
     return out;
 }
+
+int liste_equals(liste l1, liste l2){
+    while (test_vide(l1)==0 && test_vide(l2)==0){
+        if (equals(l1->val, l2->val)==0)
+            return 0;
+        l1 = l1->next;
+        l2 = l2->next;
+    }
+    if (test_vide(l1)==0 || test_vide(l2)==0)//Si l'une des deux listes est vide, alors elles ne sont pas de même taille
+        return 0;
+    return 1;
+}
