@@ -1,6 +1,7 @@
 #include "../header/plateau.h"
 #include "../header/structure.h"
 #include <limits.h>
+#include <stdio.h>
 
 typedef struct plateau_base *plateau;
 
