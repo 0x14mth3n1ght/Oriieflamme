@@ -43,4 +43,9 @@ void affiche_effet(carte c);
 @ensures    : affiche le vainqueur de la partie et retourne 1 ou 2 le numéro de la faction gagnante*/
 int affiche_gagnant(faction f1, faction f2);
 
+/*@requires : f1 et f2 valides
+@assigns    : nothing
+@ensures    : affiche le vainqueur de la manche en cours et retourne 1 ou 2 le numéro de la faction gagnante*/
+
+int affiche_gagnant_manche(faction f1, faction f2)
 #endif

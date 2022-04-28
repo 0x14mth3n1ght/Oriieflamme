@@ -1,7 +1,3 @@
-
-#ifndef INTERFACE_H
-#define INTERFACE_H
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <stddef.h>
@@ -58,9 +54,9 @@ void affiche_plateau(plateau p) {
                 case 2:{
                     cell cell_to_print= get_cell(p,i,j);
                     carte card_to_print= get_card(cell_to_print);
-                    int num_faction= get_card_faction(cell_to_print);
+                    int num_faction= get_faction_id(get_faction(cell_to_print));
 
-                    char * name_card= get_carte_nom(card_to_print);
+                    char * name_card= get_carte_nom_court(card_to_print);
                     if(num_faction==1) {
                         printf("\033[0;31m");
                         printf("%4s",name_card);
@@ -94,7 +90,7 @@ void affiche_main(faction f) {
     while (test_vide(main_f)==0) {
         printf("|");
         cpt+=1;
-        carte card_to_print= pop(&main_f); //pas sur d'avoir compris comment fonctionnait la liste chainée
+        carte card_to_print= pop(&main_f);
         char * name_card= get_carte_nom(card_to_print);
         printf("%4s",name_card);
     }
@@ -161,16 +157,29 @@ void affiche_effet(carte c){
     printf("Voici la description de la carte qui vient d'être retournée:\n%s",get_carte_description(c));
 }
 
-int affiche_gagnant(faction f1, faction f2){
+int affiche_gagnant_manche(faction f1, faction f2){
     int ddrs1,ddrs2;
     ddrs1=get_ddrs(f1);
     ddrs2=get_ddrs(f2);
     if (ddrs1 > ddrs2 ) {
         printf("\n Le vainqueur de cette partie est la faction: %s avec %i points ddrs contre %i.", get_faction_nom(f1),ddrs1,ddrs2);
+        return 1;
     }
     else{
         printf("\n Le vainqueur de cette partie est la faction: %s avec %i points ddrs contre %i.", get_faction_nom(f2),ddrs2,ddrs1);
+        return 2;
     }
 }
 
-#endif
+int affiche_gagnant(faction f1, faction f2){
+    int nb_vict1,nb_vict2;
+    nb_vict1=get_nb_victoires(f1);
+    nb_vict2=get_nb_victoires(f2);
+    if (nb_vict1 > nb_vict2 ) {
+        printf("\n Le vainqueur du jeu est la faction: %s avec %i manches gagnées contre %i.", get_faction_nom(f1),nb_vict1,nb_vict2);
+        return 1;
+    }
+    else{
+        printf("\n Le vainqueur du jeu est la faction: %s avec %i manches gagnées contre %i.", get_faction_nom(f2),nb_vict2,nb_vict1);
+        return 2;
+    }
