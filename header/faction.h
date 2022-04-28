@@ -1,6 +1,5 @@
 #ifndef _FACTION_H
 #define _FACTION_H
-#include <stdlib.h>
 #include "structure.h"
 
 /* vérifier qu'il n'y a pas de soucis avec le include "structure" */
