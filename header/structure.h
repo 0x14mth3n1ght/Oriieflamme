@@ -270,4 +270,14 @@ int nb_elt(elt e, liste l);
  */
 liste deepcopy(liste l);
 
+/**
+ * @brief Comparateur du contenu de liste.
+ * 
+ * @param l1 liste valide
+ * @param l2 liste valide
+ * @return @b 1 si @b l1 et @b l2 contiennent les mêmes éléments dans le bon ordre et sont de même taille,
+ *         @b 0 sinon.
+ */
+int liste_equals(liste l1, liste l2);
+
 #endif

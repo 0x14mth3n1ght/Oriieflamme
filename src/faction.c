@@ -1,6 +1,7 @@
 #include "../header/faction.h"
 #include "../header/carte.h"
 #include "../header/structure.h"
+#include <stdlib>
 
 int a_remelanger_main(faction f){
     return f.a_remelange;
@@ -28,9 +29,9 @@ void repiocher(faction *f){
 
 void remelanger_main(faction *f){
     if (a_remelanger_main(*f) == 0){
-        vider_main(&f);
-        melanger_pioche(&f);
-        repiocher(&f);
+        vider_main(f);
+        melanger_pioche(f);
+        repiocher(f);
     }
     (*f).a_remelange = 1;
 };
