@@ -16,6 +16,10 @@ int get_carte_occurences(carte c){
     return c.occurences;
 };
 
+char* get_nom_court(carte c){
+    return c.nom_court;
+};
+
 int equals(carte c, carte d){
   return (c.id == d.id);
 };

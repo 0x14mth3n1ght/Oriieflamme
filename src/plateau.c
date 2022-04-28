@@ -92,14 +92,13 @@ int retourne_carte(plateau *p, int x, int y){
         if (get_occupee(get_cell((*p)->grille, x, y)) == 1 && get_visible(get_cell((*p)->grille, x, y)) == 0){
             get_cell((*p)->grille, x, y)->visible = 1;
             (*p)->nb_cartes_visibles += 1;
-        
-	}
+	    }
     }
 };
 
 int cachee_visible_existe(plateau *p, int x, int y){
-    cell_base cellule = get_cell((*p)->grille, x ,y);
-    if (cellule =! NULL){
+    cell cellule = get_cell((*p)->grille, x ,y);
+    if (cellule != NULL){
         if (cellule->occupee == 0){
             return 3;
         }
