@@ -56,10 +56,10 @@ int get_carte_occurences(carte c);
 char* get_nom_court(carte c); 
 
 /**
-* \brief fonction permettant de savoir si deux factions sont égales
+* \brief fonction permettant de savoir si deux cartes sont égales
 * \param c
-* \param d les deux factions
-* \return 1 si elles sont égales, 0 sinon
+* \param d les deux cartes
+* \return 1 si elles sont égales, 0 sinon.
 */
 int equals(carte c, carte d);
 

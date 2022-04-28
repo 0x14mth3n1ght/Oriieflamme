@@ -59,7 +59,7 @@ void test_starting_faction() {
         sum+=rand()%2; //Test starting faction
     }
     float proba= sum/n;
-    CU_ASSERT(proba>0.40&&proba<0.60);
+    CU_ASSERT(proba>0.40&proba<0.60);
     
 }
 
@@ -164,7 +164,14 @@ void test_vanqueur_manche(){
     faction faction2;
     retourne_factions(plat,&faction1, &faction2);
 
+    set_ddrs(&faction1,1);
 
+    reinitialisation(&plat);
+
+    CU_ASSERT_EQUAL(get_nb_victoires(faction1),1);
+    CU_ASSERT_EQUAL(get_nb_victoires(faction2),0);
+
+    detruire_plateau(&plat);    
 }
 
 int main() {

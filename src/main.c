@@ -45,7 +45,7 @@ void print_title()
 @ensures: Effectue un tour de jeu pour la faction *fact présente sur le plateau *partie
 */
 
-void tour_de_jeu(faction *fact, plateau *partie)
+void tour_de_jeu(faction* fact, plateau* partie)
 {
     int *new_pos;
     carte new_card;
@@ -56,8 +56,9 @@ void tour_de_jeu(faction *fact, plateau *partie)
         affiche_main(*fact);
         new_card = choix_carte(*fact);
         affiche_plateau(*partie);
-        position_carte(*fact, new_pos);
-        possible = pose_carte(partie, fact, new_card, new_pos);
+        int x,y; //Abscisse et ordonnée de la carte à poser
+        position_carte(*fact, &x,&y);
+        possible = pose_carte(partie, fact, new_card,x,y);
     }
 }
 
@@ -79,7 +80,7 @@ int main()
     plateau partie = creer_plateau();
     faction faction1;
     faction faction2;
-    retourne_factions(&faction1, &faction2);
+    retourne_factions(partie,&faction1, &faction2);
     /*
     * reinitilisation retourne 1 lorsque le jeu est terminé et 0 sinon.
     * Hors le jeu se termine lorsqu'une faction a gagné 2 manches. 
@@ -122,7 +123,6 @@ int main()
             tour_de_jeu(&faction2, &partie);
         }
     }
-    int reste_cartes = 1;
     affiche_plateau(partie);
     /*
     * reste_cartes est un compteur des cartes qu'il reste à retourner
@@ -132,9 +132,11 @@ int main()
     * Cela assure la terminaison de la boucle while
     * 
     */
-    while (reste_cartes){
-        affiche_effet(active_carte(&partie, &reste_cartes));
+   int restes_cartes = abs(get_nb_cartes_posees(partie) - get_nb_cartes_visibles(partie));
+    while (restes_cartes>0){
+        affiche_effet(active_carte(&partie));
         affiche_plateau(partie);
+        restes_cartes=abs(get_nb_cartes_posees(partie) - get_nb_cartes_visibles(partie));
     }
     }
     affiche_gagnant(faction1,faction2);
