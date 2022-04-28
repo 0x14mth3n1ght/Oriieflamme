@@ -59,7 +59,7 @@ void test_starting_faction() {
         sum+=rand()%2; //Test starting faction
     }
     float proba= sum/n;
-    CU_ASSERT(proba>0.40&proba<0.60);
+    CU_ASSERT((proba>0.40)&&(proba<0.60));
     
 }
 
@@ -135,7 +135,7 @@ void test_poser_carte() {
     carte c1 = peek(main_f1);
 
     CU_ASSERT_EQUAL(pose_carte(&plat,&faction1,c1,0,0),1);
-    CU_ASSERT_EQUAL(cachee_visible_existe(plat,0,0),0);
+    CU_ASSERT_EQUAL(cachee_visible_existe(&plat,0,0),0);
 
     grid grid_p= get_grid(plat);
     cell cell0 = get_cell(grid_p,0,0);
