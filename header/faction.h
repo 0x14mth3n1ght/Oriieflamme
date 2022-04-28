@@ -39,7 +39,7 @@ int a_remelanger_main(faction f);
 * l'option de remelanger sa main, c'est a dire, 
 * remettre sa main dans la boite a idee, la melanger,
 * et repiocher nb_cartes_main_debut_manche cartes
-* \param fp un pointeur vers une faction (ici il y aura
+* \param f un pointeur vers une faction (ici il y aura
 * \a modification des champs de la faction)
 * \attention 1) le pointeur doit pointer vers une faction existante
 * 2) si la faction a deja utilise l'option de remelanger sa main, 
@@ -52,7 +52,7 @@ void remelanger_main(faction *f);
 * \brief cette procedure permet a une faction de vider sa 
 * main dans sa pioche. A la fin de la procedure
 * la main de la faction est donc vide et la pioche modifiee
-* \param fp un pointeur vers une faction (ici il y aura 
+* \param f un pointeur vers une faction (ici il y aura 
 * \a modification des champs de la faction)
 * \attention 1) le pointeur doit pointer vers une faction existante
 * 2) la main ne doit pas etre deja vide
@@ -62,7 +62,7 @@ void vider_main(faction *f);
 
 /**
 * \brief cette procedure permet a une faction de melanger sa pioche
-* \param fp un pointeur vers une faction (ici il y aura 
+* \param f un pointeur vers une faction (ici il y aura 
 * \a modification des champs de la faction)
 * \attention 1) le pointeur doit pointer vers une faction existante
 * \return la procedure ne retourne rien
@@ -71,7 +71,7 @@ void melanger_pioche(faction *f);
 
 /**
 * \brief cette procedure permet a une faction de repiocher ses cartes
-* \param fp un pointeur vers une faction (ici il y aura
+* \param f un pointeur vers une faction (ici il y aura
 * \a modification des champs de la faction)
 * \attention 1) le pointeur doit pointer vers une faction existante
 * 2) la main doit etre initialement vide
@@ -89,7 +89,7 @@ int get_faction_id(faction f);
 
 /**
 * \brief procédure qui permet de fixer l'id d'une faction
-* \param fp un pointeur valide vers une faction
+* \param f un pointeur valide vers une faction
 * \param n entier positif ou nul, l'id de la faction prendra cette valeur 
 * \attention la faction doit exister
 * \return rien
@@ -114,7 +114,7 @@ int get_ddrs(faction f);
 
 /**
 * \brief cette procédure permet de modifier le nombre de points DDRS d'une faction
-* \param fp un pointeur vers une faction
+* \param f un pointeur vers une faction
 * \param i un nombre de points a accorder 
 * \attention le pointeur doit pointer vers une faction existante
 * \attention le nombre passe en parametre est positif ou nul
@@ -124,7 +124,7 @@ void set_ddrs(faction *f, int i);
 
 /**
 * \brief cette procédure permet d'ajouter un nombre de points DDRS à une faction
-* \param fp un pointeur vers une faction
+* \param f un pointeur vers une faction
 * \param i un nombre de points a ajouter
 * \attention le pointeur doit pointer vers une faction existante
 * \attention le nombre passe en parametre est positif ou nul
@@ -150,7 +150,7 @@ int get_nb_victoires(faction f);
 
 /**
 * \brief cette fonction permet de modifier le nombre de victoires d'une faction
-* \param fp un pointeur vers une faction
+* \param f un pointeur vers une faction
 * \param i un nombre de victoires a accorder
 * \attention le pointeur doit pointer vers une faction existante
 * \attention le nombre passe en parametre est positif ou nul
@@ -172,7 +172,7 @@ liste get_pioche(faction f);
 * \brief cette procédure permet de modifier la pioche d'une
 * faction en la remplacant par une pioche par défault, dans laquelle 
 * toutes les cartes sont rangees "dans l'ordre"
-* \param fp un pointeur vers une faction
+* \param f un pointeur vers une faction
 * \attention le pointeur doit pointer vers une faction existante
 * \return 
 */
@@ -181,7 +181,7 @@ void set_pioche_defaut(faction *f);
 /**
 * \brief cette procédure permet de modifier la main d'une faction
 * \param cartes une liste de cartes
-* \param fp un pointeur vers une faction
+* \param f un pointeur vers une faction
 * \attention la liste ne doit pas avoir plus de nb_cartes_main_debut_manche cartes 
 * \attention le pointeur doit pointer vers une faction existante
 * \return rien 
@@ -192,7 +192,7 @@ void set_main(faction *f, liste cartes);
 * \brief cette procédure permet de modifier la pioche d'une faction, plus precisement
 * la pioche prend comme valeur la liste de cartes passe en argument
 * \param cartes une liste de cartes
-* \param fp un pointeur vers une faction
+* \param f un pointeur vers une faction
 * \attention le pointeur doit pointer vers une faction existante 
 * \return rien 
 */
@@ -200,7 +200,7 @@ void set_pioche(faction *f, liste cartes);
 
 /**
 * \brief cette procédure permet de donner un nouveau nom a une faction
-* \param fp un pointeur vers une faction
+* \param f un pointeur vers une faction
 * \param n le nouveau nom de la faction
 * \return rien
 */ 
