@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include "../header/structure.h"
 
-#define N 100 //Nombre de lignes
-#define P 100 //Nombre de colonnes
+#define N nb_cartes_main_debut_manche*2+15 //Nombre de lignes
+#define P nb_cartes_main_debut_manche*2+15 //Nombre de colonnes
 
 /**
  * @file structure.c
