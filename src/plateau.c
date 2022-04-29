@@ -20,6 +20,7 @@ struct plateau_base{
 
 plateau cree_plateau(){
     plateau resultat;
+    init_cartes();
     /* attention nouvelle version du malloc possiblement nécessaire */
     resultat = malloc(sizeof(plateau));
     resultat->grille = init_grille();
