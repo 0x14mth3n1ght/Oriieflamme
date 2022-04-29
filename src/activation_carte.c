@@ -6,7 +6,7 @@
 #include "../header/structure.h"
 /**
  * @file TMP_plateau.c
- * @brief Début d'implémentation des effets des cartes. À terme sera inclus dans la fonction active_carte de plateau.c
+ * @brief Implémentation des effets des cartes. Désormais inclus dans la fonction active_carte de plateau.c
  */
 
 //id des cartes (pour la clarté du code)
