@@ -54,7 +54,11 @@ plateau cree_plateau(){
 };
 
 void detruire_plateau(plateau *p){
+        printf("aa");
+    fflush(stdout);
     free_grille(&(*p)->grille);
+    printf("aa");
+    fflush(stdout);
     free_liste(&((*p)->cartes_visibles));
     free_liste(&((*p)->cartes_activees));
     free_liste(&((*p)->faction1.main));
@@ -66,15 +70,20 @@ void detruire_plateau(plateau *p){
 
 int reinitialisation(plateau *p){
     /* on verifie si partie terminee */
+
     if (get_nb_victoires((*p)->faction1) == nb_manches_gagnantes || get_nb_victoires((*p)->faction2) == nb_manches_gagnantes)
     {
         return 0;
     }
     else{
+
         /* recuperation du nom des deux factions */
         char* n_f1 = (*p)->faction1.nom;
         char* n_f2 = (*p)->faction2.nom;
+
         detruire_plateau(p);
+        printf("aa");
+        fflush(stdout);
         *p = cree_plateau();
         set_name(&((*p)->faction1), n_f1);
         set_name(&((*p)->faction2), n_f2);

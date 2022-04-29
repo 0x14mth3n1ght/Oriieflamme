@@ -55,8 +55,12 @@ int est_libre(grid g, int x, int y){
 
 void free_grille(grid* pg){
     for (int i=0; i<N; i++){
+        printf("\ntest free_grille int_boucle %i",i);
+        fflush(stdout);
         free((*pg)[i]);
     }
+        printf("\ntest free_grille ext_boucle");
+        fflush(stdout);
     free(*pg);
 }
 
