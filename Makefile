@@ -1,7 +1,7 @@
 CC = gcc -Wall -Wextra -std=c99
 
 jeu: main.o
-	gcc obj/main.o -o bin/jeu
+	$(CC) obj/*.o -o bin/jeu
 
 clean:
 	rm -rf obj/*.o
