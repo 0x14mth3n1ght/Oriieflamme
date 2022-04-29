@@ -65,8 +65,8 @@ int equals(carte c, carte d);
 
 /* CONSTANTES */
 
-int nb_cartes_main_debut_manche = 8;
-int nb_manches_gagnantes = 2;
+#define nb_cartes_main_debut_manche 8
+#define nb_manches_gagnantes 2
 
 const carte FISE = {1, "FISE", "La faction qui a posé cette carte gagne 1 point DDRS.", 4, " FISE "};
 const carte FISA = {2, "FISA", "La faction qui a posé cette carte gagne 2 points DDRS si le nombre de cartes retournées sur le plateau (y compris celle-ci) est pair, et 0 sinon.", 4, " FISA "};
