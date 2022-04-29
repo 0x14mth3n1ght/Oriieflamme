@@ -78,6 +78,8 @@ void affiche_plateau(plateau p) {
 
         putchar('|');
     }
+    printf("\n La faction %s possède %i points ddrs. ",get_faction_nom(faction1),get_ddrs(faction1));
+    printf("\n La faction %s possède %i points ddrs. ",get_faction_nom(faction2),get_ddrs(faction2));
 
 }
 
