@@ -10,7 +10,7 @@
 #include <time.h>
 
 /*
-@requires: La largeur du terminal doit être supérireur à 84 caractères pour afficher
+@requires: La largeur du terminal doit être supérieur à 84 caractères pour afficher
         Correctement le titre
 @assigns: nothing
 @ensures: Affiche le titre de Oriieflame 
@@ -77,7 +77,7 @@ int main()
     */
     int manche = 0;
     int starting_faction;
-    plateau partie = creer_plateau();
+    plateau partie = cree_plateau();
     faction faction1;
     faction faction2;
     retourne_factions(partie,&faction1, &faction2);
