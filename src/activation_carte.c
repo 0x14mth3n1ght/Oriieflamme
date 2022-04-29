@@ -9,17 +9,6 @@
  * @brief Début d'implémentation des effets des cartes. À terme sera inclus dans la fonction active_carte de plateau.c
  */
 
-#include <stdlib.h>
-#include <limits.h>
-#include "../header/plateau.h"
-#include "../header/carte.h"
-#include "../header/faction.h"
-#include "../header/structure.h"
-/**
- * @file TMP_plateau.c
- * @brief Implémentation des effets des cartes. À terme sera inclus dans la fonction active_carte de plateau.c
- */
-
 //id des cartes (pour la clarté du code)
 #define id_fise 1
 #define id_fisa 2
