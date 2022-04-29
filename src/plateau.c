@@ -20,6 +20,7 @@ struct plateau_base{
 
 plateau cree_plateau(){
     plateau resultat;
+    init_cartes();
     /* attention nouvelle version du malloc possiblement nécessaire */
     resultat = malloc(sizeof(plateau));
     resultat->grille = init_grille();
@@ -683,14 +684,13 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
                 retourne_carte(pp, x, j);
         }
         break;
-    case id_lp:{
-        int compteur = 0; //Nombre de cartes non-retournées
+    case id_lp:
         if ((*pp)->nb_cartes_visibles + 1 == (*pp)->nb_cartes_posees){ //S'il n'y a plus qu'une carte non-visible sur le plateau (Laurent Prével, qui va être retournée après..)
             set_ddrs(pf, INT_MAX -100);
             set_ddrs(p_adv, 0);
             reinitialisation(pp);
         }
-        break;}
+        break;
     default:
         printf("Warning : activated unknown card.\n");
         break;
@@ -717,11 +717,10 @@ cell non_visible_hg(plateau p, int* px, int* py){
             }
         }
     }
+    return NULL;
 }
 
 carte active_carte(plateau *pp){
-    grid g = get_grid(*pp);
-
     //Cellule non-visible en haut à gauche
     int x_hg;
     int y_hg;
@@ -738,8 +737,7 @@ carte active_carte(plateau *pp){
         adversaire = f2;
     else if (get_faction_id(f) == get_faction_id(f2))
         adversaire = f1;
-    
-    int nb_non_retournee = abs(get_nb_cartes_posees(*pp) - get_nb_cartes_visibles(*pp));
+
     activation(c, pp, &f, &adversaire, x_hg, y_hg);
     
     //Modification de la cellule
