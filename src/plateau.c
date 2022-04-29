@@ -18,6 +18,16 @@ struct plateau_base{
     liste cartes_activees;
 };
 
+cell constrcuteur_cell(carte car, faction fac){
+    cell out = malloc(sizeof(cell));
+    out->c = car;
+    out->f = fac;
+    out->occupee = 1;
+    out->visible = 0;
+    out->activee = 0;
+    return out;
+};
+
 plateau cree_plateau(){
     plateau resultat;
     init_cartes();
@@ -82,20 +92,16 @@ void retourne_factions(plateau p, faction *pf1, faction *pf2){
 int pose_carte(plateau *p, faction *fac, carte car, int x, int y){
     if (get_cell((*p)->grille, x, y) != NULL){
         if (get_occupee(get_cell((*p)->grille, x, y)) == 0){
-            cell nouvelle_cell;
-            nouvelle_cell->c = car;
-            nouvelle_cell->f = *fac;
-            nouvelle_cell->occupee = 1;
-            nouvelle_cell->visible = 0;
-            nouvelle_cell->activee = 0;
+            cell nouvelle_cell = constrcuteur_cell(car, *fac);
             enlever(car, &((*fac).main));
             (*p)->nb_cartes_posees += 1;
             placer_cell(nouvelle_cell, &(*p)->grille, x , y);
             return 1;
         }
+        else return 0;
     }
     else return 0;
-};
+}
 
 int retourne_carte(plateau *p, int x, int y){
     grid g = get_grid(*p);
@@ -114,6 +120,7 @@ int retourne_carte(plateau *p, int x, int y){
             }
             return 1;
 	    }
+        else return 0;
     }
     else return 0;
 };
@@ -148,7 +155,6 @@ int cachee_visible_existe(plateau *p, int x, int y){
  */
 int supp_case(plateau* pp, int x, int y){
     grid g = get_grid(*pp);
-    cell c = get_cell(g, x, y);
     switch (cachee_visible_existe(pp, x, y)){
         case 0: //carte face cachée
             supp_cell_grille(&g, x, y);
