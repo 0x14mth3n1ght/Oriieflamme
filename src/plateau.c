@@ -21,11 +21,20 @@ struct plateau_base{
 plateau cree_plateau(){
     plateau resultat;
     /* attention nouvelle version du malloc possiblement nécessaire */
+    resultat = malloc(sizeof(plateau));
+    resultat->grille = init_grille();
+    resultat->faction1 = set_faction_defaut();
+    resultat->faction2 = set_faction_defaut();
+    resultat->nb_cartes_posees = 0;
+    resultat->nb_cartes_visibles = 0;
+    resultat->nb_cartes_activees = 0;
+    resultat->cartes_visibles = cree_liste_vide();
     resultat->cartes_activees = cree_liste_vide();
     resultat->nb_ALL_retournee = 0;
     set_faction_id(&(resultat->faction1), 1);
     set_faction_id(&(resultat->faction2), 2);
     return resultat;
+
 };
 
 void detruire_plateau(plateau *p){
