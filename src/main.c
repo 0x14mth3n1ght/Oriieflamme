@@ -19,24 +19,25 @@ void print_title()
 {
     struct winsize w;
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-    char *str_dash_title = malloc(sizeof(char *));
-
     for (int i = 0; i < w.ws_col; i++)
     {
         printf("---");
         if ((i % 2 == 0) && (i < (w.ws_col - 84)))
         {
-            strcat(str_dash_title, "-");
+            printf("-");
         }
     }
-    printf("%s", str_dash_title);
     printf("Bienvenue dans le meilleur jeu vidéoludique:    Oriieflamme: La Grande Guerre DDRS");
-    printf("%s\n", str_dash_title);
     for (int i = 0; i < w.ws_col; i++)
     {
         printf("---");
+         if ((i % 2 == 0) && (i < (w.ws_col - 84)))
+        {
+            printf("-");
+        }
     }
-    free(str_dash_title);
+    printf("\n");
+    printf("\n");
 }
 
 /*
