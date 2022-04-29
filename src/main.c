@@ -47,16 +47,15 @@ void print_title()
 
 void tour_de_jeu(faction* fact, plateau* partie)
 {
-    int *new_pos;
+    int x,y; //Abscisse et ordonnée de la carte à poser
+
     carte new_card;
     int possible = 0;
-    new_pos=malloc(2*sizeof(int));
     while (!possible)
     {
         affiche_main(*fact);
         new_card = choix_carte(*fact);
         affiche_plateau(*partie);
-        int x,y; //Abscisse et ordonnée de la carte à poser
         position_carte(*fact, &x,&y);
         possible = pose_carte(partie, fact, new_card,x,y);
     }

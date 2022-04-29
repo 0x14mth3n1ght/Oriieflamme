@@ -110,7 +110,7 @@ int mulligan_main(faction f, int already){
     if (1==already){
         return 0;
     }
-    printf("\nVous pouvez, si vous le souhaitez vider votre main, mélanger la pioche et repiocher une nouvelle main. \n");
+    printf("\n%s vous pouvez, si vous le souhaitez vider votre main, mélanger la pioche et repiocher une nouvelle main. \n",get_faction_nom(f));
     printf("Pour rappel, voux ne pouvez utiliser cette option qu'une seule fois dans toute la partie\n");
     printf("Souhaitez vous utiliser cette option? (y/n)\n");
     char answer;
@@ -132,7 +132,7 @@ carte choix_carte(faction f){
     printf("\n Quelle carte voulez vous poser?[1,...,%i]\n",length_main);
     int answer;
     scanf("%i",&answer);
-    while(answer<1|answer>length_main){
+    while(answer<1||answer>length_main){
         printf("\n Quelle carte voulez vous poser?[1,...,%i]\n",length_main);
         scanf("%i",&answer);
     }
@@ -144,7 +144,7 @@ carte choix_carte(faction f){
     return result;
 }
 void position_carte(faction f, int* x,int* y){
-        printf("\n Où voulez vous poser votre carte? \n Rappel: la carte doit être adjacente à un autre carte déjà posée");
+        printf("\n %s où voulez vous poser votre carte? \n Rappel: la carte doit être adjacente à un autre carte déjà posée",get_faction_nom(f));
         printf("Entrez la coordonée x:\n");
         int answer_x;
         scanf("%i",&answer_x);
