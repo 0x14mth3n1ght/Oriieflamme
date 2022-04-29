@@ -63,6 +63,11 @@ char* get_nom_court(carte c);
 */
 int equals(carte c, carte d);
 
+/**
+ * \brief Initialise toutes les cartes du jeu
+ */
+void init_cartes();
+
 /* CONSTANTES */
 
 #define nb_cartes_main_debut_manche 8
@@ -101,20 +106,6 @@ carte LPACAV;
 carte KS;
 carte LP;
 
-/**
- * @brief fonction renvoyant une carte avec les arguments passés en paramètre
- * @param id l'id de la carte
- * @param nom le nom de la carte
- * @param desc la description de la carte
- * @param occ le nombre d'occurences de la carte
- * @param nom_court le nom raccourci la carte (6 caractères max)
- * @return la carte voulue
- */
-carte constructeur_de_carte(int id, char* nom, char* desc, int occ, char* nom_court);
-
-/**
- * \brief Initialise toutes les cartes du jeu
- */
-void init_cartes();
 
 #endif
+

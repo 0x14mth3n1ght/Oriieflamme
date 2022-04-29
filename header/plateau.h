@@ -3,7 +3,6 @@
 
 #include "carte.h"
 #include "faction.h"
-#include <stdlib.h>
 
 /* Type abstrait d'un plateau de jeu */
 typedef struct plateau_base *plateau;
@@ -215,12 +214,5 @@ int get_ALL(plateau p);
 * \return rien
 */
 void set_ALL(plateau *p, int n);
-
-/**
- * @brief fonction permettant de construire une cell avec une carte donnee retournee
- * @param car une carte
- * @param fac une faction 
-*/
-cell constrcuteur_cell(carte car, faction fac);
 
 #endif

@@ -24,6 +24,15 @@ int equals(carte c, carte d){
   return (c.id == d.id);
 };
 
+/**
+ * @brief fonction renvoyant une carte avec les arguments passés en paramètre
+ * @param id l'id de la carte
+ * @param nom le nom de la carte
+ * @param desc la description de la carte
+ * @param occ le nombre d'occurences de la carte
+ * @param nom_court le nom raccourci la carte (6 caractères max)
+ * @return la carte voulue
+ */
 carte constructeur_de_carte(int id, char* nom, char* desc, int occ, char* nom_court){
     carte out;
     out.id = id;

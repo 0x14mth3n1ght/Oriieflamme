@@ -18,7 +18,12 @@ struct plateau_base{
     liste cartes_activees;
 };
 
-cell constrcuteur_cell(carte car, faction fac){
+/**
+ * @brief fonction permettant de construire une cell avec une carte donnee retournee
+ * @param car une carte
+ * @param fac une faction 
+*/
+cell construcuteur_cell(carte car, faction fac){
     cell out = malloc(sizeof(cell));
     out->c = car;
     out->f = fac;
@@ -92,7 +97,7 @@ void retourne_factions(plateau p, faction *pf1, faction *pf2){
 int pose_carte(plateau *p, faction *fac, carte car, int x, int y){
     if (get_cell((*p)->grille, x, y) != NULL){
         if (get_occupee(get_cell((*p)->grille, x, y)) == 0){
-            cell nouvelle_cell = constrcuteur_cell(car, *fac);
+            cell nouvelle_cell = construcuteur_cell(car, *fac);
             enlever(car, &((*fac).main));
             (*p)->nb_cartes_posees += 1;
             placer_cell(nouvelle_cell, &(*p)->grille, x , y);
