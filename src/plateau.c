@@ -49,7 +49,7 @@ int reinitialisation(plateau *p){
         /* recuperation du nom des deux factions */
         char* n_f1 = (*p)->faction1.nom;
         char* n_f2 = (*p)->faction2.nom;
-        detruire_plateau(&p);
+        detruire_plateau(p);
         *p = cree_plateau();
         set_name(&((*p)->faction1), n_f1);
         set_name(&((*p)->faction2), n_f2);
