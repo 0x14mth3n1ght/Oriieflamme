@@ -1,7 +1,7 @@
 #include "../header/faction.h"
 #include "../header/carte.h"
 #include "../header/structure.h"
-#include <stdlib>
+#include <stdlib.h>
 
 int a_remelanger_main(faction f){
     return f.a_remelange;
