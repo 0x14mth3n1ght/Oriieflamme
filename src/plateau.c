@@ -20,27 +20,30 @@ struct plateau_base{
 
 plateau cree_plateau(){
     plateau resultat;
-    resultat = malloc();
+    /* attention nouvelle version du malloc possiblement nécessaire */
+    resultat = malloc(sizeof(plateau));
     resultat->grille = init_grille();
-    resultat->faction1 = faction_defaut_1;
-    resultat->faction2 = faction_defaut_2;
+    resultat->faction1 = set_faction_defaut();
+    resultat->faction2 = set_faction_defaut();
     resultat->nb_cartes_posees = 0;
     resultat->nb_cartes_visibles = 0;
     resultat->nb_cartes_activees = 0;
     resultat->cartes_visibles = cree_liste_vide();
     resultat->nb_cartes_activees = cree_liste_vide();
     resultat->nb_ALL_retournee = 0;
+    set_id(&(resultat->faction1), 1);
+    set_id(&(resultat->faction2), 2);
     return resultat;
 };
 
 void detruire_plateau(plateau *p){
     free_grille(&(*p)->grille);
-    free_liste(&(*p)->nb_cartes_visibles);
-    free_liste(&(*p)->nb_cartes_activees);
-    free_liste(&(*p)->faction1->main);
-    free_liste(&(*p)->faction1->pioche);
-    free_liste(&(*p)->faction2->main);
-    free_liste(&(*p)->faction2->pioche);
+    free_liste(&((*p)->cartes_visibles));
+    free_liste(&((*p)->cartes_activees));
+    free_liste(&((*p)->faction1.main));
+    free_liste(&((*p)->faction1.pioche));
+    free_liste(&((*p)->faction2.main));
+    free_liste(&((*p)->faction2.pioche));
     free(*p);
 };
 
@@ -52,8 +55,8 @@ int reinitialisation(plateau *p){
     }
     else{
         /* recuperation du nom des deux factions */
-        char* n_f1 = (*p)->faction1->nom;
-        char* n_f2 = (*p)->faction2->nom;
+        char* n_f1 = (*p)->faction1.nom;
+        char* n_f2 = (*p)->faction2.nom;
         detruire_plateau(&p);
         *p = cree_plateau();
         set_name(&((*p)->faction1), n_f1);
@@ -69,34 +72,49 @@ int reinitialisation(plateau *p){
 };
 
 void retourne_factions(plateau p, faction *pf1, faction *pf2){
-  set_name(&pf1, "nom1");
-  set_name(&pf2, "nom2");
-  set_id(&pf1, 1);
-  set_id(&pf2, 2); 
   *pf1 = p->faction1;
   *pf2 = p->faction2;
 }
 
-int pose_carte(plateau *p, faction *f, carte car, int x, int y){
+int pose_carte(plateau *p, faction *fac, carte car, int x, int y){
     if (get_cell((*p)->grille, x, y) != NULL){
         if (get_occupee(get_cell((*p)->grille, x, y)) == 0){
-            get_cell((*p)->grille, x, y)->c = car;
-            get_cell((*p)->grille, x, y)->fac = *f;
-            get_cell((*p)->grille, x, y)->occupee = 1;
-            enlever(car, &((*f)->main));
+            cell nouvelle_cell;
+            nouvelle_cell->c = car;
+            nouvelle_cell->f = *fac;
+            nouvelle_cell->occupee = 1;
+            nouvelle_cell->visible = 0;
+            nouvelle_cell->activee = 0;
+            enlever(car, &((*fac).main));
             (*p)->nb_cartes_posees += 1;
+            placer_cell(nouvelle_cell, &(*p)->grille, x , y);
+            return 1;
         }
     }
+    else return 0;
 };
 
 int retourne_carte(plateau *p, int x, int y){
-    if (get_cell((*p)->grille, x, y) != NULL){
-        if (get_occupee(get_cell((*p)->grille, x, y)) == 1 && get_visible(get_cell((*p)->grille, x, y)) == 0){
-            get_cell((*p)->grille, x, y)->visible = 1;
+    grid g = get_grid(*p);
+    //Cellule coordonnees x y
+    cell cellule = get_cell(g, x, y);
+    if (cellule != NULL){
+        if (get_occupee(cellule) == 1 && get_visible(cellule) == 0){
+            carte car = get_card(cellule);
+            cellule->visible = 1;
             (*p)->nb_cartes_visibles += 1;
+            push(car, &(*p)->cartes_visibles);
+            //Test de fin de manche
+            if ((*p)->nb_cartes_visibles == (*p)->nb_cartes_posees - (*p)->nb_ALL_retournee){//Si toutes les cartes posées ont été retournées, moins les dernières cartes du plateau affectés par l'effet de la carte Anne-Laure Ligozat, qu'on ignorera
+                reinitialisation(&p); //Termine la manche
+                return 1;
+            }
+            return 1;
 	    }
     }
+    else return 0;
 };
+
 
 int cachee_visible_existe(plateau *p, int x, int y){
     cell cellule = get_cell((*p)->grille, x ,y);
@@ -114,6 +132,7 @@ int cachee_visible_existe(plateau *p, int x, int y){
             return 2;
         }
     }
+    return 3;
 };
 
 /**

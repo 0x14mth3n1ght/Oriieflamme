@@ -60,14 +60,14 @@ void retourne_factions(plateau p, faction *pf1, faction *pf2);
 * de la main de la faction
 * \attention la faction doit posséder au moins un exemplaire de cette carte
 * \param p pointeur valide vers le plateau 
-* \param f pointeur valide vers la faction a qui appartient la carte a poser
+* \param fac pointeur valide vers la faction a qui appartient la carte a poser
 * \param car la carte a poser
 * \param x
 * \param y (x et y coordonnes valides de la case sur laquelle on pose la carte)
 * \attention la case doit etre inocuppee, la faction doit exister
 * \return 1 si le placement a bien ete effectue et 0 sinon
 */
-int pose_carte(plateau *p, faction *f, carte car, int x, int y);
+int pose_carte(plateau *p, faction *fac, carte car, int x, int y);
 
 /**
 * \brief fonction qui retourne sur le plateau une carte à jouer face visible sans l'activer
