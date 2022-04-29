@@ -99,7 +99,7 @@ int retourne_carte(plateau *p, int x, int y){
             push(car, &(*p)->cartes_visibles);
             //Test de fin de manche
             if ((*p)->nb_cartes_visibles == (*p)->nb_cartes_posees - (*p)->nb_ALL_retournee){//Si toutes les cartes posées ont été retournées, moins les dernières cartes du plateau affectés par l'effet de la carte Anne-Laure Ligozat, qu'on ignorera
-                reinitialisation(&p); //Termine la manche
+                reinitialisation(p); //Termine la manche
                 return 1;
             }
             return 1;
