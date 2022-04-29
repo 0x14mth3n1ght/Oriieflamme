@@ -1,7 +1,7 @@
 CC = gcc -Wall -Wextra -std=c99
 
-jeu: main.o
-	gcc obj/main.o -o bin/jeu
+jeu: obj/main.o
+	$(CC) $^ -o bin/$@
 
 clean:
 	rm -rf obj/*.o
@@ -9,7 +9,7 @@ clean:
 rmall: clean
 	rm -rf bin/jeu
 
-main.o: carte.o faction.o interface.o plateau.o structure.o
+main.o: obj/carte.o obj/faction.o obj/interface.o obj/plateau.o obj/structure.o
 	gcc -c src/main.c -o  obj/main.o
 
 carte.o: header/carte.h
