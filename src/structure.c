@@ -55,6 +55,9 @@ int est_libre(grid g, int x, int y){
 
 void free_grille(grid* pg){
     for (int i=0; i<N; i++){
+        for (int j=0; j<P; j++){
+            free((*pg)[i][j]); //On free les cellules
+        }
         free((*pg)[i]);
     }
     free(*pg);
