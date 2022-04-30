@@ -78,14 +78,14 @@ void affiche_plateau(plateau p) {
 
         putchar('|');
     }
-    printf("\n La faction %s possède %i points ddrs. ",get_faction_nom(faction1),get_ddrs(faction1));
-    printf("\n La faction %s possède %i points ddrs. ",get_faction_nom(faction2),get_ddrs(faction2));
+    printf("\n La faction 1 %s possède %i points ddrs. ",get_faction_nom(faction1),get_ddrs(faction1));
+    printf("\n La faction 2 %s possède %i points ddrs. ",get_faction_nom(faction2),get_ddrs(faction2));
 
 }
 
 
 void affiche_main(faction f) {
-    printf("\n Voici votre main: \n");
+    printf("\n Faction %i Voici votre main: \n",get_faction_id(f));
     liste main_f= get_main(f);
     int cpt; // Compteur pour la taille de la main (pour afficher en dessous l'indice de la carte)
     cpt=0;
@@ -110,7 +110,7 @@ int mulligan_main(faction f, int already){
     if (1==already){
         return 0;
     }
-    printf("\nFaction %i:%s vous pouvez, si vous le souhaitez vider votre main, mélanger la pioche et repiocher une nouvelle main. \n",get_faction_id(f),get_faction_nom(f));
+    printf("\nFaction %i: %s vous pouvez, si vous le souhaitez vider votre main, mélanger la pioche et repiocher une nouvelle main. \n",get_faction_id(f),get_faction_nom(f));
     printf("Pour rappel, voux ne pouvez utiliser cette option qu'une seule fois dans toute la partie\n");
     printf("Souhaitez vous utiliser cette option? (y/n)\n");
     char answer;
@@ -132,7 +132,7 @@ carte choix_carte(faction f){
     printf("\n Quelle carte voulez vous poser?[1,...,%i]\n",length_main);
     int answer;
     scanf("%i",&answer);
-    while(answer<1||answer>length_main){
+     while(answer<1||answer>length_main){
         printf("\n Quelle carte voulez vous poser?[1,...,%i]\n",length_main);
         scanf("%i",&answer);
     }
@@ -140,17 +140,17 @@ carte choix_carte(faction f){
     carte result;
     for(i=1;i<=answer;i+=1) {
         result= pop(&main_f);
-    }
-    return result;
+    } 
+  return;
 }
 void position_carte(faction f, int* x,int* y){
         printf("\n %s où voulez vous poser votre carte? \n Rappel: la carte doit être adjacente à un autre carte déjà posée",get_faction_nom(f));
-        printf("Entrez la coordonée x:\n");
+        printf("\n Entrez la coordonée x:\n");
         int answer_x;
-        scanf("%i",&answer_x);
+        scanf(" %d",&answer_x);
         printf("\n Entrez la coordonée y:\n");
         int answer_y;
-        scanf("%i",&answer_y);
+        scanf(" %d",&answer_y);
         *x=answer_x;
         *y=answer_y;
 }
