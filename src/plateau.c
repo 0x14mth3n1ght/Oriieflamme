@@ -34,24 +34,32 @@ cell construcuteur_cell(carte car, faction fac){
 };
 
 plateau cree_plateau(){
-    plateau resultat;
     init_cartes();
-    /* attention nouvelle version du malloc possiblement nécessaire */
-    resultat = malloc(sizeof(plateau));
-    resultat->grille = init_grille();
-    resultat->faction1 = set_faction_defaut();
-    resultat->faction2 = set_faction_defaut();
+    /* initialisation des attributs */
+    grid g = init_grille();
+    for (int i=0; i<31; i++)
+        printf("g[%i] = %p\n", i, g[i]);
+    faction f1 = set_faction_defaut();
+    faction f2 = set_faction_defaut();
+    liste l_visibles = cree_liste_vide();
+    liste l_activees = cree_liste_vide();
+    /* initialisation des attributs du plateau */
+    plateau resultat = malloc(sizeof(plateau));
+    resultat->grille = g;
+    resultat->faction1 = f1;
+    resultat->faction2 = f2;
     resultat->nb_cartes_posees = 0;
     resultat->nb_cartes_visibles = 0;
     resultat->nb_cartes_activees = 0;
-    resultat->cartes_visibles = cree_liste_vide();
-    resultat->cartes_activees = cree_liste_vide();
+    resultat->cartes_visibles = l_visibles;
+    resultat->cartes_activees = l_activees;
     resultat->nb_ALL_retournee = 0;
     set_faction_id(&(resultat->faction1), 1);
     set_faction_id(&(resultat->faction2), 2);
+    for (int i=0; i<31; i++)
+        printf("r->g[%i] = %p\n", i, (resultat->grille)[i]);
     return resultat;
-
-};
+}
 
 void detruire_plateau(plateau *p){
         printf("aa");
@@ -93,7 +101,6 @@ int reinitialisation(plateau *p){
         melanger_pioche(&((*p)->faction2));
         repiocher(&((*p)->faction1));
         repiocher(&((*p)->faction2));
-        detruire_plateau(p);
 	return 1;
     };  
 };
