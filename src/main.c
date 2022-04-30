@@ -37,7 +37,6 @@ void print_title()
         }
     }
     printf("\n");
-    printf("\n");
 }
 
 /*
@@ -64,6 +63,7 @@ void tour_de_jeu(faction* fact, plateau* partie)
 
 int main()
 {
+
     srand(time(NULL)); // Utilisé pour pour générer le rand()
     print_title();
     /* manche est le compteur de manche afin de savoir comment sélectionner la faction qui commence
@@ -81,14 +81,19 @@ int main()
     faction faction1;
     faction faction2;
     retourne_factions(partie,&faction1, &faction2);
+    
+    //bon
     /*
     * reinitilisation retourne 1 lorsque le jeu est terminé et 0 sinon.
     * Hors le jeu se termine lorsqu'une faction a gagné 2 manches. 
     * Cela assure la terminaison de la boucle while.
     * 
     */
-    while (!reinitialisation(&partie))
+   
+    while (reinitialisation(&partie)==1)
+    //PROBLEME REINITIALISATION
     { // réinitialisation renvoie un int
+    
     manche += 1;
     repiocher(&faction1);
     repiocher(&faction2);

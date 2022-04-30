@@ -110,7 +110,7 @@ int mulligan_main(faction f, int already){
     if (1==already){
         return 0;
     }
-    printf("\n%s vous pouvez, si vous le souhaitez vider votre main, mélanger la pioche et repiocher une nouvelle main. \n",get_faction_nom(f));
+    printf("\nFaction %i:%s vous pouvez, si vous le souhaitez vider votre main, mélanger la pioche et repiocher une nouvelle main. \n",get_faction_id(f),get_faction_nom(f));
     printf("Pour rappel, voux ne pouvez utiliser cette option qu'une seule fois dans toute la partie\n");
     printf("Souhaitez vous utiliser cette option? (y/n)\n");
     char answer;

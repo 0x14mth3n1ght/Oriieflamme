@@ -34,27 +34,40 @@ cell construcuteur_cell(carte car, faction fac){
 };
 
 plateau cree_plateau(){
-    plateau resultat;
+    plateau resultat = malloc(100*sizeof(plateau));
+
     init_cartes();
-    /* attention nouvelle version du malloc possiblement nécessaire */
-    resultat = malloc(sizeof(plateau));
-    resultat->grille = init_grille();
-    resultat->faction1 = set_faction_defaut();
-    resultat->faction2 = set_faction_defaut();
+    /* initialisation des attributs */
+    grid g = init_grille();
+    for (int i=0; i<31; i++)
+        printf("g[%i] = %p\n", i, g[i]);
+    faction f1 = set_faction_defaut();
+    faction f2 = set_faction_defaut();
+    liste l_visibles = cree_liste_vide();
+    liste l_activees = cree_liste_vide();
+    /* initialisation des attributs du plateau */
+    resultat->grille = g;
+    resultat->faction1 = f1;
+    resultat->faction2 = f2;
     resultat->nb_cartes_posees = 0;
     resultat->nb_cartes_visibles = 0;
     resultat->nb_cartes_activees = 0;
-    resultat->cartes_visibles = cree_liste_vide();
-    resultat->cartes_activees = cree_liste_vide();
+    resultat->cartes_visibles = l_visibles;
+    resultat->cartes_activees = l_activees;
     resultat->nb_ALL_retournee = 0;
     set_faction_id(&(resultat->faction1), 1);
     set_faction_id(&(resultat->faction2), 2);
+    for (int i=0; i<31; i++)
+        printf("r->g[%i] = %p\n", i, (resultat->grille)[i]);
     return resultat;
-
-};
+}
 
 void detruire_plateau(plateau *p){
+        printf("aa");
+    fflush(stdout);
     free_grille(&(*p)->grille);
+    printf("aa");
+    fflush(stdout);
     free_liste(&((*p)->cartes_visibles));
     free_liste(&((*p)->cartes_activees));
     free_liste(&((*p)->faction1.main));
@@ -66,15 +79,20 @@ void detruire_plateau(plateau *p){
 
 int reinitialisation(plateau *p){
     /* on verifie si partie terminee */
+
     if (get_nb_victoires((*p)->faction1) == nb_manches_gagnantes || get_nb_victoires((*p)->faction2) == nb_manches_gagnantes)
     {
         return 0;
     }
     else{
+
         /* recuperation du nom des deux factions */
         char* n_f1 = (*p)->faction1.nom;
         char* n_f2 = (*p)->faction2.nom;
+
         detruire_plateau(p);
+        printf("aa");
+        fflush(stdout);
         *p = cree_plateau();
         set_name(&((*p)->faction1), n_f1);
         set_name(&((*p)->faction2), n_f2);
@@ -84,7 +102,6 @@ int reinitialisation(plateau *p){
         melanger_pioche(&((*p)->faction2));
         repiocher(&((*p)->faction1));
         repiocher(&((*p)->faction2));
-        detruire_plateau(p);
 	return 1;
     };  
 };

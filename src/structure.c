@@ -27,11 +27,17 @@ const cell nulle = NULL;
  */
 grid new_grille(int n, int p){
     grid out = malloc(n*sizeof(cell*));
+    printf("new grille out malloc-ed\n");
     for (int i=0; i<n; i++){
-        out[i] = calloc(p, sizeof(cell));
-        for (int j=0; j<p; j++)
+        printf("calloc-ing new grille [%d]\n", i);
+        out[i] = malloc(p*sizeof(cell));
+        printf("calloc-ed  new grille [%d]\n", i);
+        for (int j=0; j<p; j++){
             out[i][j] = nulle;
+        }
+        printf("calloc-ed and init-ed new grille [%d]\n", i);
     }
+    printf("end ng\n");
     return out;
 }
 
@@ -54,10 +60,16 @@ int est_libre(grid g, int x, int y){
 }
 
 void free_grille(grid* pg){
-    for (int i=0; i<N; i++){
+    for (int i=N-1; i>=0; i--){
+        for (int j=0; j<P; j++){
+            free((*pg)[i][j]);
+        }
+        printf("fg[%d] = %p\n", i, (*pg)[i]);
         free((*pg)[i]);
     }
+    printf("fg = %p\n", (*pg));
     free(*pg);
+    printf("end fg\n");
 }
 
 int placer_cell(cell c, grid* pg, int x, int y){
@@ -201,7 +213,7 @@ int test_vide(liste l){
     @assigns  : nothing
     @ensures  : renvoie une nouvelle liste avec e au dessus de la liste l */
 liste cons(elt e, liste l){
-    liste res = malloc(sizeof *res);
+    liste res = malloc(10*sizeof(liste));
     res->val = e;
     res->next = l;
     return res;

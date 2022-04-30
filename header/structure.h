@@ -158,7 +158,7 @@ grid sous_grille(grid g, int x1, int y1, int x2, int y2);
  * @typedef liste 
  * @brief Structure de liste chaînée. Pointeur vers la structure de maillons. Ses éléments sont de type abstrait @b elt 
  */
-typedef struct bucket *liste;
+typedef struct bucket* liste;
 
 /**
  * @brief Créé une liste vide.
