@@ -1,4 +1,4 @@
-CC = gcc -Wall -Wextra -std=c99
+CC = gcc -Wall -Wextra -std=c99 -g
 
 jeu: main.o
 	$(CC) obj/*.o -o bin/jeu
