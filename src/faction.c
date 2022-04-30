@@ -20,10 +20,8 @@ void melanger_pioche(faction *f){
 };
 
 void repiocher(faction *f){
-    if (test_vide((*f).main) != 1){
-        while (len_liste((*f).main) < nb_cartes_main_debut_manche){
-            push(pop(&((*f).pioche)), &((*f).main));
-        }
+    while (len_liste((*f).main) < nb_cartes_main_debut_manche){
+        push(pop(&((*f).pioche)), &((*f).main));
     }
 };
 
@@ -194,3 +192,12 @@ faction set_faction_defaut(){
     faction f = {0, "sans nom", 0, NULL, NULL, 0, 0};
     return f;
 };
+
+/*int main(){
+    faction fac = set_faction_defaut();
+    liste l = cree_liste_vide();
+    push(FISE, &l);
+    set_main(&fac, l);
+    liste g = get_main(fac);
+    return 0;
+}*/
