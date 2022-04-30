@@ -57,10 +57,10 @@ plateau cree_plateau(){
     resultat->nb_ALL_retournee = 0;
     set_faction_id(&(resultat->faction1), 1);
     set_faction_id(&(resultat->faction2), 2);
-    set_pioche_defaut(&(resultat->faction1));
+    /*set_pioche_defaut(&(resultat->faction1));
     set_pioche_defaut(&(resultat->faction2));
     melanger_pioche(&(resultat->faction1));
-    melanger_pioche(&(resultat->faction2));
+    melanger_pioche(&(resultat->faction2));*/
     for (int i=0; i<31; i++)
         printf("r->g[%i] = %p\n", i, (resultat->grille)[i]);
     return resultat;
