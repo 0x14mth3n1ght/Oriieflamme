@@ -90,7 +90,7 @@ int main()
     * 
     */
    
-    while (!reinitialisation(&partie))
+    while (reinitialisation(&partie)==1)
     //PROBLEME REINITIALISATION
     { // réinitialisation renvoie un int
     

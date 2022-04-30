@@ -34,6 +34,8 @@ cell construcuteur_cell(carte car, faction fac){
 };
 
 plateau cree_plateau(){
+    plateau resultat = malloc(100*sizeof(plateau));
+
     init_cartes();
     /* initialisation des attributs */
     grid g = init_grille();
@@ -44,7 +46,6 @@ plateau cree_plateau(){
     liste l_visibles = cree_liste_vide();
     liste l_activees = cree_liste_vide();
     /* initialisation des attributs du plateau */
-    plateau resultat = malloc(sizeof(plateau));
     resultat->grille = g;
     resultat->faction1 = f1;
     resultat->faction2 = f2;
