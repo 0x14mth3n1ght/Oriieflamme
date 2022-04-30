@@ -20,11 +20,9 @@ void melanger_pioche(faction *f){
 };
 
 void repiocher(faction *f){
-    if (test_vide((*f).main) != 1){
         while (len_liste((*f).main) < nb_cartes_main_debut_manche){
             push(pop(&((*f).pioche)), &((*f).main));
         }
-    }
 };
 
 void remelanger_main(faction *f){
