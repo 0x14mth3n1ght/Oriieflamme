@@ -37,9 +37,9 @@ void detruire_plateau(plateau *p){
     free_grille(&(*p)->grille);
     free_liste(&(*p)->nb_cartes_visibles);
     free_liste(&(*p)->nb_cartes_activees);
-    free_liste(&(*p)->faction1->main);
+    free_liste(&(*p)->get_main(faction1));
     free_liste(&(*p)->faction1->pioche);
-    free_liste(&(*p)->faction2->main);
+    free_liste(&(*p)->get_main(faction2));
     free_liste(&(*p)->faction2->pioche);
     free(*p);
 };
@@ -83,7 +83,7 @@ int pose_carte(plateau *p, faction *f, carte car, int x, int y){
             get_cell((*p)->grille, x, y)->c = car;
             get_cell((*p)->grille, x, y)->fac = *f;
             get_cell((*p)->grille, x, y)->occupee = 1;
-            enlever(car, &((*f)->main));
+            enlever(car, &(get_main(f)));
             (*p)->nb_cartes_posees += 1;
         }
     }
