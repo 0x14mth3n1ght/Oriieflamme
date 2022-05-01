@@ -94,6 +94,7 @@ int reinitialisation(plateau *p){
         // printf("aa");
         // fflush(stdout);
         detruire_plateau(p);
+        (*p)->grille = init_grille();
         set_name(&((*p)->faction1), n_f1);
         set_name(&((*p)->faction2), n_f2);
         set_pioche_defaut(&((*p)->faction1));
