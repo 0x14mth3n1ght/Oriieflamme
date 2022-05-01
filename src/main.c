@@ -54,6 +54,7 @@ void tour_de_jeu(faction* fact, plateau* partie)
     int possible = 0;
     while (!possible)
     {
+        affiche_plateau(*partie);
         affiche_main(*fact);
         new_card = choix_carte(*fact);
         affiche_plateau(*partie);

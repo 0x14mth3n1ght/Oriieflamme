@@ -31,7 +31,7 @@ void affiche_plateau(plateau p) {
     faction faction2;
     retourne_factions(p,&faction1, &faction2);
     for(i=max_north; i<=max_south; i+=1){
-        print_ligne(max_east-max_west);
+        print_ligne((max_east-max_west)*5);
         printf("\n");
         for(j=max_west;j<=max_east;j+=1) {
             putchar('|');
