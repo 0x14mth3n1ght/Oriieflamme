@@ -35,8 +35,6 @@ cell construcuteur_cell(carte car, faction fac){
 
 plateau cree_plateau(){
     plateau resultat = malloc(sizeof(struct plateau_base));
-
-    init_cartes();
     /* initialisation des attributs */
     grid g = init_grille();
     faction f1 = set_faction_defaut();

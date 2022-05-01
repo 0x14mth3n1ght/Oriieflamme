@@ -65,7 +65,7 @@ void tour_de_jeu(faction* fact, plateau* partie)
 
 int main()
 {
-
+    init_cartes(); //On initialise les cartes
     srand(time(NULL)); // Utilisé pour pour générer le rand()
     print_title();
     /* manche est le compteur de manche afin de savoir comment sélectionner la faction qui commence
@@ -85,7 +85,6 @@ int main()
     faction faction2 = get_faction_plateau(partie, 2);
     //retourne_factions(partie,&faction1, &faction2);
 
-    //bon
     /*
     * reinitilisation retourne 1 lorsque le jeu est terminé et 0 sinon.
     * Hors le jeu se termine lorsqu'une faction a gagné 2 manches. 
@@ -94,8 +93,7 @@ int main()
     */
    
     while (reinitialisation(&partie)==1)
-    //PROBLEME REINITIALISATION
-    { // réinitialisation renvoie un int
+    {
     print_faction(faction1);
     manche += 1;
     affiche_main(faction1);
