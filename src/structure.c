@@ -27,17 +27,12 @@ const cell nulle = NULL;
  */
 grid new_grille(int n, int p){
     grid out = malloc(n*sizeof(cell*));
-    printf("new grille out malloc-ed\n");
     for (int i=0; i<n; i++){
-        printf("calloc-ing new grille [%d]\n", i);
         out[i] = malloc(p*sizeof(cell));
-        printf("calloc-ed  new grille [%d]\n", i);
         for (int j=0; j<p; j++){
             out[i][j] = nulle;
         }
-        printf("calloc-ed and init-ed new grille [%d]\n", i);
     }
-    printf("end ng\n");
     return out;
 }
 
@@ -64,12 +59,9 @@ void free_grille(grid* pg){
         for (int j=0; j<P; j++){
             free((*pg)[i][j]);
         }
-        printf("fg[%d] = %p\n", i, (*pg)[i]);
         free((*pg)[i]);
     }
-    printf("fg = %p\n", (*pg));
     free(*pg);
-    printf("end fg\n");
 }
 
 int placer_cell(cell c, grid* pg, int x, int y){
@@ -345,4 +337,11 @@ int liste_equals(liste l1, liste l2){
     if (test_vide(l1)==0 || test_vide(l2)==0)//Si l'une des deux listes est vide, alors elles ne sont pas de même taille
         return 0;
     return 1;
+}
+
+void print_liste(liste l){
+    while(test_vide(l)!=1){
+        printf("%d -> ", get_carte_id(pop(&l)));
+    }
+    printf("()\n");
 }

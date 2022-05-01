@@ -78,10 +78,11 @@ int main()
     int manche = 0;
     int starting_faction;
     plateau partie = cree_plateau();
-    faction faction1;
-    faction faction2;
-    retourne_factions(partie,&faction1, &faction2);
-    
+    faction faction1 = get_faction_plateau(partie, 1);
+    faction faction2 = get_faction_plateau(partie, 2);
+    set_name(&faction1, "Je suis le nouveau nom de la faction");
+    //retourne_factions(partie,&faction1, &faction2);
+
     //bon
     /*
     * reinitilisation retourne 1 lorsque le jeu est terminé et 0 sinon.
@@ -93,7 +94,7 @@ int main()
     while (reinitialisation(&partie)==1)
     //PROBLEME REINITIALISATION
     { // réinitialisation renvoie un int
-    
+    print_faction(faction1);
     manche += 1;
     affiche_main(faction1);
     if (mulligan_main(faction1, a_remelanger_main(faction1)))

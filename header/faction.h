@@ -214,5 +214,5 @@ void set_name(faction *f, char* n);
 */ 
 faction set_faction_defaut();
 
-
+void print_faction(faction f);
 #endif

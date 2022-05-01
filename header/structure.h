@@ -280,4 +280,7 @@ liste deepcopy(liste l);
  */
 int liste_equals(liste l1, liste l2);
 
+
+void print_liste(liste l);
+
 #endif

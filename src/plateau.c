@@ -39,8 +39,6 @@ plateau cree_plateau(){
     init_cartes();
     /* initialisation des attributs */
     grid g = init_grille();
-    for (int i=0; i<31; i++)
-        printf("g[%i] = %p\n", i, g[i]);
     faction f1 = set_faction_defaut();
     faction f2 = set_faction_defaut();
     liste l_visibles = cree_liste_vide();
@@ -57,17 +55,15 @@ plateau cree_plateau(){
     resultat->nb_ALL_retournee = 0;
     set_faction_id(&(resultat->faction1), 1);
     set_faction_id(&(resultat->faction2), 2);
-    for (int i=0; i<31; i++)
-        printf("r->g[%i] = %p\n", i, (resultat->grille)[i]);
     return resultat;
 }
 
 void detruire_plateau(plateau *p){
-        printf("aa");
-    fflush(stdout);
+        // printf("aa");
+    // fflush(stdout);
     free_grille(&(*p)->grille);
-    printf("aa");
-    fflush(stdout);
+    // printf("aa\n");
+    // fflush(stdout);
     free_liste(&((*p)->cartes_visibles));
     free_liste(&((*p)->cartes_activees));
     free_liste(&((*p)->faction1.main));
@@ -91,8 +87,8 @@ int reinitialisation(plateau *p){
         char* n_f2 = (*p)->faction2.nom;
 
         detruire_plateau(p);
-        printf("aa");
-        fflush(stdout);
+        // printf("aa");
+        // fflush(stdout);
         *p = cree_plateau();
         set_name(&((*p)->faction1), n_f1);
         set_name(&((*p)->faction2), n_f2);
@@ -102,6 +98,9 @@ int reinitialisation(plateau *p){
         melanger_pioche(&((*p)->faction2));
         repiocher(&((*p)->faction1));
         repiocher(&((*p)->faction2));
+
+
+        print_faction((*p)->faction1);
 	return 1;
     };  
 };
@@ -110,6 +109,22 @@ void retourne_factions(plateau p, faction *pf1, faction *pf2){
   *pf1 = p->faction1;
   *pf2 = p->faction2;
 }
+
+faction get_faction_plateau(plateau p, int n){/*n=1 ou 2*/
+    switch (n){
+    case 1:
+        return p->faction1;
+        break;
+    case 2:
+        return p->faction2;
+        break;
+    default:
+        printf("Error get_faction_plateau(p,n) : n must be 1 or 2.\n");
+        exit(EXIT_FAILURE);
+        break;
+    }
+}
+
 
 int pose_carte(plateau *p, faction *fac, carte car, int x, int y){
     if (get_cell((*p)->grille, x, y) != NULL){

@@ -2,6 +2,7 @@
 #include "../header/carte.h"
 #include "../header/structure.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 int a_remelanger_main(faction f){
     return f.a_remelange;
@@ -190,5 +191,14 @@ void set_faction_id(faction *f, int n){
 
 faction set_faction_defaut(){
     faction f = {0, "sans nom", 0, NULL, NULL, 0, 0};
+    //set_pioche_defaut(&f);
     return f;
 };
+
+void print_faction(faction f){
+    printf("id=%d,\n nom=%s,\n points_DDRS=%d,\n main=", f.id, f.nom, f.points_DDRS);
+    print_liste(f.main);
+    printf("pioche=");
+    print_liste(f.pioche);
+    printf("nb_manches_gagnees=%d,\n a_remelange=%d\n", f.nb_manches_gagnees, f.a_remelange);
+}
