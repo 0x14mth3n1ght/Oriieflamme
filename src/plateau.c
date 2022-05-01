@@ -799,10 +799,5 @@ carte active_carte(plateau *pp){
     push(c, &(*pp)->cartes_visibles);
     push(c, &(*pp)->cartes_activees);
 
-    //Test de fin de manche
-    if ((*pp)->nb_cartes_visibles == (*pp)->nb_cartes_posees - (*pp)->nb_ALL_retournee){//Si toutes les cartes posées ont été retournées, moins les dernières cartes du plateau affectés par l'effet de la carte Anne-Laure Ligozat, qu'on ignorera
-        reinitialisation(pp); //Termine la manche
-    }
-
     return c;
 }

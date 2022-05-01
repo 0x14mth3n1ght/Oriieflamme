@@ -142,6 +142,7 @@ int main()
     * 
     */
    int restes_cartes = abs(get_nb_cartes_posees(partie) - get_nb_cartes_visibles(partie));
+   printf("il reste:%i",restes_cartes);
     while (restes_cartes>0){
         affiche_effet(active_carte(&partie));
         affiche_plateau(partie);

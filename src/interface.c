@@ -86,7 +86,7 @@ void affiche_plateau(plateau p) {
         printf("|\n");
     }
     printf("\n La faction 1 %s possède %i points ddrs. ",get_faction_nom(faction1),get_ddrs(faction1));
-    printf("\n La faction 2 %s possède %i points ddrs. ",get_faction_nom(faction2),get_ddrs(faction2));
+    printf("\n La faction 2 %s possède %i points ddrs. \n",get_faction_nom(faction2),get_ddrs(faction2));
 }
 
 
@@ -154,7 +154,7 @@ carte choix_carte(faction f){
     return result;
 }
 void position_carte(faction f, int* x,int* y){
-        printf("\n %s où voulez vous poser votre carte? \n Rappel: la carte doit être adjacente à un autre carte déjà posée",get_faction_nom(f));
+        printf("\n Faction %i: %s où voulez vous poser votre carte? \n Rappel: la carte doit être adjacente à un autre carte déjà posée",get_faction_id(f),get_faction_nom(f));
         printf("\n Entrez la coordonée x:\n");
         int answer_y;
         scanf(" %d",&answer_y);
@@ -168,7 +168,7 @@ void position_carte(faction f, int* x,int* y){
 void affiche_effet(carte c){
     sleep(5);
     printf("\nLa carte %s vient d'être retournée.\n",get_carte_nom(c));
-    printf("Voici la description de cette carte:\n%s",get_carte_description(c));
+    printf("Voici la description de cette carte:\n%s\n",get_carte_description(c));
 }
 
 int affiche_gagnant_manche(faction f1, faction f2){
