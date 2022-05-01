@@ -21,7 +21,6 @@ void print_ligne(int line_length) {
 }
 
 void affiche_plateau(plateau p) {
-    sleep(5);
     grid g= get_grid(p);
     int max_north = taille_grille(north,g);
     int max_south =taille_grille(south,g);
@@ -82,6 +81,8 @@ void affiche_plateau(plateau p) {
     }
     printf("\n La faction 1 %s possède %i points ddrs. ",get_faction_nom(faction1),get_ddrs(faction1));
     printf("\n La faction 2 %s possède %i points ddrs. ",get_faction_nom(faction2),get_ddrs(faction2));
+    sleep(5);
+
 
 }
 
