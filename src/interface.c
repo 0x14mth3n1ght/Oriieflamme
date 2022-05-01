@@ -93,14 +93,14 @@ void affiche_main(faction f) {
         printf("|");
         cpt+=1;
         carte card_to_print= pop(&main_f);
-        char * name_card= get_carte_nom(card_to_print);
+        char * name_card= get_nom_court(card_to_print);
         printf("%4s",name_card);
     }
     printf("| \n");
     int i;
     for(i=1;i<=cpt; i+=1) {
         printf("|");
-        printf("%4i",i);
+        printf("%6i",i);
     }
     printf("| \n");
 }
