@@ -83,8 +83,6 @@ int main()
 
     faction faction1 = get_faction_plateau(partie, 1);
     faction faction2 = get_faction_plateau(partie, 2);
-    set_name(&faction1, "Je suis le nouveau nom de la faction");
-    print_faction(faction1);
     //retourne_factions(partie,&faction1, &faction2);
 
     //bon
