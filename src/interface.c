@@ -141,7 +141,7 @@ carte choix_carte(faction f){
     for(i=1;i<=answer;i+=1) {
         result= pop(&main_f);
     } 
-  return;
+    return result;
 }
 void position_carte(faction f, int* x,int* y){
         printf("\n %s où voulez vous poser votre carte? \n Rappel: la carte doit être adjacente à un autre carte déjà posée",get_faction_nom(f));
