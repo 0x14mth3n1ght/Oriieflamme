@@ -20,7 +20,7 @@ void print_ligne(int line_length) {
 }
 
 void affiche_plateau(plateau p) {
-    wait(5);
+    sleep(5);
     grid g= get_grid(p);
     int max_north = taille_grille(north,g);
     int max_south =taille_grille(south,g);
