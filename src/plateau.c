@@ -95,6 +95,10 @@ int reinitialisation(plateau *p){
         // fflush(stdout);
         detruire_plateau(p);
         (*p)->grille = init_grille();
+        (*p)->nb_cartes_posees = 0;
+        (*p)->nb_cartes_visibles = 0;
+        (*p)->nb_cartes_activees = 0;
+        (*p)->nb_ALL_retournee = 0;
         set_name(&((*p)->faction1), n_f1);
         set_name(&((*p)->faction2), n_f2);
         set_pioche_defaut(&((*p)->faction1));
@@ -103,7 +107,6 @@ int reinitialisation(plateau *p){
         melanger_pioche(&((*p)->faction2));
         repiocher(&((*p)->faction1));
         repiocher(&((*p)->faction2));
-        print_faction((*p)->faction1);
 	return 1;
     };  
 };
@@ -134,7 +137,7 @@ int pose_carte(plateau *p, faction *fac, carte car, int x, int y){
         cell nouvelle_cell = construcuteur_cell(car, *fac);
         enlever(car, &((*fac)->main));
         (*p)->nb_cartes_posees += 1;
-        placer_cell(nouvelle_cell, &(*p)->grille, 16 , 16);
+        premiere_cellule(nouvelle_cell, &(*p)->grille);
         return 1;
     }
     int sum=cachee_visible_existe(p,x-1,y)+cachee_visible_existe(p,x+1,y)+cachee_visible_existe(p,x,y-1)+cachee_visible_existe(p,x,y+1);
@@ -368,7 +371,7 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
         break;
     case id_fc:
         if (find(FC, hist_visible)!=-1)
-            add_ddrs(pf, 2);
+            add_ddrs(pf, 4);
         break;
     case id_ecologiie:{
         int nb = 0; /*nombre de carte fise, fisa, fc retournées*/
