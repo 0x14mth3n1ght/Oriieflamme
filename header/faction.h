@@ -19,7 +19,7 @@ struct faction_base {
     int a_remelange;
 };
 
-typedef struct faction_base faction;
+typedef struct faction_base *faction;
 
 /**
 * \brief cette fonction permet de savoir si une faction
