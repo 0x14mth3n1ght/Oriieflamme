@@ -20,6 +20,7 @@ void print_ligne(int line_length) {
 }
 
 void affiche_plateau(plateau p) {
+    wait(5);
     grid g= get_grid(p);
     int max_north = taille_grille(north,g);
     int max_south =taille_grille(south,g);
@@ -115,10 +116,12 @@ int mulligan_main(faction f, int already){
     printf("Souhaitez vous utiliser cette option? (y/n)\n");
     char answer;
     scanf("%s",&answer);
+    getchar();
 
     while(!(answer=='y'|| answer=='n')){
         printf("Souhaitez vous utiliser cette option? (y/n) \n");
         scanf("%c",&answer);
+        getchar();
     }
     if (answer=='n'){
         return 0;
@@ -131,10 +134,12 @@ carte choix_carte(faction f){
     int length_main= len_liste(main_f);
     printf("\n Quelle carte voulez vous poser?[1,...,%i]\n",length_main);
     int answer;
-    scanf("%i",&answer);
+    scanf("%d",&answer);
+    getchar();
      while(answer<1||answer>length_main){
-        printf("\n Quelle carte voulez vous poser?[1,...,%i]\n",length_main);
-        scanf("%i",&answer);
+        printf("\n Quelle carte voulez vous poser? Veuillez choisir un entier entre 1 et %i.\n",length_main);
+        scanf("%d",&answer);
+        getchar();
     }
     int i;
     carte result;
