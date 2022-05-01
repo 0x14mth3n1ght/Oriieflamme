@@ -130,14 +130,22 @@ faction get_faction_plateau(plateau p, int n){/*n=1 ou 2*/
 
 
 int pose_carte(plateau *p, faction *fac, carte car, int x, int y){
-    if (cachee_visible_existe(p, x, y)==3){
+    if (get_nb_cartes_posees(*p)==0){
+        cell nouvelle_cell = construcuteur_cell(car, *fac);
+        enlever(car, &((*fac)->main));
+        (*p)->nb_cartes_posees += 1;
+        placer_cell(nouvelle_cell, &(*p)->grille, 16 , 16);
+        return 1;
+    }
+    int sum=cachee_visible_existe(p,x-1,y)+cachee_visible_existe(p,x+1,y)+cachee_visible_existe(p,x,y-1)+cachee_visible_existe(p,x,y+1);
+    if(cachee_visible_existe(p, x, y)==3 && sum !=12){   
         cell nouvelle_cell = construcuteur_cell(car, *fac);
         enlever(car, &((*fac)->main));
         (*p)->nb_cartes_posees += 1;
         placer_cell(nouvelle_cell, &(*p)->grille, x , y);
         return 1;
     }
-    else return 0;
+    return 0;
 }
 
 int retourne_carte(plateau *p, int x, int y){
