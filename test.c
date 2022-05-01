@@ -180,6 +180,12 @@ int main() {
 
     CU_add_test(suite, "faction", test_init_faction);
     CU_add_test(suite, "plateau", test_init_plateau);
+    CU_add_test(suite, "starting_faction", test_starting_faction);
+    CU_add_test(suite, "test_starting_faction_rd_2", test_starting_faction_rd_2);
+    CU_add_test(suite, "test_troisieme_manche", test_troisieme_manche);
+    CU_add_test(suite, "test_mulligan", test_mulligan);
+    CU_add_test(suite, "test_poser_carte", test_poser_carte);
+    CU_add_test(suite, "test_vanqueur_manche", test_vanqueur_manche);
 
     CU_basic_set_mode(CU_BRM_VERBOSE);
     CU_basic_run_tests();

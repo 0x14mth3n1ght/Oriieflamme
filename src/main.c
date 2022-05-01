@@ -146,6 +146,14 @@ int main()
         affiche_plateau(partie);
         restes_cartes=abs(get_nb_cartes_posees(partie) - get_nb_cartes_visibles(partie));
     }
+    affiche_gagnant_manche(faction1,faction2);
+    if (get_ddrs(faction1)>get_ddrs(faction2)) {
+        set_nb_victoires(faction1,get_nb_victoires(faction1)+1);
+    }
+    else{
+        set_nb_victoires(faction2,get_nb_victoires(faction2)+1);
+
+    }
     }
     affiche_gagnant(faction1,faction2);
     detruire_plateau(&partie);
