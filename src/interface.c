@@ -81,9 +81,6 @@ void affiche_plateau(plateau p) {
     }
     printf("\n La faction 1 %s possède %i points ddrs. ",get_faction_nom(faction1),get_ddrs(faction1));
     printf("\n La faction 2 %s possède %i points ddrs. ",get_faction_nom(faction2),get_ddrs(faction2));
-    sleep(5);
-
-
 }
 
 
@@ -163,6 +160,7 @@ void position_carte(faction f, int* x,int* y){
 }
 
 void affiche_effet(carte c){
+    sleep(5);
     printf("\nLa carte %s vient d'être retournée.\n",get_carte_nom(c));
     printf("Voici la description de cette carte:\n%s",get_carte_description(c));
 }
