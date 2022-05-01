@@ -156,7 +156,8 @@ void position_carte(faction f, int* x,int* y){
 }
 
 void affiche_effet(carte c){
-    printf("Voici la description de la carte qui vient d'être retournée:\n%s",get_carte_description(c));
+    printf("\nLa carte %s vient d'être retournée.\n",get_carte_nom(c));
+    printf("Voici la description de cette carte:\n%s",get_carte_description(c));
 }
 
 int affiche_gagnant_manche(faction f1, faction f2){
