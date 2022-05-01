@@ -30,9 +30,17 @@ void affiche_plateau(plateau p) {
     faction faction1;
     faction faction2;
     retourne_factions(p,&faction1, &faction2);
+    printf("  ");
+    for(j=max_west;j<=max_east;j+=1) {
+        printf("|%4i",j);
+    }
+    putchar('|');
+    printf("\n");
+
     for(i=max_north; i<=max_south; i+=1){
-        print_ligne((max_east-max_west)*5);
+        print_ligne((max_east-max_west+1)*6);
         printf("\n");
+        printf("%2i",i);
         for(j=max_west;j<=max_east;j+=1) {
             putchar('|');
             
@@ -76,8 +84,6 @@ void affiche_plateau(plateau p) {
         
         }
         printf("|\n");
-
-        putchar('|');
     }
     printf("\n La faction 1 %s possède %i points ddrs. ",get_faction_nom(faction1),get_ddrs(faction1));
     printf("\n La faction 2 %s possède %i points ddrs. ",get_faction_nom(faction2),get_ddrs(faction2));
