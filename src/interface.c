@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stddef.h>
+#include <unistd.h>
 /*Obtention des types carte, faction et plateau*/
 #include "../header/carte.h"
 #include "../header/faction.h"
