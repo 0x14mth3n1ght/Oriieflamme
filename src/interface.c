@@ -22,10 +22,10 @@ void print_ligne(int line_length) {
 
 void affiche_plateau(plateau p) {
     grid g= get_grid(p);
-    int max_north = taille_grille(north,g);
-    int max_south =taille_grille(south,g);
-    int max_west = taille_grille(west,g);
-    int max_east = taille_grille(east,g);
+    int max_north= taille_grille(north,g)-1;
+    int max_south =taille_grille(south,g)+1;
+    int max_west = taille_grille(west,g)-1;
+    int max_east = taille_grille(east,g)+1;
     int i,j;
     faction faction1;
     faction faction2;
@@ -150,11 +150,11 @@ carte choix_carte(faction f){
 void position_carte(faction f, int* x,int* y){
         printf("\n %s où voulez vous poser votre carte? \n Rappel: la carte doit être adjacente à un autre carte déjà posée",get_faction_nom(f));
         printf("\n Entrez la coordonée x:\n");
-        int answer_x;
-        scanf(" %d",&answer_x);
-        printf("\n Entrez la coordonée y:\n");
         int answer_y;
         scanf(" %d",&answer_y);
+        printf("\n Entrez la coordonée y:\n");
+        int answer_x;
+        scanf(" %d",&answer_x);
         *x=answer_x;
         *y=answer_y;
 }

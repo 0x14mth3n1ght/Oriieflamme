@@ -83,7 +83,7 @@ int taille_ligne_direction(direction d, grid g, int n){
             if (g[i][n] != nulle)
                 return i;
         }
-        return 0; //si la colonne est nulle
+        return N; //si la colonne est nulle
         break;
     case south:
         for (int i=0; i<N; i++){
@@ -97,7 +97,7 @@ int taille_ligne_direction(direction d, grid g, int n){
             if (g[n][j] != nulle)
                 return j;
         }
-        return 0; //si la ligne est nulle
+        return P; //si la ligne est nulle
         break;
     case east:
         for (int j=0; j<P; j++){
