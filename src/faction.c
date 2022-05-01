@@ -197,6 +197,7 @@ faction set_faction_defaut(){
     set_main(&f,NULL);
     set_pioche(&f,NULL);
     set_nb_victoires(&f,0);
+    f->a_remelange=0;
     //set_pioche_defaut(&f);
     return f;
 };
