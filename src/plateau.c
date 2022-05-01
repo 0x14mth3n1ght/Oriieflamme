@@ -55,8 +55,14 @@ plateau cree_plateau(){
     resultat->nb_ALL_retournee = 0;
     set_faction_id(&(resultat->faction1), 1);
     set_faction_id(&(resultat->faction2), 2);
+    set_pioche_defaut(&(resultat->faction1));
+    set_pioche_defaut(&(resultat->faction2));
+    melanger_pioche(&(resultat->faction1));
+    melanger_pioche(&(resultat->faction2));
+    repiocher(&(resultat->faction1));
+    repiocher(&(resultat->faction2));
     return resultat;
-}
+};
 
 void detruire_plateau(plateau *p){
         // printf("aa");
@@ -92,12 +98,12 @@ int reinitialisation(plateau *p){
         *p = cree_plateau();
         set_name(&((*p)->faction1), n_f1);
         set_name(&((*p)->faction2), n_f2);
-        set_pioche_defaut(&((*p)->faction1));
+        /*set_pioche_defaut(&((*p)->faction1));
         set_pioche_defaut(&((*p)->faction2));
         melanger_pioche(&((*p)->faction1));
         melanger_pioche(&((*p)->faction2));
         repiocher(&((*p)->faction1));
-        repiocher(&((*p)->faction2));
+        repiocher(&((*p)->faction2));*/
 
 
         print_faction((*p)->faction1);
