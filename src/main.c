@@ -95,12 +95,13 @@ int main()
     { // réinitialisation renvoie un int
     
     manche += 1;
+    repiocher(&faction1);
+    repiocher(&faction2);
     affiche_main(faction1);
     if (mulligan_main(faction1, a_remelanger_main(faction1)))
     {
         remelanger_main(&faction1);
     }
-    affiche_main(faction2);
     if (mulligan_main(faction2, a_remelanger_main(faction2)))
     {
         remelanger_main(&faction2);
