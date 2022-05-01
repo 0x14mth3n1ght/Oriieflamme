@@ -24,7 +24,7 @@ struct plateau_base{
  * @param fac une faction 
 */
 cell construcuteur_cell(carte car, faction fac){
-    cell out = malloc(sizeof(cell));
+    cell out = malloc(sizeof(struct cell_base));
     out->c = car;
     out->f = fac;
     out->occupee = 1;
@@ -34,7 +34,7 @@ cell construcuteur_cell(carte car, faction fac){
 };
 
 plateau cree_plateau(){
-    plateau resultat = malloc(100*sizeof(plateau));
+    plateau resultat = malloc(sizeof(struct plateau_base));
 
     init_cartes();
     /* initialisation des attributs */

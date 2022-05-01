@@ -205,7 +205,7 @@ int test_vide(liste l){
     @assigns  : nothing
     @ensures  : renvoie une nouvelle liste avec e au dessus de la liste l */
 liste cons(elt e, liste l){
-    liste res = malloc(10*sizeof(liste));
+    liste res = malloc(sizeof(struct bucket));
     res->val = e;
     res->next = l;
     return res;
