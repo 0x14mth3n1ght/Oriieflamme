@@ -9,6 +9,7 @@
 #include "../header/interface.h"
 #include <time.h>
 
+
 /*
 @requires: La largeur du terminal doit être supérieur à 84 caractères pour afficher
         Correctement le titre
@@ -78,6 +79,7 @@ int main()
     int manche = 0;
     int starting_faction;
     plateau partie = cree_plateau();
+
     faction faction1 = get_faction_plateau(partie, 1);
     faction faction2 = get_faction_plateau(partie, 2);
     set_name(&faction1, "Je suis le nouveau nom de la faction");

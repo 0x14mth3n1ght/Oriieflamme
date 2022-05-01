@@ -66,10 +66,10 @@ void detruire_plateau(plateau *p){
     // fflush(stdout);
     free_liste(&((*p)->cartes_visibles));
     free_liste(&((*p)->cartes_activees));
-    free_liste(&((*p)->faction1.main));
-    free_liste(&((*p)->faction1.pioche));
-    free_liste(&((*p)->faction2.main));
-    free_liste(&((*p)->faction2.pioche));
+    free_liste(&((*p)->faction1->main));
+    free_liste(&((*p)->faction1->pioche));
+    free_liste(&((*p)->faction2->main));
+    free_liste(&((*p)->faction2->pioche));
     free(*p);
 };
 
@@ -83,8 +83,8 @@ int reinitialisation(plateau *p){
     else{
 
         /* recuperation du nom des deux factions */
-        char* n_f1 = (*p)->faction1.nom;
-        char* n_f2 = (*p)->faction2.nom;
+        char* n_f1 = (*p)->faction1->nom;
+        char* n_f2 = (*p)->faction2->nom;
 
         detruire_plateau(p);
         // printf("aa");
@@ -130,7 +130,7 @@ int pose_carte(plateau *p, faction *fac, carte car, int x, int y){
     if (get_cell((*p)->grille, x, y) != NULL){
         if (get_occupee(get_cell((*p)->grille, x, y)) == 0){
             cell nouvelle_cell = construcuteur_cell(car, *fac);
-            enlever(car, &((*fac).main));
+            enlever(car, &((*fac)->main));
             (*p)->nb_cartes_posees += 1;
             placer_cell(nouvelle_cell, &(*p)->grille, x , y);
             return 1;
