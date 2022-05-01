@@ -43,7 +43,7 @@ void affiche_plateau(plateau p) {
                     if(num_faction==1){
                         printf("\033[0;31m");
                         printf("%4s","X");
-                        printf("\033");
+                        printf("\033[00m");
                     }
                     else {
                         printf("%4s","X");
@@ -60,7 +60,7 @@ void affiche_plateau(plateau p) {
                     if(num_faction==1) {
                         printf("\033[0;31m");
                         printf("%4s",name_card);
-                        printf("\033"); 
+                        printf("\033[00m"); 
                     }
                     else{
                         printf("%4s",name_card);
