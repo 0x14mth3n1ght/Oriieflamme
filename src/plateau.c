@@ -76,7 +76,6 @@ void detruire_plateau(plateau *p){
     free_liste(&((*p)->faction1->pioche));
     free_liste(&((*p)->faction2->main));
     free_liste(&((*p)->faction2->pioche));
-    free(*p);
 };
 
 int reinitialisation(plateau *p){
@@ -92,20 +91,17 @@ int reinitialisation(plateau *p){
         char* n_f1 = (*p)->faction1->nom;
         char* n_f2 = (*p)->faction2->nom;
 
-        detruire_plateau(p);
         // printf("aa");
         // fflush(stdout);
-        *p = cree_plateau();
+        detruire_plateau(p);
         set_name(&((*p)->faction1), n_f1);
         set_name(&((*p)->faction2), n_f2);
-        /*set_pioche_defaut(&((*p)->faction1));
+        set_pioche_defaut(&((*p)->faction1));
         set_pioche_defaut(&((*p)->faction2));
         melanger_pioche(&((*p)->faction1));
         melanger_pioche(&((*p)->faction2));
         repiocher(&((*p)->faction1));
-        repiocher(&((*p)->faction2));*/
-
-
+        repiocher(&((*p)->faction2));
         print_faction((*p)->faction1);
 	return 1;
     };  
