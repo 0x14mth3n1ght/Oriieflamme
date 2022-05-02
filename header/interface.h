@@ -28,10 +28,11 @@ int mulligan_main(faction f, int already);
 @ensures    : demande à f la carte qu'elle souhaite poser sur le plateau et la retourne*/
 carte choix_carte(faction f);
 
-/*@requires : f est valide, x et y des pointeurs valide
+/*@requires : f est valide, x et y des pointeurs valide, called indique si l'utilisateur s'est trompé.
+            si called!=0 l'utilisateur s'est trompé. premier=0 si on pose la première carte.
 @assigns    : pos
 @ensures    : demande à f les coordonnées (x,y) de l'endroit où elle souhaite poser la carte. Les coordonnées seront stockées dans x et y*/
-void position_carte(faction f, int* x,int* y);
+void position_carte(faction f, int* x,int* y,int called,int premier);
 
 /*@requires : c est valide
 @assigns    : nothing

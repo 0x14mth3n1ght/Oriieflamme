@@ -24,7 +24,7 @@ struct plateau_base{
  * @param fac une faction 
 */
 cell construcuteur_cell(carte car, faction fac){
-    cell out = malloc(sizeof(cell));
+    cell out = malloc(sizeof(struct cell_base));
     out->c = car;
     out->f = fac;
     out->occupee = 1;
@@ -34,48 +34,65 @@ cell construcuteur_cell(carte car, faction fac){
 };
 
 plateau cree_plateau(){
-    plateau resultat;
-    init_cartes();
-    /* attention nouvelle version du malloc possiblement nécessaire */
-    resultat = malloc(sizeof(plateau));
-    resultat->grille = init_grille();
-    resultat->faction1 = set_faction_defaut();
-    resultat->faction2 = set_faction_defaut();
+    plateau resultat = malloc(sizeof(struct plateau_base));
+    /* initialisation des attributs */
+    grid g = init_grille();
+    faction f1 = set_faction_defaut();
+    faction f2 = set_faction_defaut();
+    liste l_visibles = cree_liste_vide();
+    liste l_activees = cree_liste_vide();
+    /* initialisation des attributs du plateau */
+    resultat->grille = g;
+    resultat->faction1 = f1;
+    resultat->faction2 = f2;
     resultat->nb_cartes_posees = 0;
     resultat->nb_cartes_visibles = 0;
     resultat->nb_cartes_activees = 0;
-    resultat->cartes_visibles = cree_liste_vide();
-    resultat->cartes_activees = cree_liste_vide();
+    resultat->cartes_visibles = l_visibles;
+    resultat->cartes_activees = l_activees;
     resultat->nb_ALL_retournee = 0;
     set_faction_id(&(resultat->faction1), 1);
     set_faction_id(&(resultat->faction2), 2);
+    set_pioche_defaut(&(resultat->faction1));
+    set_pioche_defaut(&(resultat->faction2));
+    melanger_pioche(&(resultat->faction1));
+    melanger_pioche(&(resultat->faction2));
+    repiocher(&(resultat->faction1));
+    repiocher(&(resultat->faction2));
     return resultat;
-
 };
 
 void detruire_plateau(plateau *p){
     free_grille(&(*p)->grille);
     free_liste(&((*p)->cartes_visibles));
     free_liste(&((*p)->cartes_activees));
-    free_liste(&((*p)->faction1.main));
-    free_liste(&((*p)->faction1.pioche));
-    free_liste(&((*p)->faction2.main));
-    free_liste(&((*p)->faction2.pioche));
-    free(*p);
+    free_liste(&((*p)->faction1->main));
+    free_liste(&((*p)->faction1->pioche));
+    free_liste(&((*p)->faction2->main));
+    free_liste(&((*p)->faction2->pioche));
 };
 
 int reinitialisation(plateau *p){
     /* on verifie si partie terminee */
+
     if (get_nb_victoires((*p)->faction1) == nb_manches_gagnantes || get_nb_victoires((*p)->faction2) == nb_manches_gagnantes)
     {
         return 0;
     }
     else{
+
         /* recuperation du nom des deux factions */
-        char* n_f1 = (*p)->faction1.nom;
-        char* n_f2 = (*p)->faction2.nom;
+        char* n_f1 = (*p)->faction1->nom;
+        char* n_f2 = (*p)->faction2->nom;
+
         detruire_plateau(p);
-        *p = cree_plateau();
+        (*p)->grille = init_grille();
+        (*p)->nb_cartes_posees = 0;
+        (*p)->nb_cartes_visibles = 0;
+        (*p)->nb_cartes_activees = 0;
+        (*p)->nb_ALL_retournee = 0;
+        set_ddrs(&((*p)->faction1), 0);
+        set_ddrs(&((*p)->faction2), 0);
         set_name(&((*p)->faction1), n_f1);
         set_name(&((*p)->faction2), n_f2);
         set_pioche_defaut(&((*p)->faction1));
@@ -84,7 +101,6 @@ int reinitialisation(plateau *p){
         melanger_pioche(&((*p)->faction2));
         repiocher(&((*p)->faction1));
         repiocher(&((*p)->faction2));
-        detruire_plateau(p);
 	return 1;
     };  
 };
@@ -94,18 +110,39 @@ void retourne_factions(plateau p, faction *pf1, faction *pf2){
   *pf2 = p->faction2;
 }
 
-int pose_carte(plateau *p, faction *fac, carte car, int x, int y){
-    if (get_cell((*p)->grille, x, y) != NULL){
-        if (get_occupee(get_cell((*p)->grille, x, y)) == 0){
-            cell nouvelle_cell = construcuteur_cell(car, *fac);
-            enlever(car, &((*fac).main));
-            (*p)->nb_cartes_posees += 1;
-            placer_cell(nouvelle_cell, &(*p)->grille, x , y);
-            return 1;
-        }
-        else return 0;
+faction get_faction_plateau(plateau p, int n){/*n=1 ou 2*/
+    switch (n){
+    case 1:
+        return p->faction1;
+        break;
+    case 2:
+        return p->faction2;
+        break;
+    default:
+        printf("Error get_faction_plateau(p,n) : n must be 1 or 2.\n");
+        exit(EXIT_FAILURE);
+        break;
     }
-    else return 0;
+}
+
+
+int pose_carte(plateau *p, faction *fac, carte car, int x, int y){
+    if (get_nb_cartes_posees(*p)==0){
+        cell nouvelle_cell = construcuteur_cell(car, *fac);
+        enlever(car, &((*fac)->main));
+        (*p)->nb_cartes_posees += 1;
+        premiere_cellule(nouvelle_cell, &(*p)->grille);
+        return 1;
+    }
+    int sum=cachee_visible_existe(p,x-1,y)+cachee_visible_existe(p,x+1,y)+cachee_visible_existe(p,x,y-1)+cachee_visible_existe(p,x,y+1);
+    if(cachee_visible_existe(p, x, y)==3 && sum !=12){   
+        cell nouvelle_cell = construcuteur_cell(car, *fac);
+        enlever(car, &((*fac)->main));
+        (*p)->nb_cartes_posees += 1;
+        placer_cell(nouvelle_cell, &(*p)->grille, x , y);
+        return 1;
+    }
+    return 0;
 }
 
 int retourne_carte(plateau *p, int x, int y){
@@ -118,11 +155,6 @@ int retourne_carte(plateau *p, int x, int y){
             cellule->visible = 1;
             (*p)->nb_cartes_visibles += 1;
             push(car, &(*p)->cartes_visibles);
-            //Test de fin de manche
-            if ((*p)->nb_cartes_visibles == (*p)->nb_cartes_posees - (*p)->nb_ALL_retournee){//Si toutes les cartes posées ont été retournées, moins les dernières cartes du plateau affectés par l'effet de la carte Anne-Laure Ligozat, qu'on ignorera
-                reinitialisation(p); //Termine la manche
-                return 1;
-            }
             return 1;
 	    }
         else return 0;
@@ -166,19 +198,24 @@ int supp_case(plateau* pp, int x, int y){
             ((*pp)->nb_cartes_posees)--;
             return 1;
             break;
-        case 1: //carte face visible
+        case 1:{ //carte face visible
+            carte c = get_card(get_cell(g, x, y));
+            enlever(c, &((*pp)->cartes_visibles));
             supp_cell_grille(&g, x, y);
             ((*pp)->nb_cartes_visibles)--;
             ((*pp)->nb_cartes_posees)--;
             return 1;
-            break;
-        case 2: //carte face visible et activée
+            break;}
+        case 2:{ //carte face visible et activée
+            carte c = get_card(get_cell(g, x, y));
+            enlever(c, &((*pp)->cartes_visibles));
+            enlever(c, &((*pp)->cartes_activees));
             supp_cell_grille(&g, x, y);
             ((*pp)->nb_cartes_activees)--;
             ((*pp)->nb_cartes_visibles)--;
             ((*pp)->nb_cartes_posees)--;
             return 1;
-            break;
+            break;}
         case 3: //pas de carte
             return 0;
             break;
@@ -193,18 +230,26 @@ carte get_card(cell cellule){
 };
 
 faction get_faction(cell cellule){
+    if (cellule==NULL)
+        return NULL;
     return cellule->f;
 };
 
 int get_occupee(cell cellule){
+    if (cellule==NULL)
+        return 0;
     return cellule->occupee;
 };
 
 int get_visible(cell cellule){
+    if (cellule==NULL)
+        return 0;
     return cellule->visible;
 };
 
 int get_activee(cell cellule){
+    if (cellule==NULL)
+        return 0;
     return cellule->activee;
 };
 
@@ -323,12 +368,12 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
         add_ddrs(pf, 1);
         break;
     case id_fisa:
-        if (nb_retournees%2==0)
+        if ((nb_retournees+1)%2==0) //On compte FISA comme carte retournée
             add_ddrs(pf, 2);
         break;
     case id_fc:
         if (find(FC, hist_visible)!=-1)
-            add_ddrs(pf, 2);
+            add_ddrs(pf, 4);
         break;
     case id_ecologiie:{
         int nb = 0; /*nombre de carte fise, fisa, fc retournées*/
@@ -352,7 +397,7 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
                         supp_case(pp, i, j);
                         push(FISA, &tmp_pioche);
                     }
-                    if (get_carte_id(get_card(c_parcours)) == id_fise){//si la carte en (i,j) est FC
+                    if (get_carte_id(get_card(c_parcours)) == id_fc){//si la carte en (i,j) est FC
                         supp_case(pp, i, j);
                         push(FISE, &tmp_pioche);
                     }
@@ -369,6 +414,7 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
             int y_hg = taille_ligne_direction(west, g, x);
             pose_carte(pp, pf, a_poser, x_hg, y_hg-nb_posees);
         }
+        free(tmp_pioche);
         break;}
     case id_ssa:
         if (find(ALCOOL, hist_visible)!=-1){//Si une carte alcool a été retournée
@@ -394,10 +440,10 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
             add_ddrs(pf, 5);
         break;
     case id_alcool: //Supprimez du plateau toutes les cartes qui touchent cette carte-ci (mais laissez la carte Alcool sur le plateau).
-        supp_case(pp, x+1, y+1);
-        supp_case(pp, x+1, y-1);
-        supp_case(pp, x-1, y-1);
-        supp_case(pp, x-1, y+1);
+        supp_case(pp, x, y+1);
+        supp_case(pp, x, y-1);
+        supp_case(pp, x-1, y);
+        supp_case(pp, x+1, y);
         break;
     case id_cafe:
         //Parcours de grille
@@ -436,8 +482,9 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
     case id_ecocup:
         break;
     case id_reprographie:{
-        int compteur = 0; //Compteur de cartes paires
+        int compteur = 0; //Compteur de paires de cartes
         liste tmp = deepcopy(hist_visible);
+        push(REPRO, &tmp); //La carte qui vient d'etre retournée n'est pas encore dans l'historique des cartes retournées
         while (test_vide(tmp)!=1){
             elt e = pop(&tmp);
             int n = nb_elt(e, tmp); //Le nombre de paires dans m cartes identiques est égal au nombre d'arrêtes dans un graphe complet d'ordre m
@@ -465,7 +512,7 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
             }
         }
         add_ddrs(pf, nb_f);
-        add_ddrs(pf, nb_adv);
+        add_ddrs(p_adv, nb_adv);
         break;}
     case id_psn:
         for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){/*Parcours de ligne*/
@@ -480,32 +527,44 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
         add_ddrs(p_adv, -3*nb);
         break;}
     case id_kb:{
-        int nb_non_retournees = 0; //Compteur de cartes non retournées
+        /*Construction de la liste qui contient les cartes du plateau non retournées*/
+        liste tmp_non_ret = cree_liste_vide(); //Liste qui contiendra les cartes du plateau non retournées
+        int len_tmp = 0; //Longueur de tmp_non_ret
         /*Parcours de tout le plateau*/
         for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
             for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
-                if (cachee_visible_existe(pp, i, j) == 0)//S'il y a une carte face cachée
-                    nb_non_retournees++;
+                if ((i!=x && j!=y) || cachee_visible_existe(pp, i, j) == 0){//S'il y a une carte face cachée (qui n'est pas Kahina Bouchama)
+                    carte c = get_card(get_cell(g, i, j));
+                    push(c, &tmp_non_ret);
+                    len_tmp++;
+                }
             }
         }
-        int random_carte_num = rand()%(nb_non_retournees); //Choix au hasard d'une carte non-retournée
-        int compteur_carte_rand = 0;
+
+        int random_carte_pos = rand()%(len_tmp); //Choix au hasard d'une carte non-retournée
+        carte random_c = get_at(random_carte_pos, tmp_non_ret);
+        int occ_tmp = nb_elt(random_c, tmp_non_ret); //Nombre d'occurence de random_c dans tmp_non_ret
+        int random_occ = rand()%(occ_tmp) +1; //Choix au hasard de l'occurence de c parmis les cartes non-retournées
+        int compteur_carte = 1; //Nombre de fois qu'on tombera sur la carte
+        free(tmp_non_ret);
         /*Parcours de tout le plateau*/
         for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
             for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
-                if (cachee_visible_existe(pp, i, j) == 0){//On regarde les cartes face cachées
-                    if (compteur_carte_rand == random_carte_num){//Si on tombe sur la carte choisie
-                        supp_case(pp, i, j);
-                        return;
+                if ((i!=x && j!=y) || cachee_visible_existe(pp, i, j) == 0){//On regarde les cartes face cachées (on ne supprime pas Kahina Bouchama)
+                    if (get_carte_id(get_card(get_cell(g, i, j))) == get_carte_id(random_c)){//Si on tombe sur la carte choisie
+                        if (random_occ == compteur_carte){//Si on tombe sur la bonne occurrence
+                            supp_case(pp, i, j);
+                            return;
+                        }
+                        compteur_carte++; //On augmente car on est tombé sur la carte
                     }
-                    random_carte_num++;
                 }
             }
         }
         break;}
     case id_kg:{
         int nb_lignes = abs(taille_grille(south, g) - taille_grille(north, g) +1); //vérifier par calcul
-        int i = rand()%(nb_lignes); //Choix d'un entier positif sur le nombre de ligne
+        int i = rand()%(nb_lignes) + taille_grille(north, g); //Choix d'un entier positif sur le nombre de ligne, translaté à la ligne la plus au nord
         int nb = 0; //Nombre de cartes sur la ligne
         for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){//Parcours de ligne
             cell curr_cell = get_cell(g, i, j);
@@ -517,7 +576,7 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
         add_ddrs(pf, 2*nb);
         break;}
     case id_mm:
-        if (test_vide(hist_visible)!=0){
+        if (test_vide(hist_visible)!=1){
             carte dernier = peek(hist_visible);
             activation(dernier, pp, pf, p_adv, x, y);
         }
@@ -623,49 +682,44 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
             add_ddrs(pf, 5);
         break;}
     case id_el:{
-        liste tmp = cree_liste_vide();
-        cell choix_cellules[5]; //tableau des cellules choisies
-        int choix_cartes_id[5]; //tableau des id des cartes choisies
-        for (int n=0; n<5; n++){
-            int nb_lignes = abs(taille_grille(south, g) - taille_grille(north, g) +1);
-            int nb_colonnes = abs(taille_grille(east, g) - taille_grille(west, g) +1);
-
-            //Choix de la cellule
-            int i = rand()%(nb_lignes);
-            int j = rand()%(nb_colonnes);
-            cell cell_choisie = get_cell(g, i, j);
-            while (get_visible(cell_choisie)!=1 || mem_cell_table(cell_choisie, choix_cellules, n) == 1){//Si la carte choisie est visible, ou si la cellule a déjà été choisie (déjà dans les n premières cases de choix_cellules), on recommence
-                i = rand()%(nb_lignes);
-                j = rand()%(nb_colonnes);
-                cell_choisie = get_cell(g, i, j);
+        liste tmp_el = cree_liste_vide();
+        for (int k=0; k<5;k++){//Choix des 5 cartes
+            int random_carte_pos = rand()%(len_liste(hist_visible)); //Choix au hasard d'une carte retournée
+            carte random_c = get_at(random_carte_pos, hist_visible);
+            int c_id = get_carte_id(random_c);
+            if (c_id==id_cd || c_id==id_all || c_id==id_gb || c_id==id_cm || c_id==id_tl || c_id==id_jf || c_id==id_dw){
+                push(random_c, &tmp_el);
             }
-            
-            //on a choisi une cellule ayant une carte visible et pas encore choisie
-            choix_cellules[n] = cell_choisie;
-            choix_cartes_id[n] = get_carte_id(get_card(cell_choisie));
-            
-            switch (choix_cartes_id[n]){
-                case id_cd: push(CD, &tmp); break;
-                case id_all: push(ALL, &tmp); break;
-                case id_gb: push(GB, &tmp); break;
-                case id_cm: push(CM, &tmp); break;
-                case id_tl: push(TL, &tmp); break;
-                case id_jf: push(JF, &tmp); break;
-                case id_dw: push(DW, &tmp); break;
-                default: break;
+            int occ_tmp = nb_elt(random_c, hist_visible); //Nombre d'occurence de random_c dans tmp_non_ret
+            int random_occ = rand()%(occ_tmp) +1; //Choix au hasard de l'occurence de c parmis les cartes non-retournées
+            int compteur_carte = 1; //Nombre de fois qu'on tombera sur la carte
+            /*Parcours de tout le plateau*/
+            for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
+                for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
+                    if (cachee_visible_existe(pp, i, j) == 1 || cachee_visible_existe(pp, i, j) == 2){//On regarde les cartes retournées
+                        if (get_carte_id(get_card(get_cell(g, i, j))) == get_carte_id(random_c)){//Si on tombe sur la carte choisie
+                            if (random_occ == compteur_carte){//Si on tombe sur la bonne occurrence
+                                supp_case(pp, i, j);
+                                goto end_double_loop;
+                            }
+                            compteur_carte++; //On augmente car on est tombé sur la carte
+                        }
+                    }
+                }
             }
-            supp_case(pp, i, j); //On supprime la carte du plateau (si c'est une des cartes citées, elle sera déplacée, sinon simplement supprimée)
+            end_double_loop:;
         }
-        tmp = melanger(tmp);
+        tmp_el = melanger(tmp_el);
+
         int prem_ligne = taille_grille(north, g);
         int y_carte_hg = taille_ligne_direction(west, g, prem_ligne);
         int compteur = 0; //Décalage vers la gauche par rapport à la carte en haut a gauche
-        while (test_vide(tmp)!=1){//On pose les cartes
-            elt c_mel = pop(&tmp);
+        while (test_vide(tmp_el)!=1){//On pose les cartes
+            elt c_mel = pop(&tmp_el);
             compteur++;
             pose_carte(pp, pf, c_mel, prem_ligne, y_carte_hg -compteur);
         }
-        free(tmp);
+        free(tmp_el);
         break;}
     case id_lpacav:
         for (int j=taille_ligne_direction(west, g, x); j<=taille_ligne_direction(east, g, x); j++){//Parcours de ligne
@@ -736,6 +790,11 @@ carte active_carte(plateau *pp){
     int x_hg;
     int y_hg;
     cell hg = non_visible_hg(*pp, &x_hg, &y_hg);
+    if (hg==NULL){
+        printf("Il n'y a plus de cartes sur le plateau.\n");
+        return FISE; /*Une carte...*/
+    }
+
     carte c = get_card(hg);
 
     //Attribution des factions, celle qui a posé la carte, et son adversaire
@@ -758,11 +817,5 @@ carte active_carte(plateau *pp){
     ((*pp)->nb_cartes_activees)++;
     push(c, &(*pp)->cartes_visibles);
     push(c, &(*pp)->cartes_activees);
-
-    //Test de fin de manche
-    if ((*pp)->nb_cartes_visibles == (*pp)->nb_cartes_posees - (*pp)->nb_ALL_retournee){//Si toutes les cartes posées ont été retournées, moins les dernières cartes du plateau affectés par l'effet de la carte Anne-Laure Ligozat, qu'on ignorera
-        reinitialisation(pp); //Termine la manche
-    }
-
     return c;
 }

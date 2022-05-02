@@ -54,6 +54,7 @@ int reinitialisation(plateau *p);
 */
 void retourne_factions(plateau p, faction *pf1, faction *pf2);
 
+faction get_faction_plateau(plateau p, int n);
 /**
 * \brief fonction qui place sur le plateau une carte à jouer face cachée et retire cette carte 
 * de la main de la faction

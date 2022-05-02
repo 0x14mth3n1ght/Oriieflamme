@@ -19,7 +19,7 @@ struct faction_base {
     int a_remelange;
 };
 
-typedef struct faction_base faction;
+typedef struct faction_base *faction;
 
 /**
 * \brief cette fonction permet de savoir si une faction
@@ -214,5 +214,5 @@ void set_name(faction *f, char* n);
 */ 
 faction set_faction_defaut();
 
-
+void print_faction(faction f);
 #endif
