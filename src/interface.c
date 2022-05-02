@@ -171,20 +171,36 @@ carte choix_carte(faction f){
     } 
     return result;
 }
-void position_carte(faction f, int* x,int* y){
-        printf("\n Faction %i: %s où voulez vous poser votre carte? \n Rappel: la carte doit être adjacente à un autre carte déjà posée",get_faction_id(f),get_faction_nom(f));
-        printf("\n Entrez la coordonée x:\n");
+void position_carte(faction f, int* x,int* y,int called,int premier){
         int answer_y;
         int answer_x;
         do{
-        scanf("%d",&answer_y);
-        getchar();
-        printf("\n Entrez la coordonée y:\n");
-        scanf(" %d",&answer_x);
-        getchar();
-        *x=answer_x;
-        *y=answer_y;
-        }
+            if(premier==0){
+                printf("\n Faction %i: %s comme vous posez la première carte de la manche il n'y a pas besoin d'entrer de coordonées.",get_faction_id(f),get_faction_nom(f));
+                *x=1;
+                *y=1;
+            }
+            else {
+            if(called==0) {
+                printf("\n Faction %i: %s où voulez vous poser votre carte? \n Rappel: la carte doit être adjacente à un autre carte déjà posée",get_faction_id(f),get_faction_nom(f));
+            }     
+            else{
+                printf("\n Faction %i: %s où voulez vous poser votre carte? \n",get_faction_id(f),get_faction_nom(f));
+                printf("\033[0;31m");
+                printf("Rappel: la carte doit être adjacente à un autre carte déjà posée");
+                printf("\033[00m");        
+            }
+            printf("\n Entrez la coordonée x:\n");
+            scanf("%d",&answer_y);
+            getchar();
+            printf("\n Entrez la coordonée y:\n");
+            scanf(" %d",&answer_x);
+            getchar();
+            *x=answer_x;
+            *y=answer_y;
+            called+=1;
+            }
+            }
         while (answer_x<0 || answer_x>46 || answer_y<0 || answer_y>46);
         
 }
