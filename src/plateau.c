@@ -91,8 +91,8 @@ int reinitialisation(plateau *p){
         (*p)->nb_cartes_visibles = 0;
         (*p)->nb_cartes_activees = 0;
         (*p)->nb_ALL_retournee = 0;
-        set_ddrs((*p)->faction1, 0);
-        set_ddrs((*p)->faction2, 0);
+        set_ddrs(&((*p)->faction1), 0);
+        set_ddrs(&((*p)->faction2), 0);
         set_name(&((*p)->faction1), n_f1);
         set_name(&((*p)->faction2), n_f2);
         set_pioche_defaut(&((*p)->faction1));
@@ -204,15 +204,15 @@ int supp_case(plateau* pp, int x, int y){
             ((*pp)->nb_cartes_posees)--;
             return 1;
             break;
-        case 1: //carte face visible
+        case 1:{ //carte face visible
             carte c = get_card(get_cell(g, x, y));
             enlever(c, &((*pp)->cartes_visibles));
             supp_cell_grille(&g, x, y);
             ((*pp)->nb_cartes_visibles)--;
             ((*pp)->nb_cartes_posees)--;
             return 1;
-            break;
-        case 2: //carte face visible et activée
+            break;}
+        case 2:{ //carte face visible et activée
             carte c = get_card(get_cell(g, x, y));
             enlever(c, &((*pp)->cartes_visibles));
             enlever(c, &((*pp)->cartes_activees));
@@ -221,7 +221,7 @@ int supp_case(plateau* pp, int x, int y){
             ((*pp)->nb_cartes_visibles)--;
             ((*pp)->nb_cartes_posees)--;
             return 1;
-            break;
+            break;}
         case 3: //pas de carte
             return 0;
             break;
