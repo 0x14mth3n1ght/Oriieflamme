@@ -85,8 +85,6 @@ int reinitialisation(plateau *p){
         char* n_f1 = (*p)->faction1->nom;
         char* n_f2 = (*p)->faction2->nom;
 
-        // printf("aa");
-        // fflush(stdout);
         detruire_plateau(p);
         (*p)->grille = init_grille();
         (*p)->nb_cartes_posees = 0;
@@ -171,7 +169,6 @@ int retourne_carte(plateau *p, int x, int y){
 int cachee_visible_existe(plateau *p, int x, int y){
     cell cellule = get_cell((*p)->grille, x ,y);
     if (cellule != NULL){
-        printf("carte : %s\n", get_carte_nom(get_card(cellule)));
         if (cellule->occupee == 0){
             return 3;
         }
