@@ -63,11 +63,7 @@ plateau cree_plateau(){
 };
 
 void detruire_plateau(plateau *p){
-        // printf("aa");
-    // fflush(stdout);
     free_grille(&(*p)->grille);
-    // printf("aa\n");
-    // fflush(stdout);
     free_liste(&((*p)->cartes_visibles));
     free_liste(&((*p)->cartes_activees));
     free_liste(&((*p)->faction1->main));
@@ -175,6 +171,7 @@ int retourne_carte(plateau *p, int x, int y){
 int cachee_visible_existe(plateau *p, int x, int y){
     cell cellule = get_cell((*p)->grille, x ,y);
     if (cellule != NULL){
+        printf("carte : %s\n", get_carte_nom(get_card(cellule)));
         if (cellule->occupee == 0){
             return 3;
         }
@@ -201,6 +198,7 @@ int cachee_visible_existe(plateau *p, int x, int y){
  */
 int supp_case(plateau* pp, int x, int y){
     grid g = get_grid(*pp);
+    printf("Suppression de x=%d, y=%d\n", x, y);
     switch (cachee_visible_existe(pp, x, y)){
         case 0: //carte face cachée
             supp_cell_grille(&g, x, y);
@@ -364,7 +362,7 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
         add_ddrs(pf, 1);
         break;
     case id_fisa:
-        if (nb_retournees%2==0)
+        if ((nb_retournees+1)%2==0) //On compte FISA comme carte retournée
             add_ddrs(pf, 2);
         break;
     case id_fc:
@@ -435,10 +433,10 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
             add_ddrs(pf, 5);
         break;
     case id_alcool: //Supprimez du plateau toutes les cartes qui touchent cette carte-ci (mais laissez la carte Alcool sur le plateau).
-        supp_case(pp, x+1, y+1);
-        supp_case(pp, x+1, y-1);
-        supp_case(pp, x-1, y-1);
-        supp_case(pp, x-1, y+1);
+        supp_case(pp, x, y+1);
+        supp_case(pp, x, y-1);
+        supp_case(pp, x-1, y);
+        supp_case(pp, x-1, y);
         break;
     case id_cafe:
         //Parcours de grille
@@ -525,7 +523,7 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
         /*Parcours de tout le plateau*/
         for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
             for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
-                if (cachee_visible_existe(pp, i, j) == 0)//S'il y a une carte face cachée
+                if (i!=x && j!=y && cachee_visible_existe(pp, i, j) == 0)//S'il y a une carte face cachée (qui n'est pas Kahina Bouchama)
                     nb_non_retournees++;
             }
         }
@@ -534,7 +532,7 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
         /*Parcours de tout le plateau*/
         for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
             for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
-                if (cachee_visible_existe(pp, i, j) == 0){//On regarde les cartes face cachées
+                if (i!=x && j!=y && cachee_visible_existe(pp, i, j) == 0){//On regarde les cartes face cachées (on ne supprime pas Kahina Bouchama)
                     if (compteur_carte_rand == random_carte_num){//Si on tombe sur la carte choisie
                         supp_case(pp, i, j);
                         return;
