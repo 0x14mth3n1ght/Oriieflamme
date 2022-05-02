@@ -138,7 +138,7 @@ int main()
     * Cela assure la terminaison de la boucle while
     * 
     */
-   int restes_cartes = abs(get_nb_cartes_posees(partie) - get_nb_cartes_visibles(partie));
+   int restes_cartes = abs(get_nb_cartes_posees(partie) - get_nb_cartes_visibles(partie) )-get_ALL(partie);
     while (restes_cartes>0){
         affiche_effet(active_carte(&partie));
         affiche_plateau(partie);
