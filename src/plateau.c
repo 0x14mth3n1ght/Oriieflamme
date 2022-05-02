@@ -236,19 +236,19 @@ faction get_faction(cell cellule){
 
 int get_occupee(cell cellule){
     if (cellule==NULL)
-        return NULL;
+        return 0;
     return cellule->occupee;
 };
 
 int get_visible(cell cellule){
     if (cellule==NULL)
-        return NULL;
+        return 0;
     return cellule->visible;
 };
 
 int get_activee(cell cellule){
     if (cellule==NULL)
-        return NULL;
+        return 0;
     return cellule->activee;
 };
 
