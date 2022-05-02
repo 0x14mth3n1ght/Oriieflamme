@@ -433,7 +433,7 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
         supp_case(pp, x, y+1);
         supp_case(pp, x, y-1);
         supp_case(pp, x-1, y);
-        supp_case(pp, x-1, y);
+        supp_case(pp, x+1, y);
         break;
     case id_cafe:
         //Parcours de grille
@@ -760,6 +760,7 @@ cell non_visible_hg(plateau p, int* px, int* py){
             if (cachee_visible_existe(&p, i, j) == 0){
                 *px = i;
                 *py = j;
+printf("Parcours de %s\n", get_carte_nom(get_card(get_cell(g, i, j))));
                 return get_cell(g, i, j);
             }
         }
