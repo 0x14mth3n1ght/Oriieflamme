@@ -9,6 +9,7 @@
 #include "../header/interface.h"
 #include <time.h>
 
+
 /*
 @requires: La largeur du terminal doit être supérieur à 84 caractères pour afficher
         Correctement le titre
@@ -37,7 +38,6 @@ void print_title()
         }
     }
     printf("\n");
-    printf("\n");
 }
 
 /*
@@ -52,18 +52,22 @@ void tour_de_jeu(faction* fact, plateau* partie)
 
     carte new_card;
     int possible = 0;
+    int cpt=0;
     while (!possible)
     {
+        affiche_plateau(*partie);
         affiche_main(*fact);
         new_card = choix_carte(*fact);
         affiche_plateau(*partie);
-        position_carte(*fact, &x,&y);
+        position_carte(*fact, &x,&y,cpt,get_nb_cartes_posees(*partie));
         possible = pose_carte(partie, fact, new_card,x,y);
+        cpt+=1;
     }
 }
 
 int main()
 {
+    init_cartes(); //On initialise les cartes
     srand(time(NULL)); // Utilisé pour pour générer le rand()
     print_title();
     /* manche est le compteur de manche afin de savoir comment sélectionner la faction qui commence
@@ -78,30 +82,32 @@ int main()
     int manche = 0;
     int starting_faction;
     plateau partie = cree_plateau();
-    faction faction1;
-    faction faction2;
-    retourne_factions(partie,&faction1, &faction2);
+
+    faction faction1 = get_faction_plateau(partie, 1);
+    faction faction2 = get_faction_plateau(partie, 2);
+    //retourne_factions(partie,&faction1, &faction2);
+
     /*
     * reinitilisation retourne 1 lorsque le jeu est terminé et 0 sinon.
     * Hors le jeu se termine lorsqu'une faction a gagné 2 manches. 
     * Cela assure la terminaison de la boucle while.
     * 
     */
-    while (!reinitialisation(&partie))
-    { // réinitialisation renvoie un int
+   
+    while (reinitialisation(&partie)==1)
+    {
     manche += 1;
-    repiocher(&faction1);
-    repiocher(&faction2);
     affiche_main(faction1);
     if (mulligan_main(faction1, a_remelanger_main(faction1)))
     {
         remelanger_main(&faction1);
     }
+    affiche_main(faction2);
     if (mulligan_main(faction2, a_remelanger_main(faction2)))
     {
         remelanger_main(&faction2);
     }
-    /*On choisie aléatoirement une deux des factions */
+    /*On choisit aléatoirement une deux des factions */
     if (manche != 2)
     {
         starting_faction = rand() % 2;
@@ -110,7 +116,7 @@ int main()
     {
         starting_faction = (starting_faction + 1) % 2;
     }
-    for (int j = 0; j < 16; j += 1)
+    for (int j = 0; j < nb_cartes_main_debut_manche*2; j += 1)
     {
         if ((j + starting_faction) % 2 == 1)
         {
@@ -137,6 +143,14 @@ int main()
         affiche_effet(active_carte(&partie));
         affiche_plateau(partie);
         restes_cartes=abs(get_nb_cartes_posees(partie) - get_nb_cartes_visibles(partie));
+    }
+    affiche_gagnant_manche(faction1,faction2);
+    if (get_ddrs(faction1)>get_ddrs(faction2)) {
+        set_nb_victoires(&faction1,get_nb_victoires(faction1)+1);
+    }
+    else{
+        set_nb_victoires(&faction2,get_nb_victoires(faction2)+1);
+
     }
     }
     affiche_gagnant(faction1,faction2);

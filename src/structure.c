@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include "../header/structure.h"
 
-#define N nb_cartes_main_debut_manche*2+15 //Nombre de lignes
-#define P nb_cartes_main_debut_manche*2+15 //Nombre de colonnes
+#define N (nb_cartes_main_debut_manche*4+15) //Nombre de lignes
+#define P (nb_cartes_main_debut_manche*4+15) //Nombre de colonnes
 
 /**
  * @file structure.c
@@ -28,9 +28,10 @@ const cell nulle = NULL;
 grid new_grille(int n, int p){
     grid out = malloc(n*sizeof(cell*));
     for (int i=0; i<n; i++){
-        out[i] = calloc(p, sizeof(cell));
-        for (int j=0; j<p; j++)
+        out[i] = calloc(p,sizeof(cell));
+        for (int j=0; j<p; j++){
             out[i][j] = nulle;
+        }
     }
     return out;
 }
@@ -56,7 +57,7 @@ int est_libre(grid g, int x, int y){
 void free_grille(grid* pg){
     for (int i=0; i<N; i++){
         for (int j=0; j<P; j++){
-            free((*pg)[i][j]); //On free les cellules
+            free((*pg)[i][j]);
         }
         free((*pg)[i]);
     }
@@ -82,28 +83,28 @@ int taille_ligne_direction(direction d, grid g, int n){
             if (g[i][n] != nulle)
                 return i;
         }
-        return N-1; //si la colonne est nulle
+        return N; //si la colonne est nulle
         break;
     case south:
         for (int i=0; i<N; i++){
             if (g[N-1-i][n] != nulle)
                 return N-1-i;
         }
-        return 0; //si la colonne est nulle
+        return 1; //si la colonne est nulle
         break;
     case west:
         for (int j=0; j<P; j++){
             if (g[n][j] != nulle)
                 return j;
         }
-        return P-1; //si la ligne est nulle
+        return P; //si la ligne est nulle
         break;
     case east:
         for (int j=0; j<P; j++){
             if (g[n][P-1-j] != nulle)
                 return P-1-j;
         }
-        return 0; //si la ligne est nulle
+        return 1; //si la ligne est nulle
         break;   
     default:
         break;
@@ -204,7 +205,7 @@ int test_vide(liste l){
     @assigns  : nothing
     @ensures  : renvoie une nouvelle liste avec e au dessus de la liste l */
 liste cons(elt e, liste l){
-    liste res = malloc(sizeof *res);
+    liste res = malloc(sizeof(struct bucket));
     res->val = e;
     res->next = l;
     return res;
@@ -255,6 +256,8 @@ int len_liste(liste l){
 
 int enlever(elt e, liste* pl){
     //Cas initial
+    if (test_vide(*pl)==1)
+        return 0;
     if (equals((*pl)->val,e)==1){ //Si la première case contient e
         liste first = *pl;
         *pl = (*pl)->next; //On commence par la case suivante
@@ -264,7 +267,7 @@ int enlever(elt e, liste* pl){
     liste curr = (*pl)->next; //Pointeur vers la case courante
     liste prec = *pl; //Pointeur vers la case précédente
     //Tant que l'on a pas trouvé e
-    while (equals(curr->val,e)==0){
+    while (curr!= NULL && equals(curr->val,e)==0){
         prec = prec->next; //le pointeur du précédent avance
         curr = curr->next; //le pointeur du courant avance
     }
@@ -336,4 +339,11 @@ int liste_equals(liste l1, liste l2){
     if (test_vide(l1)==0 || test_vide(l2)==0)//Si l'une des deux listes est vide, alors elles ne sont pas de même taille
         return 0;
     return 1;
+}
+
+void print_liste(liste l){
+    while(test_vide(l)!=1){
+        printf("%d -> ", get_carte_id(pop(&l)));
+    }
+    printf("()\n");
 }
