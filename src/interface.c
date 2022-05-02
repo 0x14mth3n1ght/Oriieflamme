@@ -179,6 +179,8 @@ void position_carte(faction f, int* x,int* y,int called,int premier){
                 printf("\n Faction %i: %s comme vous posez la première carte de la manche il n'y a pas besoin d'entrer de coordonées.",get_faction_id(f),get_faction_nom(f));
                 *x=1;
                 *y=1;
+                answer_x=1;
+                answer_y=1;
             }
             else {
             if(called==0) {
