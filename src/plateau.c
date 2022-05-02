@@ -197,7 +197,6 @@ int cachee_visible_existe(plateau *p, int x, int y){
  */
 int supp_case(plateau* pp, int x, int y){
     grid g = get_grid(*pp);
-    printf("Suppression de x=%d, y=%d\n", x, y);
     switch (cachee_visible_existe(pp, x, y)){
         case 0: //carte face cachée
             supp_cell_grille(&g, x, y);
@@ -784,7 +783,6 @@ cell non_visible_hg(plateau p, int* px, int* py){
             if (cachee_visible_existe(&p, i, j) == 0){
                 *px = i;
                 *py = j;
-printf("Parcours de %s\n", get_carte_nom(get_card(get_cell(g, i, j))));
                 return get_cell(g, i, j);
             }
         }
@@ -797,6 +795,11 @@ carte active_carte(plateau *pp){
     int x_hg;
     int y_hg;
     cell hg = non_visible_hg(*pp, &x_hg, &y_hg);
+    if (hg==NULL){
+        printf("Il n'y a plus de cartes sur le plateau.\n");
+        return FISE; /*Une carte...*/
+    }
+
     carte c = get_card(hg);
 
     //Attribution des factions, celle qui a posé la carte, et son adversaire
@@ -819,6 +822,13 @@ carte active_carte(plateau *pp){
     ((*pp)->nb_cartes_activees)++;
     push(c, &(*pp)->cartes_visibles);
     push(c, &(*pp)->cartes_activees);
-
+    //Test de fin de manche
+    if ((*pp)->nb_cartes_visibles == (*pp)->nb_cartes_posees - (*pp)->nb_ALL_retournee){//Si toutes les cartes posées ont été retournées, moins les dernières cartes du plateau affectés par l'effet de la carte Anne-Laure Ligozat, qu'on ignorera
+        if ((*pp)->nb_ALL_retournee > 0){
+            printf("Activation de l'effet de la carte d'Anne-Laure Ligozat : la dernière cellule retournée est supprimée.\n");
+        }
+        reinitialisation(pp); //Termine la manche
+        return (peek((*pp)->cartes_visibles));
+    }
     return c;
 }
