@@ -520,7 +520,7 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
         /*Parcours de tout le plateau*/
         for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
             for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
-                if (i!=x && j!=y && cachee_visible_existe(pp, i, j) == 0)//S'il y a une carte face cachée (qui n'est pas Kahina Bouchama)
+                if ((i!=x && j!=y) || cachee_visible_existe(pp, i, j) == 0)//S'il y a une carte face cachée (qui n'est pas Kahina Bouchama)
                     nb_non_retournees++;
             }
         }
@@ -529,7 +529,7 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
         /*Parcours de tout le plateau*/
         for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
             for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
-                if (i!=x && j!=y && cachee_visible_existe(pp, i, j) == 0){//On regarde les cartes face cachées (on ne supprime pas Kahina Bouchama)
+                if ((i!=x && j!=y) || cachee_visible_existe(pp, i, j) == 0){//On regarde les cartes face cachées (on ne supprime pas Kahina Bouchama)
                     if (compteur_carte_rand == random_carte_num){//Si on tombe sur la carte choisie
                         supp_case(pp, i, j);
                         return;
