@@ -396,7 +396,7 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
                         supp_case(pp, i, j);
                         push(FISA, &tmp_pioche);
                     }
-                    if (get_carte_id(get_card(c_parcours)) == id_fise){//si la carte en (i,j) est FC
+                    if (get_carte_id(get_card(c_parcours)) == id_fc){//si la carte en (i,j) est FC
                         supp_case(pp, i, j);
                         push(FISE, &tmp_pioche);
                     }
@@ -509,7 +509,7 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
             }
         }
         add_ddrs(pf, nb_f);
-        add_ddrs(pf, nb_adv);
+        add_ddrs(p_adv, nb_adv);
         break;}
     case id_psn:
         for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){/*Parcours de ligne*/
