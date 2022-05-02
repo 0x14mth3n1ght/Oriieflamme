@@ -568,7 +568,7 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
         break;}
     case id_kg:{
         int nb_lignes = abs(taille_grille(south, g) - taille_grille(north, g) +1); //vérifier par calcul
-        int i = rand()%(nb_lignes); //Choix d'un entier positif sur le nombre de ligne
+        int i = rand()%(nb_lignes) + taille_grille(north, g); //Choix d'un entier positif sur le nombre de ligne, translaté à la ligne la plus au nord
         int nb = 0; //Nombre de cartes sur la ligne
         for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){//Parcours de ligne
             cell curr_cell = get_cell(g, i, j);
@@ -580,7 +580,7 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
         add_ddrs(pf, 2*nb);
         break;}
     case id_mm:
-        if (test_vide(hist_visible)!=0){
+        if (test_vide(hist_visible)!=1){
             carte dernier = peek(hist_visible);
             activation(dernier, pp, pf, p_adv, x, y);
         }
