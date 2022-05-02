@@ -267,7 +267,7 @@ int enlever(elt e, liste* pl){
     liste curr = (*pl)->next; //Pointeur vers la case courante
     liste prec = *pl; //Pointeur vers la case précédente
     //Tant que l'on a pas trouvé e
-    while (curr!= NULL || equals(curr->val,e)==0){
+    while (curr!= NULL && equals(curr->val,e)==0){
         prec = prec->next; //le pointeur du précédent avance
         curr = curr->next; //le pointeur du courant avance
     }
