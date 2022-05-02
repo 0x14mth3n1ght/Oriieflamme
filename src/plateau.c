@@ -229,18 +229,26 @@ carte get_card(cell cellule){
 };
 
 faction get_faction(cell cellule){
+    if (cellule==NULL)
+        return NULL;
     return cellule->f;
 };
 
 int get_occupee(cell cellule){
+    if (cellule==NULL)
+        return NULL;
     return cellule->occupee;
 };
 
 int get_visible(cell cellule){
+    if (cellule==NULL)
+        return NULL;
     return cellule->visible;
 };
 
 int get_activee(cell cellule){
+    if (cellule==NULL)
+        return NULL;
     return cellule->activee;
 };
 
