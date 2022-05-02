@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Projet_Informatique_S2" company="" webLink="http://" view-date="2022-03-03" view-index="0" gantt-divider-location="330" resource-divider-location="300" version="3.2.3220" locale="fr_FR">
+<?xml version="1.0" encoding="UTF-8"?><project name="Projet_Informatique_S2" company="" webLink="http://" view-date="2022-03-03" view-index="0" gantt-divider-location="315" resource-divider-location="300" version="3.2.3220" locale="fr_FR">
     <description>
         <![CDATA[Organisation es tâche projet informatique]]>
     </description>
     <view zooming-state="default:2" id="gantt-chart">
         <field id="tpd3" name="Nom" width="200" order="0"/>
-        <field id="tpd4" name="Date de début" width="75" order="1"/>
-        <field id="tpd5" name="Date de fin" width="39" order="2"/>
+        <field id="tpd4" name="Date de début" width="69" order="1"/>
+        <field id="tpd5" name="Date de fin" width="30" order="2"/>
         <option id="filter.completedTasks" value="false"/>
     </view>
     <view id="resource-table">
