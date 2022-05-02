@@ -712,7 +712,7 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
                     }
                 }
             }
-            end_double_loop:
+            end_double_loop:;
         }
         tmp_el = melanger(tmp_el);
 
