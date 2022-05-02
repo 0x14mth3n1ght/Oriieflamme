@@ -38,7 +38,7 @@ void affiche_plateau(plateau p) {
     printf("\n");
 
     for(i=max_north; i<=max_south; i+=1){
-        print_ligne((max_east-max_west+1)*8-3);
+        print_ligne((max_east-max_west+1)*7+3);
         printf("\n");
         printf("%2i",i);
         for(j=max_west;j<=max_east;j+=1) {
@@ -86,11 +86,11 @@ void affiche_plateau(plateau p) {
                     char * name_card= get_nom_court(card_to_print);
                     if(num_faction==1) {
                         printf("\033[0;31m");
-                        printf("%4s",name_card);
+                        printf("%6s",name_card);
                         printf("\033[00m"); 
                     }
                     else{
-                        printf("%4s",name_card);
+                        printf("%6s",name_card);
                     }
                 }
                 break;
@@ -175,12 +175,18 @@ void position_carte(faction f, int* x,int* y){
         printf("\n Faction %i: %s où voulez vous poser votre carte? \n Rappel: la carte doit être adjacente à un autre carte déjà posée",get_faction_id(f),get_faction_nom(f));
         printf("\n Entrez la coordonée x:\n");
         int answer_y;
-        scanf(" %d",&answer_y);
-        printf("\n Entrez la coordonée y:\n");
         int answer_x;
+        do{
+        scanf("%d",&answer_y);
+        getchar();
+        printf("\n Entrez la coordonée y:\n");
         scanf(" %d",&answer_x);
+        getchar();
         *x=answer_x;
         *y=answer_y;
+        }
+        while (answer_x<0 || answer_x>46 || answer_y<0 || answer_y>46);
+        
 }
 
 void affiche_effet(carte c){
