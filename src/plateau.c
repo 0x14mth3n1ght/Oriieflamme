@@ -155,11 +155,6 @@ int retourne_carte(plateau *p, int x, int y){
             cellule->visible = 1;
             (*p)->nb_cartes_visibles += 1;
             push(car, &(*p)->cartes_visibles);
-            //Test de fin de manche
-            if ((*p)->nb_cartes_visibles == (*p)->nb_cartes_posees - (*p)->nb_ALL_retournee){//Si toutes les cartes posées ont été retournées, moins les dernières cartes du plateau affectés par l'effet de la carte Anne-Laure Ligozat, qu'on ignorera
-                reinitialisation(p); //Termine la manche
-                return 1;
-            }
             return 1;
 	    }
         else return 0;
@@ -822,13 +817,5 @@ carte active_carte(plateau *pp){
     ((*pp)->nb_cartes_activees)++;
     push(c, &(*pp)->cartes_visibles);
     push(c, &(*pp)->cartes_activees);
-    //Test de fin de manche
-    if ((*pp)->nb_cartes_visibles == (*pp)->nb_cartes_posees - (*pp)->nb_ALL_retournee){//Si toutes les cartes posées ont été retournées, moins les dernières cartes du plateau affectés par l'effet de la carte Anne-Laure Ligozat, qu'on ignorera
-        if ((*pp)->nb_ALL_retournee > 0){
-            printf("Activation de l'effet de la carte d'Anne-Laure Ligozat : la dernière cellule retournée est supprimée.\n");
-        }
-        reinitialisation(pp); //Termine la manche
-        return (peek((*pp)->cartes_visibles));
-    }
     return c;
 }
