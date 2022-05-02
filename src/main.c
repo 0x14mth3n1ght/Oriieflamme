@@ -52,14 +52,16 @@ void tour_de_jeu(faction* fact, plateau* partie)
 
     carte new_card;
     int possible = 0;
+    int cpt=0;
     while (!possible)
     {
         affiche_plateau(*partie);
         affiche_main(*fact);
         new_card = choix_carte(*fact);
         affiche_plateau(*partie);
-        position_carte(*fact, &x,&y);
+        position_carte(*fact, &x,&y,cpt,get_nb_cartes_posees);
         possible = pose_carte(partie, fact, new_card,x,y);
+        cpt+=1;
     }
 }
 
