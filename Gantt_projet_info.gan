@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Projet_Informatique_S2" company="" webLink="http://" view-date="2022-02-26" view-index="0" gantt-divider-location="300" resource-divider-location="300" version="3.2.3221" locale="fr_FR">
+<?xml version="1.0" encoding="UTF-8"?><project name="Projet_Informatique_S2" company="" webLink="http://" view-date="2022-02-26" view-index="0" gantt-divider-location="285" resource-divider-location="300" version="3.2.3220" locale="fr_FR">
     <description>
         <![CDATA[Organisation es tâche projet informatique]]>
     </description>
     <view zooming-state="default:2" id="gantt-chart">
         <field id="tpd3" name="Nom" width="200" order="0"/>
-        <field id="tpd4" name="Date de début" width="54" order="1"/>
+        <field id="tpd4" name="Date de début" width="39" order="1"/>
         <field id="tpd5" name="Date de fin" width="30" order="2"/>
         <option id="filter.completedTasks" value="false"/>
     </view>
@@ -39,10 +39,12 @@
         <task id="0" name="Lot_A" color="#8cb6ce" meeting="false" start="2022-03-04" duration="17" complete="0" thirdDate="2022-03-07" thirdDate-constraint="0" expand="true">
             <depend id="11" type="2" difference="0" hardness="Strong"/>
             <task id="1" name="Tache_A_1 Yanis" color="#8cb6ce" meeting="false" start="2022-03-04" duration="17" complete="0" thirdDate="2022-03-07" thirdDate-constraint="0" expand="true">
+                <depend id="16" type="2" difference="0" hardness="Strong"/>
                 <task id="9" name="main.c" color="#8cb6ce" meeting="false" start="2022-03-11" duration="10" complete="0" thirdDate="2022-03-07" thirdDate-constraint="0" expand="true"/>
                 <task id="8" name="ganttproject" color="#8cb6ce" meeting="false" start="2022-03-04" duration="7" complete="0" thirdDate="2022-03-07" thirdDate-constraint="0" expand="true"/>
             </task>
             <task id="2" name="Tache_A_2 Julien" color="#8cb6ce" meeting="false" start="2022-03-04" duration="7" complete="0" thirdDate="2022-03-07" thirdDate-constraint="0" expand="true">
+                <depend id="16" type="2" difference="0" hardness="Strong"/>
                 <task id="10" name="interface.h" color="#8cb6ce" meeting="false" start="2022-03-04" duration="7" complete="0" thirdDate="2022-03-04" thirdDate-constraint="0" expand="true">
                     <depend id="9" type="2" difference="0" hardness="Strong"/>
                     <task id="5" name="carte.h" color="#8cb6ce" meeting="false" start="2022-03-04" duration="7" complete="0" thirdDate="2022-03-07" thirdDate-constraint="0" expand="true">
@@ -51,35 +53,53 @@
                 </task>
             </task>
             <task id="3" name="Tache_A_3 Aurélien" color="#8cb6ce" meeting="false" start="2022-03-04" duration="7" complete="0" thirdDate="2022-03-07" thirdDate-constraint="0" expand="true">
+                <depend id="16" type="2" difference="0" hardness="Strong"/>
                 <task id="7" name="plateau.h" color="#8cb6ce" meeting="false" start="2022-03-04" duration="7" complete="0" thirdDate="2022-03-07" thirdDate-constraint="0" expand="true">
                     <depend id="9" type="2" difference="0" hardness="Strong"/>
                 </task>
             </task>
             <task id="4" name="Tache_A_4 Alexandre" color="#8cb6ce" meeting="false" start="2022-03-04" duration="7" complete="0" thirdDate="2022-03-07" thirdDate-constraint="0" expand="true">
+                <depend id="16" type="2" difference="0" hardness="Strong"/>
                 <task id="6" name="faction.h" color="#8cb6ce" meeting="false" start="2022-03-04" duration="7" complete="0" thirdDate="2022-03-07" thirdDate-constraint="0" expand="true">
                     <depend id="9" type="2" difference="0" hardness="Strong"/>
                 </task>
             </task>
         </task>
-        <task id="11" name="Lot_B" color="#8cb6ce" meeting="false" start="2022-03-21" duration="42" complete="0" thirdDate="2022-03-01" thirdDate-constraint="0" expand="true">
+        <task id="11" name="Lot_B" color="#8cb6ce" meeting="false" start="2022-03-21" duration="155" complete="0" thirdDate="2022-03-01" thirdDate-constraint="0" expand="true">
             <task id="12" name="Tache_B_1 Aurélien" color="#8cb6ce" meeting="false" start="2022-03-21" duration="31" complete="0" thirdDate="2022-03-04" thirdDate-constraint="0" priority="0" expand="true">
+                <depend id="24" type="2" difference="0" hardness="Strong"/>
                 <task id="25" name="Makefile" color="#8cb6ce" meeting="false" start="2022-03-21" duration="31" complete="0" thirdDate="2022-04-01" thirdDate-constraint="0" expand="true"/>
             </task>
-            <task id="24" name="Tache_B_2 Yanis" color="#8cb6ce" meeting="false" start="2022-03-21" duration="1" complete="0" thirdDate="2022-03-04" thirdDate-constraint="0" expand="true">
-                <task id="26" name="Tests" meeting="false" start="2022-03-21" duration="1" complete="0" expand="true"/>
+            <task id="24" name="Tache_B_2 Yanis" color="#8cb6ce" meeting="false" start="2022-07-23" duration="1" complete="0" thirdDate="2022-03-04" thirdDate-constraint="0" expand="true">
+                <task id="26" name="Tests" meeting="false" start="2022-07-23" duration="1" complete="0" expand="true"/>
             </task>
-            <task id="15" name="Tache_B_3  Julien" color="#8cb6ce" meeting="false" start="2022-04-01" duration="31" complete="0" thirdDate="2022-03-04" thirdDate-constraint="0" expand="true"/>
-            <task id="16" name="Tache_B_4 Alexandre" color="#8cb6ce" meeting="false" start="2022-04-01" duration="31" complete="0" thirdDate="2022-03-04" thirdDate-constraint="0" expand="true"/>
-            <task id="17" name="Tache_B_5 Alexandre" color="#8cb6ce" meeting="false" start="2022-04-01" duration="31" complete="0" thirdDate="2022-03-04" thirdDate-constraint="0" expand="true"/>
-            <task id="18" name="Tache_B_6 Aurélien" color="#8cb6ce" meeting="false" start="2022-04-01" duration="31" complete="0" thirdDate="2022-03-04" thirdDate-constraint="0" expand="true"/>
-            <task id="20" name="Tache_B_8 Yanis" color="#8cb6ce" meeting="false" start="2022-04-01" duration="31" complete="0" thirdDate="2022-03-04" thirdDate-constraint="0" priority="2" expand="true"/>
+            <task id="15" name="Tache_B_3  Julien" color="#8cb6ce" meeting="false" start="2022-04-01" duration="31" complete="0" thirdDate="2022-03-04" thirdDate-constraint="0" expand="true">
+                <depend id="24" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="16" name="Tache_B_4 Alexandre" color="#8cb6ce" meeting="false" start="2022-03-21" duration="31" complete="0" thirdDate="2022-03-04" thirdDate-constraint="0" expand="true">
+                <depend id="17" type="2" difference="0" hardness="Strong"/>
+                <depend id="24" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="17" name="Tache_B_5 Alexandre" color="#8cb6ce" meeting="false" start="2022-04-21" duration="31" complete="0" thirdDate="2022-03-04" thirdDate-constraint="0" expand="true">
+                <depend id="18" type="2" difference="0" hardness="Strong"/>
+                <depend id="19" type="2" difference="0" hardness="Strong"/>
+                <depend id="24" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="18" name="Tache_B_6 Aurélien" color="#8cb6ce" meeting="false" start="2022-05-22" duration="31" complete="0" thirdDate="2022-03-04" thirdDate-constraint="0" expand="true">
+                <depend id="19" type="2" difference="0" hardness="Strong"/>
+                <depend id="24" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="20" name="Tache_B_8 Yanis" color="#8cb6ce" meeting="false" start="2022-07-23" duration="31" complete="0" thirdDate="2022-03-04" thirdDate-constraint="0" priority="2" expand="true"/>
             <task id="27" name="Structures de données" color="#8cb6ce" meeting="false" start="2022-03-21" duration="1" complete="0" thirdDate="2022-03-04" thirdDate-constraint="0" expand="true"/>
             <task id="28" name="carte.h faction.h plateau.h" color="#8cb6ce" meeting="false" start="2022-03-21" duration="1" complete="0" thirdDate="2022-03-04" thirdDate-constraint="0" expand="true"/>
             <task id="29" name="getters setters dans carte.c faction.c plateau.c" meeting="false" start="2022-03-21" duration="1" complete="0" expand="true"/>
             <task id="30" name="fonctions plateau dans les .c" color="#8cb6ce" meeting="false" start="2022-03-21" duration="1" complete="0" thirdDate="2022-03-04" thirdDate-constraint="0" expand="true"/>
             <task id="31" name="fonctions effets carte dans les .c" color="#8cb6ce" meeting="false" start="2022-03-21" duration="1" complete="0" thirdDate="2022-03-04" thirdDate-constraint="0" expand="true"/>
             <task id="32" name="interface.c" meeting="false" start="2022-03-21" duration="1" complete="0" expand="true"/>
-            <task id="19" name="Tache_B_7 Julien" color="#8cb6ce" meeting="false" start="2022-04-01" duration="31" complete="0" thirdDate="2022-03-04" thirdDate-constraint="0" expand="true"/>
+            <task id="19" name="Tache_B_7 Julien" color="#8cb6ce" meeting="false" start="2022-06-22" duration="31" complete="0" thirdDate="2022-03-04" thirdDate-constraint="0" expand="true">
+                <depend id="20" type="2" difference="0" hardness="Strong"/>
+                <depend id="24" type="2" difference="0" hardness="Strong"/>
+            </task>
         </task>
     </tasks>
     <resources>
