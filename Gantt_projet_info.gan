@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Projet_Informatique_S2" company="" webLink="http://" view-date="2022-03-18" view-index="0" gantt-divider-location="270" resource-divider-location="300" version="3.2.3220" locale="fr_FR">
+<?xml version="1.0" encoding="UTF-8"?><project name="Projet_Informatique_S2" company="" webLink="http://" view-date="2022-03-16" view-index="0" gantt-divider-location="255" resource-divider-location="300" version="3.2.3220" locale="fr_FR">
     <description>
         <![CDATA[Organisation es tâche projet informatique]]>
     </description>
     <view zooming-state="default:2" id="gantt-chart">
-        <field id="tpd3" name="Nom" width="194" order="0"/>
+        <field id="tpd3" name="Nom" width="179" order="0"/>
         <field id="tpd4" name="Date de début" width="30" order="1"/>
         <field id="tpd5" name="Date de fin" width="30" order="2"/>
         <option id="filter.completedTasks" value="false"/>
@@ -93,9 +93,8 @@
                 <depend id="24" type="2" difference="0" hardness="Strong"/>
                 <task id="30" name="fonctions plateau dans les .c" color="#8cb6ce" meeting="false" start="2022-03-23" duration="1" complete="0" thirdDate="2022-03-04" thirdDate-constraint="0" expand="true"/>
             </task>
-            <task id="20" name="Tache_B_8 Yanis" color="#8cb6ce" meeting="false" start="2022-03-25" duration="31" complete="0" thirdDate="2022-03-04" thirdDate-constraint="0" priority="2" expand="true">
+            <task id="20" name="Tache_B_8 Yanis" color="#8cb6ce" meeting="false" start="2022-03-24" duration="1" complete="0" thirdDate="2022-03-04" thirdDate-constraint="0" priority="2" expand="true">
                 <task id="19" name="Tache_B_7 Julien" color="#8cb6ce" meeting="false" start="2022-03-24" duration="1" complete="0" thirdDate="2022-03-04" thirdDate-constraint="0" expand="true">
-                    <depend id="20" type="2" difference="0" hardness="Strong"/>
                     <depend id="24" type="2" difference="0" hardness="Strong"/>
                     <task id="31" name="fonctions effets carte dans les .c" color="#8cb6ce" meeting="false" start="2022-03-24" duration="1" complete="0" thirdDate="2022-03-04" thirdDate-constraint="0" expand="true"/>
                 </task>
