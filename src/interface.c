@@ -32,7 +32,7 @@ void affiche_plateau(plateau p) {
     retourne_factions(p,&faction1, &faction2);
     printf("  ");
     for(j=max_west;j<=max_east;j+=1) {
-        printf("|%6i",j);
+        printf("|%7i",j);
     }
     putchar('|');
     printf("\n");
@@ -47,34 +47,18 @@ void affiche_plateau(plateau p) {
             switch ( cachee_visible_existe(&p,i,j)) {
 
                 case 0: {
-                   /*  cell cell_to_print= get_cell(g,i,j);
+                    cell cell_to_print= get_cell(g,i,j);
                     int num_faction= get_faction_id(get_faction(cell_to_print));
                     if(num_faction==1){
                         printf("\033[0;31m");
-                        printf("%4s","X");
+                        printf("   X   ");
                         printf("\033[00m");
                     }
                     else {
-                        printf("%4s","X");
-                    } */
-                    //A SUPRR
-                    cell cell_to_print= get_cell(g,i,j);
-                    carte card_to_print= get_card(cell_to_print);
-                    int num_faction= get_faction_id(get_faction(cell_to_print));
-
-                    char * name_card= get_nom_court(card_to_print);
-                    if(num_faction==1) {
-                        printf("\033[0;33m");
-                        printf("%6s",name_card);
-                        printf("\033[00m"); 
+                        printf("\033[0;34m");
+                        printf("   X   ");
+                        printf("\033[00m");
                     }
-                    else{
-                        printf("\033[0;32m");
-                        printf("%6s",name_card);
-                        printf("\033[00m"); 
-
-                    }
-                    // A SUPPR
                 }
                 break;
                 case 1:
@@ -86,16 +70,18 @@ void affiche_plateau(plateau p) {
                     char * name_card= get_nom_court(card_to_print);
                     if(num_faction==1) {
                         printf("\033[0;31m");
-                        printf("%6s",name_card);
+                        printf("%7s",name_card);
                         printf("\033[00m"); 
                     }
                     else{
-                        printf("%6s",name_card);
+                        printf("\033[0;34m");
+                        printf("%7s",name_card);
+                        printf("\033[00m"); 
                     }
                 }
                 break;
                 default: {
-                    printf("%6s","");
+                    printf("%7s","");
 
                 }
             }
@@ -103,13 +89,16 @@ void affiche_plateau(plateau p) {
         }
         printf("|\n");
     }
-    printf("\n La faction 1 %s possède %i points ddrs. ",get_faction_nom(faction1),get_ddrs(faction1));
-    printf("\n La faction 2 %s possède %i points ddrs. \n",get_faction_nom(faction2),get_ddrs(faction2));
+    printf("\n\033[0;31m La faction 1 %s possède %i points ddrs.\033[00m  ",get_faction_nom(faction1),get_ddrs(faction1));
+    printf("\n\033[0;34m La faction 2 %s possède %i points ddrs.\033[00m\n",get_faction_nom(faction2),get_ddrs(faction2));
+
+    printf(" Rappel: Les cartes posées par la faction 1 sont affichées en\033[0;31m rouge\033[00m.\n         Les cartes posées par la faction 2 sont affichées en\033[0;34m bleu\033[00m.\n");
+    printf("         Les cartes non retournées sont affichées par un \"X\"");
 }
 
 
 void affiche_main(faction f) {
-    printf("\n Faction %i Voici votre main: \n",get_faction_id(f));
+    printf("\nFaction %i Voici votre main: \n",get_faction_id(f));
     liste main_f= get_main(f);
     int cpt; // Compteur pour la taille de la main (pour afficher en dessous l'indice de la carte)
     cpt=0;
@@ -155,12 +144,12 @@ int mulligan_main(faction f, int already){
 carte choix_carte(faction f){
     liste main_f= get_main(f);
     int length_main= len_liste(main_f);
-    printf("\n Quelle carte voulez vous poser?[1,...,%i]\n",length_main);
+    printf("\nQuelle carte voulez vous poser?[1,...,%i]\n",length_main);
     int answer;
     scanf("%d",&answer);
     getchar();
      while(answer<1||answer>length_main){
-        printf("\n Quelle carte voulez vous poser? Veuillez choisir un entier entre 1 et %i.\n",length_main);
+        printf("\nQuelle carte voulez vous poser? Veuillez choisir un entier entre 1 et %i.\n",length_main);
         scanf("%d",&answer);
         getchar();
     }
@@ -176,11 +165,12 @@ void position_carte(faction f, int* x,int* y,int called,int premier){
         int answer_x;
         do{
             if(premier==0){
-                printf("\n Faction %i: %s comme vous posez la première carte de la manche il n'y a pas besoin d'entrer de coordonées.",get_faction_id(f),get_faction_nom(f));
+                printf("\n Faction %i: %s comme vous posez la première carte de la manche il n'y a pas besoin d'entrer de coordonées.\n",get_faction_id(f),get_faction_nom(f));
                 *x=1;
                 *y=1;
                 answer_x=1;
                 answer_y=1;
+                sleep(4);
             }
             else {
             if(called==0) {

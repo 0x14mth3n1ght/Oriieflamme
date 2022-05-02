@@ -107,7 +107,7 @@ int main()
     {
         remelanger_main(&faction2);
     }
-    /*On choisie aléatoirement une deux des factions */
+    /*On choisit aléatoirement une deux des factions */
     if (manche != 2)
     {
         starting_faction = rand() % 2;
@@ -116,7 +116,7 @@ int main()
     {
         starting_faction = (starting_faction + 1) % 2;
     }
-    for (int j = 0; j < 16; j += 1)
+    for (int j = 0; j < nb_cartes_main_debut_manche*2; j += 1)
     {
         if ((j + starting_faction) % 2 == 1)
         {
@@ -139,7 +139,6 @@ int main()
     * 
     */
    int restes_cartes = abs(get_nb_cartes_posees(partie) - get_nb_cartes_visibles(partie));
-   printf("il reste:%i",restes_cartes);
     while (restes_cartes>0){
         affiche_effet(active_carte(&partie));
         affiche_plateau(partie);

@@ -192,7 +192,7 @@ void set_faction_id(faction *f, int n){
 faction set_faction_defaut(){
     faction f= malloc(10*sizeof(faction));
     set_faction_id(&f,0);
-    set_name(&f,"sans nom");
+    set_name(&f,"");
     set_ddrs(&f,0);
     set_main(&f,NULL);
     set_pioche(&f,NULL);
