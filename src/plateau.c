@@ -487,8 +487,9 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
     case id_ecocup:
         break;
     case id_reprographie:{
-        int compteur = 0; //Compteur de cartes paires
+        int compteur = 0; //Compteur de paires de cartes
         liste tmp = deepcopy(hist_visible);
+        push(REPRO, &tmp); //La carte qui vient d'etre retournée n'est pas encore dans l'historique des cartes retournées
         while (test_vide(tmp)!=1){
             elt e = pop(&tmp);
             int n = nb_elt(e, tmp); //Le nombre de paires dans m cartes identiques est égal au nombre d'arrêtes dans un graphe complet d'ordre m
@@ -531,25 +532,36 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
         add_ddrs(p_adv, -3*nb);
         break;}
     case id_kb:{
-        int nb_non_retournees = 0; //Compteur de cartes non retournées
+        /*Construction de la liste qui contient les cartes du plateau non retournées*/
+        liste tmp_non_ret = cree_liste_vide(); //Liste qui contiendra les cartes du plateau non retournées
+        int len_tmp = 0; //Longueur de tmp_non_ret
         /*Parcours de tout le plateau*/
         for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
             for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
-                if ((i!=x && j!=y) || cachee_visible_existe(pp, i, j) == 0)//S'il y a une carte face cachée (qui n'est pas Kahina Bouchama)
-                    nb_non_retournees++;
+                if ((i!=x && j!=y) || cachee_visible_existe(pp, i, j) == 0){//S'il y a une carte face cachée (qui n'est pas Kahina Bouchama)
+                    carte c = get_card(get_cell(g, i, j));
+                    push(c, &tmp_non_ret);
+                    len_tmp++;
+                }
             }
         }
-        int random_carte_num = rand()%(nb_non_retournees); //Choix au hasard d'une carte non-retournée
-        int compteur_carte_rand = 0;
+
+        int random_carte_pos = rand()%(len_tmp); //Choix au hasard d'une carte non-retournée
+        carte random_c = get_at(random_carte_pos, tmp_non_ret);
+        int occ_tmp = nb_elt(random_c, tmp_non_ret); //Nombre d'occurence de random_c dans tmp_non_ret
+        int random_occ = rand()%(occ_tmp) +1; //Choix au hasard de l'occurence de c parmis les cartes non-retournées
+        int compteur_carte = 1; //Nombre de fois qu'on tombera sur la carte
         /*Parcours de tout le plateau*/
         for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
             for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
                 if ((i!=x && j!=y) || cachee_visible_existe(pp, i, j) == 0){//On regarde les cartes face cachées (on ne supprime pas Kahina Bouchama)
-                    if (compteur_carte_rand == random_carte_num){//Si on tombe sur la carte choisie
-                        supp_case(pp, i, j);
-                        return;
+                    if (get_carte_id(get_card(get_cell(g, i, j))) == get_carte_id(random_c)){//Si on tombe sur la carte choisie
+                        if (random_occ == compteur_carte){//Si on tombe sur la bonne occurrence
+                            supp_case(pp, i, j);
+                            return;
+                        }
+                        compteur_carte++; //On augmente car on est tombé sur la carte
                     }
-                    random_carte_num++;
                 }
             }
         }
