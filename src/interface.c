@@ -38,7 +38,7 @@ void affiche_plateau(plateau p) {
     printf("\n");
 
     for(i=max_north; i<=max_south; i+=1){
-        print_ligne((max_east-max_west+1)*7+3);
+        print_ligne((max_east-max_west+1)*8+3);
         printf("\n");
         printf("%2i",i);
         for(j=max_west;j<=max_east;j+=1) {
