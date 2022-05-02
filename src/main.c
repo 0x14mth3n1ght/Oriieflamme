@@ -94,7 +94,6 @@ int main()
    
     while (reinitialisation(&partie)==1)
     {
-    print_faction(faction1);
     manche += 1;
     affiche_main(faction1);
     if (mulligan_main(faction1, a_remelanger_main(faction1)))
