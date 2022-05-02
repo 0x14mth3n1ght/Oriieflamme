@@ -32,13 +32,13 @@ void affiche_plateau(plateau p) {
     retourne_factions(p,&faction1, &faction2);
     printf("  ");
     for(j=max_west;j<=max_east;j+=1) {
-        printf("|%4i",j);
+        printf("|%6i",j);
     }
     putchar('|');
     printf("\n");
 
     for(i=max_north; i<=max_south; i+=1){
-        print_ligne((max_east-max_west+1)*6);
+        print_ligne((max_east-max_west+1)*8-3);
         printf("\n");
         printf("%2i",i);
         for(j=max_west;j<=max_east;j+=1) {
@@ -47,7 +47,7 @@ void affiche_plateau(plateau p) {
             switch ( cachee_visible_existe(&p,i,j)) {
 
                 case 0: {
-                    cell cell_to_print= get_cell(g,i,j);
+                   /*  cell cell_to_print= get_cell(g,i,j);
                     int num_faction= get_faction_id(get_faction(cell_to_print));
                     if(num_faction==1){
                         printf("\033[0;31m");
@@ -56,7 +56,25 @@ void affiche_plateau(plateau p) {
                     }
                     else {
                         printf("%4s","X");
+                    } */
+                    //A SUPRR
+                    cell cell_to_print= get_cell(g,i,j);
+                    carte card_to_print= get_card(cell_to_print);
+                    int num_faction= get_faction_id(get_faction(cell_to_print));
+
+                    char * name_card= get_nom_court(card_to_print);
+                    if(num_faction==1) {
+                        printf("\033[0;33m");
+                        printf("%6s",name_card);
+                        printf("\033[00m"); 
                     }
+                    else{
+                        printf("\033[0;32m");
+                        printf("%6s",name_card);
+                        printf("\033[00m"); 
+
+                    }
+                    // A SUPPR
                 }
                 break;
                 case 1:
@@ -77,7 +95,7 @@ void affiche_plateau(plateau p) {
                 }
                 break;
                 default: {
-                    printf("%4s","");
+                    printf("%6s","");
 
                 }
             }
@@ -176,11 +194,11 @@ int affiche_gagnant_manche(faction f1, faction f2){
     ddrs1=get_ddrs(f1);
     ddrs2=get_ddrs(f2);
     if (ddrs1 > ddrs2 ) {
-        printf("\n Le vainqueur de cette partie est la faction: %s avec %i points ddrs contre %i.", get_faction_nom(f1),ddrs1,ddrs2);
+        printf("\n Le vainqueur de cette manche est la faction: %s avec %i points ddrs contre %i.", get_faction_nom(f1),ddrs1,ddrs2);
         return 1;
     }
     else{
-        printf("\n Le vainqueur de cette partie est la faction: %s avec %i points ddrs contre %i.", get_faction_nom(f2),ddrs2,ddrs1);
+        printf("\n Le vainqueur de cette manche est la faction: %s avec %i points ddrs contre %i.", get_faction_nom(f2),ddrs2,ddrs1);
         return 2;
     }
 }
