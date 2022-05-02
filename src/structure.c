@@ -28,7 +28,7 @@ const cell nulle = NULL;
 grid new_grille(int n, int p){
     grid out = malloc(n*sizeof(cell*));
     for (int i=0; i<n; i++){
-        out[i] = malloc(p*sizeof(cell));
+        out[i] = calloc(p,sizeof(cell));
         for (int j=0; j<p; j++){
             out[i][j] = nulle;
         }
@@ -55,7 +55,7 @@ int est_libre(grid g, int x, int y){
 }
 
 void free_grille(grid* pg){
-    for (int i=N-1; i>=0; i--){
+    for (int i=0; i<N; i++){
         for (int j=0; j<P; j++){
             free((*pg)[i][j]);
         }
