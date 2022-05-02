@@ -420,6 +420,7 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
             int y_hg = taille_ligne_direction(west, g, x);
             pose_carte(pp, pf, a_poser, x_hg, y_hg-nb_posees);
         }
+        free(tmp_pioche);
         break;}
     case id_ssa:
         if (find(ALCOOL, hist_visible)!=-1){//Si une carte alcool a été retournée
@@ -551,6 +552,7 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
         int occ_tmp = nb_elt(random_c, tmp_non_ret); //Nombre d'occurence de random_c dans tmp_non_ret
         int random_occ = rand()%(occ_tmp) +1; //Choix au hasard de l'occurence de c parmis les cartes non-retournées
         int compteur_carte = 1; //Nombre de fois qu'on tombera sur la carte
+        free(tmp_non_ret);
         /*Parcours de tout le plateau*/
         for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
             for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
@@ -686,49 +688,44 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
             add_ddrs(pf, 5);
         break;}
     case id_el:{
-        liste tmp = cree_liste_vide();
-        cell choix_cellules[5]; //tableau des cellules choisies
-        int choix_cartes_id[5]; //tableau des id des cartes choisies
-        for (int n=0; n<5; n++){
-            int nb_lignes = abs(taille_grille(south, g) - taille_grille(north, g) +1);
-            int nb_colonnes = abs(taille_grille(east, g) - taille_grille(west, g) +1);
-
-            //Choix de la cellule
-            int i = rand()%(nb_lignes);
-            int j = rand()%(nb_colonnes);
-            cell cell_choisie = get_cell(g, i, j);
-            while (get_visible(cell_choisie)!=1 || mem_cell_table(cell_choisie, choix_cellules, n) == 1){//Si la carte choisie est visible, ou si la cellule a déjà été choisie (déjà dans les n premières cases de choix_cellules), on recommence
-                i = rand()%(nb_lignes);
-                j = rand()%(nb_colonnes);
-                cell_choisie = get_cell(g, i, j);
+        liste tmp_el = cree_liste_vide();
+        for (int k=0; k<5;k++){//Choix des 5 cartes
+            int random_carte_pos = rand()%(len_liste(hist_visible)); //Choix au hasard d'une carte retournée
+            carte random_c = get_at(random_carte_pos, hist_visible);
+            int c_id = get_carte_id(random_c);
+            if (c_id==id_cd || c_id==id_all || c_id==id_gb || c_id==id_cm || c_id==id_tl || c_id==id_jf || c_id==id_dw){
+                push(random_c, &tmp_el);
             }
-            
-            //on a choisi une cellule ayant une carte visible et pas encore choisie
-            choix_cellules[n] = cell_choisie;
-            choix_cartes_id[n] = get_carte_id(get_card(cell_choisie));
-            
-            switch (choix_cartes_id[n]){
-                case id_cd: push(CD, &tmp); break;
-                case id_all: push(ALL, &tmp); break;
-                case id_gb: push(GB, &tmp); break;
-                case id_cm: push(CM, &tmp); break;
-                case id_tl: push(TL, &tmp); break;
-                case id_jf: push(JF, &tmp); break;
-                case id_dw: push(DW, &tmp); break;
-                default: break;
+            int occ_tmp = nb_elt(random_c, hist_visible); //Nombre d'occurence de random_c dans tmp_non_ret
+            int random_occ = rand()%(occ_tmp) +1; //Choix au hasard de l'occurence de c parmis les cartes non-retournées
+            int compteur_carte = 1; //Nombre de fois qu'on tombera sur la carte
+            /*Parcours de tout le plateau*/
+            for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
+                for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
+                    if (cachee_visible_existe(pp, i, j) == 1 || cachee_visible_existe(pp, i, j) == 2){//On regarde les cartes retournées
+                        if (get_carte_id(get_card(get_cell(g, i, j))) == get_carte_id(random_c)){//Si on tombe sur la carte choisie
+                            if (random_occ == compteur_carte){//Si on tombe sur la bonne occurrence
+                                supp_case(pp, i, j);
+                                goto end_double_loop;
+                            }
+                            compteur_carte++; //On augmente car on est tombé sur la carte
+                        }
+                    }
+                }
             }
-            supp_case(pp, i, j); //On supprime la carte du plateau (si c'est une des cartes citées, elle sera déplacée, sinon simplement supprimée)
+            end_double_loop:
         }
-        tmp = melanger(tmp);
+        tmp_el = melanger(tmp_el);
+
         int prem_ligne = taille_grille(north, g);
         int y_carte_hg = taille_ligne_direction(west, g, prem_ligne);
         int compteur = 0; //Décalage vers la gauche par rapport à la carte en haut a gauche
-        while (test_vide(tmp)!=1){//On pose les cartes
-            elt c_mel = pop(&tmp);
+        while (test_vide(tmp_el)!=1){//On pose les cartes
+            elt c_mel = pop(&tmp_el);
             compteur++;
             pose_carte(pp, pf, c_mel, prem_ligne, y_carte_hg -compteur);
         }
-        free(tmp);
+        free(tmp_el);
         break;}
     case id_lpacav:
         for (int j=taille_ligne_direction(west, g, x); j<=taille_ligne_direction(east, g, x); j++){//Parcours de ligne
