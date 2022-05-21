@@ -7,18 +7,6 @@
 /* Type abstrait d'un plateau de jeu */
 typedef struct plateau_base *plateau;
 
-/* Type concret d'une case du plateau */
-struct cell_base{
-   carte c;
-   faction f;
-   /* indique si une carte est posee sur cette case */
-   int occupee;
-   /* indique si la carte est retournee */
-   int visible;
-   /* indique si l'effet de la carte est active */
-   int activee;
-};
-
 typedef struct cell_base * cell;
 
 /**
@@ -201,6 +189,20 @@ liste get_cartes_visibles(plateau p);
 liste get_cartes_activees(plateau p);
 
 /**
+* \brief fonction permettant de récupérer les cellules ayant une carte posée sur le plateau
+* \param p le plateau 
+* \return la liste des cellules non-vides sur le plateau
+*/
+liste get_cell_posees(plateau p);
+
+/**
+* \brief fonction permettant de récupérer les cellules disponibles sur le plateau
+* \param p le plateau 
+* \return la liste des cellules disponibles sur le plateau
+*/
+liste get_cell_dispo(plateau p);
+
+/**
 * \brief fonction permettant de savoir le nombre de fois où la carte ALL a été retournéee
 * \param p le plateau 
 * \return le nombre de fois où la carte ALL a été retournéee
@@ -215,5 +217,31 @@ int get_ALL(plateau p);
 * \return rien
 */
 void set_ALL(plateau *p, int n);
+
+/**
+ * @brief retourne la liste des cellules adjacentes de la cellule @b c non occupées
+ * @attention La liste est potentiellement vide
+ * @attention La cellule doit être non-vide et ne doit pas se trouver au bord du plateau @b p
+ * @param p plateau
+ * @param c cellule non-vide
+ * @return liste des cellules adjacentes à la cellule en @b c non occupées
+ */
+liste adjacent_libre(plateau p, cell c);
+
+/**
+ * @brief obtient la coordonnée x de @b c
+ * 
+ * @param c cellule valide 
+ * @return abscisse de @b c
+ */
+int getX(cell c);
+
+/**
+ * @brief obtient la coordonnée y de @b c
+ * 
+ * @param c cellule valide 
+ * @return ordonnée de @b c
+ */
+int getY(cell c);
 
 #endif

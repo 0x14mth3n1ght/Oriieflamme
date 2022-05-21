@@ -182,6 +182,14 @@ grid sous_grille(grid g, int x1, int y1, int x2, int y2){
     return out;
 }
 
+int get_sizeX(){
+    return N;
+}
+
+int get_sizeY(){
+    return P;
+}
+
 /*--------------------------------- Liste chaînée ---------------------------------*/
 /**
  * @struct bucket
@@ -215,6 +223,11 @@ void push(elt e, liste *pl){
     *pl = cons(e, *pl);
 }
 
+void push_unique_cell(cell c, liste* pl){
+    if (find_cell(c, *pl)==-1)
+        push(c, pl);
+}
+
 elt pop(liste* pl){
     if (*pl == NULL){
         printf("Error pop : list is empty.\n");
@@ -237,6 +250,18 @@ int find(elt e, liste l){
     int i = 0;
     while (l!=NULL){
         if (equals(l->val,e)==1)
+            return i;
+        i++;
+        l = l->next;
+    }
+    //e n'a pas été trouvé
+    return -1;
+}
+
+int find_cell(cell c, liste l){
+    int i = 0;
+    while (l!=NULL){
+        if (cell_equals(l->val,c)==1)
             return i;
         i++;
         l = l->next;
@@ -341,7 +366,17 @@ int liste_equals(liste l1, liste l2){
     return 1;
 }
 
-void print_liste(liste l){
+liste concat(liste l1, liste l2){
+    liste out = l1;
+    while (l1->next!=NULL){//Accès au dernier élément de l1
+        l1 = l1->next;
+    }
+    l1->next = l2; //Joint le dernier élément de l1 au premier élément de l2
+    return out;
+}
+
+
+void print_liste(liste l){//Ne fonctionne que si les éléments de la liste sont des cartes
     while(test_vide(l)!=1){
         printf("%d -> ", get_carte_id(pop(&l)));
     }

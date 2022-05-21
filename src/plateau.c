@@ -4,8 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct plateau_base *plateau;
-
+/*Type concret de la structure de plateau*/
 struct plateau_base{
     grid grille;
     faction faction1;
@@ -14,22 +13,44 @@ struct plateau_base{
     int nb_cartes_visibles;
     int nb_cartes_activees;
     int nb_ALL_retournee;
+    liste cell_posees;
+    liste cell_dispo;
     liste cartes_visibles;
     liste cartes_activees;
+};
+
+
+/* Type concret d'une case du plateau */
+struct cell_base{
+   carte c;
+   faction f;
+   /* indique si une carte est posee sur cette case */
+   int occupee;
+   /* indique si la carte est retournee */
+   int visible;
+   /* indique si l'effet de la carte est active */
+   int activee;
+   /*Coordonnées de la cellule*/
+   int x;
+   int y;
 };
 
 /**
  * @brief fonction permettant de construire une cell avec une carte donnee retournee
  * @param car une carte
  * @param fac une faction 
+ * @param x abscisse
+ * @param y ordonnée
 */
-cell construcuteur_cell(carte car, faction fac){
+cell construcuteur_cell(carte car, faction fac, int x, int y){
     cell out = malloc(sizeof(struct cell_base));
     out->c = car;
     out->f = fac;
     out->occupee = 1;
     out->visible = 0;
     out->activee = 0;
+    out->x = x;
+    out->y = y;
     return out;
 };
 
@@ -39,6 +60,9 @@ plateau cree_plateau(){
     grid g = init_grille();
     faction f1 = set_faction_defaut();
     faction f2 = set_faction_defaut();
+    
+    liste l_posees = cree_liste_vide();
+    liste l_dispo = cree_liste_vide();
     liste l_visibles = cree_liste_vide();
     liste l_activees = cree_liste_vide();
     /* initialisation des attributs du plateau */
@@ -48,6 +72,8 @@ plateau cree_plateau(){
     resultat->nb_cartes_posees = 0;
     resultat->nb_cartes_visibles = 0;
     resultat->nb_cartes_activees = 0;
+    resultat->cell_posees = l_posees;
+    resultat->cell_dispo = l_dispo;
     resultat->cartes_visibles = l_visibles;
     resultat->cartes_activees = l_activees;
     resultat->nb_ALL_retournee = 0;
@@ -64,6 +90,8 @@ plateau cree_plateau(){
 
 void detruire_plateau(plateau *p){
     free_grille(&(*p)->grille);
+    free_liste(&((*p)->cell_posees));
+    free_liste(&((*p)->cell_dispo));
     free_liste(&((*p)->cartes_visibles));
     free_liste(&((*p)->cartes_activees));
     free_liste(&((*p)->faction1->main));
@@ -125,21 +153,39 @@ faction get_faction_plateau(plateau p, int n){/*n=1 ou 2*/
     }
 }
 
+void refresh_dispo(plateau* p){
+    liste dispo = cree_liste_vide();
+    liste iter_posees = (*p)->cell_posees; //Itérateur sur les cellules posées
+    while (test_vide(iter_posees) != 1){
+        liste tmp = adjacent_libre(*p, pop(&iter_posees));
+        while (test_vide(tmp)!=1){
+            push_unique_cell(pop(&tmp), &dispo);
+        }
+    }
+    (*p)->cell_dispo = dispo;
+}
 
 int pose_carte(plateau *p, faction *fac, carte car, int x, int y){
+    if (car == NULL){//Pas de carte
+        return 0;
+    }
     if (get_nb_cartes_posees(*p)==0){
-        cell nouvelle_cell = construcuteur_cell(car, *fac);
+        cell nouvelle_cell = construcuteur_cell(car, *fac, get_sizeX()/2, get_sizeY()/2);
         enlever(car, &((*fac)->main));
+        push(nouvelle_cell, &(*p)->cell_posees);
         (*p)->nb_cartes_posees += 1;
         premiere_cellule(nouvelle_cell, &(*p)->grille);
+        refresh_dispo(p);
         return 1;
     }
     int sum=cachee_visible_existe(p,x-1,y)+cachee_visible_existe(p,x+1,y)+cachee_visible_existe(p,x,y-1)+cachee_visible_existe(p,x,y+1);
     if(cachee_visible_existe(p, x, y)==3 && sum !=12){   
-        cell nouvelle_cell = construcuteur_cell(car, *fac);
+        cell nouvelle_cell = construcuteur_cell(car, *fac, x, y);
         enlever(car, &((*fac)->main));
+        push(nouvelle_cell, &(*p)->cell_posees);
         (*p)->nb_cartes_posees += 1;
         placer_cell(nouvelle_cell, &(*p)->grille, x , y);
+        refresh_dispo(p);
         return 1;
     }
     return 0;
@@ -195,12 +241,14 @@ int supp_case(plateau* pp, int x, int y){
     switch (cachee_visible_existe(pp, x, y)){
         case 0: //carte face cachée
             supp_cell_grille(&g, x, y);
+            enlever(get_cell(g, x, y), &(*pp)->cell_posees);
             ((*pp)->nb_cartes_posees)--;
             return 1;
             break;
         case 1:{ //carte face visible
             carte c = get_card(get_cell(g, x, y));
             enlever(c, &((*pp)->cartes_visibles));
+            enlever(get_cell(g, x, y), &(*pp)->cell_posees);
             supp_cell_grille(&g, x, y);
             ((*pp)->nb_cartes_visibles)--;
             ((*pp)->nb_cartes_posees)--;
@@ -208,6 +256,7 @@ int supp_case(plateau* pp, int x, int y){
             break;}
         case 2:{ //carte face visible et activée
             carte c = get_card(get_cell(g, x, y));
+            enlever(get_cell(g, x, y), &(*pp)->cell_posees);
             enlever(c, &((*pp)->cartes_visibles));
             enlever(c, &((*pp)->cartes_activees));
             supp_cell_grille(&g, x, y);
@@ -277,6 +326,14 @@ liste get_cartes_activees(plateau p){
     return p->cartes_activees;
 };
 
+liste get_cell_posees(plateau p){
+    return p->cell_posees;
+}
+
+liste get_cell_dispo(plateau p){
+    return p->cell_dispo;
+}
+
 void set_nb_cartes_posees(plateau *p, int n){
     (*p)->nb_cartes_posees = n;
 };
@@ -296,6 +353,61 @@ int get_ALL(plateau p){
 void set_ALL(plateau *p, int n){
     (*p)->nb_ALL_retournee = n;
 };
+
+liste adjacent_libre(plateau p, cell c){
+    liste out = cree_liste_vide(); //Liste des cellules adjacentes à p(x,y)
+    int x = getX(c);
+    int y = getY(c);
+    if (cachee_visible_existe(&p, x, y) == 3){//S'il n'y a pas de cellule en (x,y)
+        printf("Error adjacent_libre(x,y) : Pas de carte posée en (x,y)");
+        exit(EXIT_FAILURE);
+        return out;
+    }
+    //Parcours des cellules adjacentes de p(x,y)
+    for (int i=-1; i<=1; i+=2){ // i={-1;1}
+        if (cachee_visible_existe(&p, x+i, y) == 3){ //S'il n'y a pas de carte adjacente à p(x,y) dans cette direction
+            //Construction de la cellule non-occupée (mais non-nulle)
+            cell c = construcuteur_cell(NULL, NULL, x+i, y);
+            c->occupee = 0;
+            push(c, &out);
+        }
+    }
+    for (int j=-1; j<=1; j+=2){ // j={-1;1}
+        if (cachee_visible_existe(&p, x, y+j) == 3){ //S'il n'y a pas de carte adjacente à p(x,y) dans cette direction
+            //Construction de la cellule non-occupée (mais non-nulle)
+            cell c = construcuteur_cell(NULL, NULL, x, y+j);
+            c->occupee = 0;
+            push(c, &out);
+        }
+    }
+    /*---------TEST----------*/
+    liste iter_out = out;
+    while(test_vide(iter_out)!=1){
+        cell c = pop(&iter_out);
+        printf("ADJACENT LIBRE : (%d, %d)\n", getX(c), getY(c));
+    }
+    printf("end test\n");
+    /*--------FIN TEST-------*/
+    return out;
+}
+
+int getX(cell c){
+    return c->x;
+}
+
+int getY(cell c){
+    return c->y;
+}
+
+int cell_equals(cell c1, cell c2){
+    return (
+        c1->c == c2->c &&
+        c1->f == c2->f &&
+        c1->x == c2->x &&
+        c1->y == c2->y
+    );
+}
+
 
 //id des cartes (pour la clarté du code)
 #define id_fise 1
