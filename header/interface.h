@@ -49,4 +49,11 @@ int affiche_gagnant(faction f1, faction f2);
 @ensures    : affiche le vainqueur de la manche en cours et retourne 1 ou 2 le numéro de la faction gagnante*/
 
 int affiche_gagnant_manche(faction f1, faction f2);
+
+/**
+ * @brief Affiche les emplacements disponibles de @b p pour poser une carte
+ * 
+ * @param p plateau valide
+ */
+void print_coordonnees_dispo(plateau p);
 #endif

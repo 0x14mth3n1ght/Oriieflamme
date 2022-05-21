@@ -230,3 +230,13 @@ int affiche_gagnant(faction f1, faction f2){
         return 2;
     }
 }
+
+void print_coordonnees_dispo(plateau p){
+    liste dispo = get_cell_dispo(p);
+    printf("\n Emplacements disponibles :");
+    while (test_vide(dispo)!=1){
+        cell c = pop(&dispo);
+        printf("(%d, %d) ", getY(c), getX(c));
+    }
+    printf("\n");
+}

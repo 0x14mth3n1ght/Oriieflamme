@@ -59,6 +59,7 @@ void tour_de_jeu(faction* fact, plateau* partie)
         affiche_main(*fact);
         new_card = choix_carte(*fact);
         affiche_plateau(*partie);
+        print_coordonnees_dispo(*partie); //Affiche les coordonnées des emplacements disponibles pour placer une carte
         position_carte(*fact, &x,&y,cpt,get_nb_cartes_posees(*partie));
         possible = pose_carte(partie, fact, new_card,x,y);
         cpt+=1;
