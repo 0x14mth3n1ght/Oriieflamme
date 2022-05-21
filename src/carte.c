@@ -1,27 +1,28 @@
+#include <stdlib.h>
 #include "../header/carte.h"
 
 int get_carte_id(carte c){
-    return c.id;
+    return c->id;
 };
 
 char* get_carte_nom(carte c){
-    return c.nom;
+    return c->nom;
 };
 
 char* get_carte_description(carte c){
-    return c.description;
+    return c->description;
 };
 
 int get_carte_occurences(carte c){
-    return c.occurences;
+    return c->occurences;
 };
 
 char* get_nom_court(carte c){
-    return c.nom_court;
+    return c->nom_court;
 };
 
 int equals(carte c, carte d){
-  return (c.id == d.id);
+  return (c->id == d->id);
 };
 
 /**
@@ -34,12 +35,12 @@ int equals(carte c, carte d){
  * @return la carte voulue
  */
 carte constructeur_de_carte(int id, char* nom, char* desc, int occ, char* nom_court){
-    carte out;
-    out.id = id;
-    out.nom = nom;
-    out.description = desc;
-    out.occurences = occ;
-    out.nom_court = nom_court;
+    carte out = malloc(sizeof(struct carte_base));
+    out->id = id;
+    out->nom = nom;
+    out->description = desc;
+    out->occurences = occ;
+    out->nom_court = nom_court;
     return out;
 };
 

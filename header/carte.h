@@ -4,7 +4,7 @@
 /**
 * \struct ceci est le type carte
 */
-struct carte {
+struct carte_base {
     int id;
     char* nom;
     char* description;
@@ -12,9 +12,9 @@ struct carte {
     char* nom_court;
 };
 
-typedef struct carte carte;
+typedef struct carte_base *carte;
 
-typedef carte elt;
+
 
 /**
 * \brief cette fonction permet de recuperer l'id d'une carte

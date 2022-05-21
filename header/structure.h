@@ -153,7 +153,21 @@ int supp_cell_grille(grid* pg, int x, int y);
  */
 grid sous_grille(grid g, int x1, int y1, int x2, int y2);
 
+/**
+ * @return le nombre de lignes de la grille
+ */
+int get_sizeX();
+
+/**
+ * @return le nombre de colonnes de la grille
+ */
+int get_sizeY();
+
 /*--------------------------------- Liste chainée ---------------------------------*/
+
+//Type des éléments des listes chaînées
+typedef void* elt;
+
 /**
  * @typedef liste 
  * @brief Structure de liste chaînée. Pointeur vers la structure de maillons. Ses éléments sont de type abstrait @b elt 
@@ -184,6 +198,14 @@ int test_vide(liste l);
 void push(elt e, liste* pl);
 
 /**
+ * @brief Modifie @b *pl en lui ajoutant un élément @b e ssi @b e n'est déjà pas présent dans @b *pl.
+ * 
+ * @param e la cellule à ajouter
+ * @param pl pointeur valide vers une liste valide, celle dont on veut ajouter l'élément.
+ */
+void push_unique_cell(cell e, liste* pl);
+
+/**
  * @brief Modifie @b *pl en retirant l'élément en haut de la liste.
  * 
  * @param pl pointeur valide vers une liste valide non vide.
@@ -210,6 +232,26 @@ elt peek(liste l);
  *         @b -1 si @b e n'est pas dans @b l .
  */
 int find(elt e, liste l);
+
+/**
+ * @brief Recherche de cellule dans une liste
+ * 
+ * @param c la cellule à rechercher
+ * @param l liste valide
+ * @return l'indice de première occurence de @b c dans @b l (indexé de @a 0 à @a len_liste(l)-1 ),
+ *         @b -1 si @b c n'est pas dans @b l .
+ */
+int find_cell(cell c, liste l);
+
+/**
+ * @brief Comparateur de cellule (sans prendre en compte l'état de la carte)
+ * @note Sera implémentée dans le fichier implétant concrètement le type cell
+ * 
+ * @param c1 cellule valide
+ * @param c2 cellule valide
+ * @return 1 si @b c1 et @b c2 possèdent la même carte, posée par la même faction, aux mêmes coordonnées
+ */
+int cell_equals(cell c1, cell c2);
 
 /**
  * @brief Longueur de liste
@@ -280,6 +322,14 @@ liste deepcopy(liste l);
  */
 int liste_equals(liste l1, liste l2);
 
+/**
+ * @brief Concaténation de listes
+ * 
+ * @param l1 liste valide
+ * @param l2 liste valide
+ * @return liste ayant d'abord les éléments dans l'ordre de @b l1 , puis de @b l2
+ */
+liste concat(liste l1, liste l2);
 
 void print_liste(liste l);
 
