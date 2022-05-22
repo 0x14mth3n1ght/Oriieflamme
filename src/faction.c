@@ -67,6 +67,10 @@ liste get_pioche(faction f){
     return f->pioche;
 };
 
+int get_is_computer(faction f){
+    return f->is_computer;
+}
+
 void set_pioche_defaut(faction *f){
     liste pioche_defaut = cree_liste_vide(); 
     int i;
@@ -198,7 +202,7 @@ faction set_faction_defaut(){
     set_pioche(&f,NULL);
     set_nb_victoires(&f,0);
     f->a_remelange=0;
-    //set_pioche_defaut(&f);
+    f->is_computer = 0;
     return f;
 };
 

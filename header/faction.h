@@ -17,6 +17,7 @@ struct faction_base {
     int nb_manches_gagnees;
     /* vaut 0 lorsque la faction est créee */
     int a_remelange;
+    int is_computer; //1 si la faction est jouée par un ordinateur, 0 sinon
 };
 
 typedef struct faction_base *faction;
@@ -166,7 +167,13 @@ void set_nb_victoires(faction *f, int i);
 */  
 liste get_pioche(faction f);
 
-/* fonctions supplémentaires que j'implémenterai si j'ai le temps */
+/**
+ * @brief accesseur de f->is_computer 
+ * 
+ * @param f faction valide
+ * @return 1 si @b f est jouée par l'ordinateur, 0 sinon
+ */
+int get_is_computer(faction f);
 
 /**
 * \brief cette procédure permet de modifier la pioche d'une
