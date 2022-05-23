@@ -67,8 +67,8 @@ liste get_pioche(faction f){
     return f->pioche;
 };
 
-int get_is_computer(faction f){
-    return f->is_computer;
+int is_bot(faction f){
+    return f->is_bot;
 }
 
 void set_pioche_defaut(faction *f){
@@ -193,6 +193,14 @@ void set_faction_id(faction *f, int n){
     (*f)->id = n;
 }
 
+void set_is_bot(faction* pf, int n){
+    if (n!=0 && n!=1){
+        printf("Error set_is_bot(&f, n) : n must be 0 or 1.\n");
+        exit(EXIT_FAILURE);
+    }
+    (*pf)->is_bot = n;
+}
+
 faction set_faction_defaut(){
     faction f= malloc(10*sizeof(faction));
     set_faction_id(&f,0);
@@ -202,7 +210,7 @@ faction set_faction_defaut(){
     set_pioche(&f,NULL);
     set_nb_victoires(&f,0);
     f->a_remelange=0;
-    f->is_computer = 0;
+    f->is_bot = 0;
     return f;
 };
 
@@ -212,4 +220,5 @@ void print_faction(faction f){
     printf("pioche=");
     print_liste((*f).pioche);
     printf("nb_manches_gagnees=%d,\n a_remelange=%d\n", (*f).nb_manches_gagnees, (*f).a_remelange);
+    printf("computer ? =%d\n", (*f).is_bot);
 }

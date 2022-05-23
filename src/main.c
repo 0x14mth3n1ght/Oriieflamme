@@ -55,12 +55,19 @@ void tour_de_jeu(faction* fact, plateau* partie)
     int cpt=0;
     while (!possible)
     {
-        affiche_plateau(*partie);
-        affiche_main(*fact);
+        if (is_bot(*fact) == 0){ // Pas d'affichage pour les ordinateurs
+            affiche_plateau(*partie);
+            affiche_main(*fact);
+        }
+        
         new_card = choix_carte(*fact);
-        affiche_plateau(*partie);
-        print_coordonnees_dispo(*partie); //Affiche les coordonnées des emplacements disponibles pour placer une carte
-        position_carte(*fact, &x,&y,cpt,get_nb_cartes_posees(*partie));
+
+        if (is_bot(*fact) == 0){ // Pas d'affichage pour les ordinateurs
+            affiche_plateau(*partie);
+            print_coordonnees_dispo(*partie); //Affiche les coordonnées des emplacements disponibles pour placer une carte
+        }
+        
+        position_carte(*fact, &x,&y,cpt,get_nb_cartes_posees(*partie), *partie);
         possible = pose_carte(partie, fact, new_card,x,y);
         cpt+=1;
     }
@@ -71,6 +78,8 @@ int main()
     init_cartes(); //On initialise les cartes
     srand(time(NULL)); // Utilisé pour pour générer le rand()
     print_title();
+
+
     /* manche est le compteur de manche afin de savoir comment sélectionner la faction qui commence
     *
     * starting_faction est la faction qui commence:
@@ -86,6 +95,9 @@ int main()
 
     faction faction1 = get_faction_plateau(partie, 1);
     faction faction2 = get_faction_plateau(partie, 2);
+
+    mode_de_jeu(&partie);
+
     //retourne_factions(partie,&faction1, &faction2);
 
     /*

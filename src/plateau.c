@@ -380,14 +380,6 @@ liste adjacent_libre(plateau p, cell c){
             push(c, &out);
         }
     }
-    /*---------TEST----------*/
-    liste iter_out = out;
-    while(test_vide(iter_out)!=1){
-        cell c = pop(&iter_out);
-        printf("ADJACENT LIBRE : (%d, %d)\n", getX(c), getY(c));
-    }
-    printf("end test\n");
-    /*--------FIN TEST-------*/
     return out;
 }
 

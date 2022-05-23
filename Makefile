@@ -9,7 +9,7 @@ clean:
 rmall: clean
 	rm -rf bin/jeu
 
-main.o: carte.o faction.o interface.o plateau.o structure.o
+main.o: carte.o faction.o interface.o plateau.o structure.o bot.o
 	$(CC) -c src/main.c -o  obj/main.o
 
 carte.o: header/carte.h
@@ -26,3 +26,6 @@ plateau.o: header/plateau.h
 
 structure.o: header/structure.h 
 	$(CC) -c src/structure.c -o obj/structure.o
+
+bot.o: header/bot.h
+	$(CC) -c src/bot.c -o obj/$@
