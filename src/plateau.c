@@ -240,8 +240,8 @@ int supp_case(plateau* pp, int x, int y){
     grid g = get_grid(*pp);
     switch (cachee_visible_existe(pp, x, y)){
         case 0: //carte face cachée
-            supp_cell_grille(&g, x, y);
             enlever(get_cell(g, x, y), &(*pp)->cell_posees);
+            supp_cell_grille(&g, x, y);
             ((*pp)->nb_cartes_posees)--;
             return 1;
             break;
@@ -466,6 +466,7 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
     int ddrs = get_ddrs(*pf); /*nombre actuel de points ddrs de la faction *pf*/
     liste hist_visible = get_cartes_visibles(*pp);
     int nb_retournees = len_liste(hist_visible);
+    liste hist_posees = get_cell_posees(*pp);
 
     switch (get_carte_id(c)){
     case id_fise:
@@ -488,26 +489,18 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
         break;}
     case id_liiens:{
         liste tmp_pioche = cree_liste_vide();
-        //Parcours de grille
-        for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
-            for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
-                cell c_parcours = get_cell(g,i,j);
-                if (get_visible(c_parcours) == 1){//S'il y a une carte sur la case et qu'elle est visible
-                    if (get_carte_id(get_card(c_parcours)) == id_fise){//si la carte en (i,j) est FISE
-                        supp_case(pp, i, j);
-                        push(FISE, &tmp_pioche);
-                    }
-                    if (get_carte_id(get_card(c_parcours)) == id_fisa){//si la carte en (i,j) est FISA
-                        supp_case(pp, i, j);
-                        push(FISA, &tmp_pioche);
-                    }
-                    if (get_carte_id(get_card(c_parcours)) == id_fc){//si la carte en (i,j) est FC
-                        supp_case(pp, i, j);
-                        push(FISE, &tmp_pioche);
-                    }
-                }
+
+        while (test_vide(hist_posees) != 1){//Parcours des cartes posées
+            cell c = pop(&hist_posees);
+            carte card = get_card(c);
+            int i = getX(c);
+            int j = getY(c);
+            if (equals(card, FISE)==1||equals(card, FISA)==1||equals(card, FC)==1){
+                supp_case(pp, i, j);
+                push(card, &tmp_pioche);
             }
         }
+
         tmp_pioche = melanger(tmp_pioche);
         int nb_posees = 0; //Nombre de cartes qu'on repose
         while (test_vide(tmp_pioche)!= 1){//Tant que la tmp_pioche n'est pas vide
@@ -788,6 +781,8 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
     case id_el:{
         liste tmp_el = cree_liste_vide();
         for (int k=0; k<5;k++){//Choix des 5 cartes
+            if (len_liste(hist_visible) == 0)
+                break;
             int random_carte_pos = rand()%(len_liste(hist_visible)); //Choix au hasard d'une carte retournée
             carte random_c = get_at(random_carte_pos, hist_visible);
             int c_id = get_carte_id(random_c);
