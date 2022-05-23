@@ -3,6 +3,9 @@ CC = gcc -Wall -Wextra -std=c99 -g
 jeu: main.o
 	$(CC) obj/*.o -o bin/jeu
 
+debug: jeu
+debug: CC += -DDEBUG
+
 clean:
 	rm -rf obj/*.o
 

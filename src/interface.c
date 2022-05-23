@@ -185,7 +185,9 @@ void position_carte(faction f, int* x,int* y,int called,int premier, plateau p){
 
                 if (is_bot(f) == 0){ // Pas d'affichage si la faction est jouée par un ordinateur. 
                     printf("\n Faction %i: %s comme vous posez la première carte de la manche il n'y a pas besoin d'entrer de coordonées.\n",get_faction_id(f),get_faction_nom(f));
+                    #ifndef DEBUG
                     sleep(4);
+                    #endif
                 } else {
                     printf("\n Faction %i (%s) vient de placer sa carte.\n", get_faction_id(f), get_faction_nom(f));
                 }
@@ -230,7 +232,9 @@ void position_carte(faction f, int* x,int* y,int called,int premier, plateau p){
 }
 
 void affiche_effet(carte c){
+    #ifndef DEBUG
     sleep(5);
+    #endif
     printf("\nLa carte %s vient d'être retournée.\n",get_carte_nom(c));
     printf("Voici la description de cette carte:\n%s\n",get_carte_description(c));
 }
@@ -276,6 +280,15 @@ void print_coordonnees_dispo(plateau p){
 void mode_de_jeu(plateau* pp){
 
     faction faction1 = get_faction_plateau(*pp, 1);
+    faction faction2 = get_faction_plateau(*pp, 2);
+    #ifdef DEBUG
+    set_name(&faction1, "Ordinateur 1");
+    set_is_bot(&faction1, 1);
+
+    set_name(&faction2, "Ordinateur 2");
+    set_is_bot(&faction2, 1);
+    return;
+    #endif
 
     printf("\n FACTION 1 : \n");
     printf("Choisissez si la faction 1 est un joueur ou un ordinateur :\n Entrer 0 pour joueur\n Entrer 1 pour ordinateur\n >>> ");
@@ -298,8 +311,6 @@ void mode_de_jeu(plateau* pp){
         set_name(&faction1, "Ordinateur 1");
         set_is_bot(&faction1, 1);
     }
-
-    faction faction2 = get_faction_plateau(*pp, 2);
 
     printf("\n FACTION 2 : \n");
     printf("Choisissez si la faction 2 est un joueur ou un ordinateur :\n Entrer 0 pour joueur\n Entrer 1 pour ordinateur\n >>> ");

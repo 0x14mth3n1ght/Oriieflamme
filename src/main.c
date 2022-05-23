@@ -75,6 +75,10 @@ void tour_de_jeu(faction* fact, plateau* partie)
 
 int main()
 {
+    #ifdef DEBUG
+    printf("Debug mode\n");
+    #endif
+
     init_cartes(); //On initialise les cartes
     srand(time(NULL)); // Utilisé pour pour générer le rand()
     print_title();
