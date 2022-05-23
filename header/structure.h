@@ -226,12 +226,12 @@ elt peek(liste l);
 /**
  * @brief Recherche d'élément dans une liste
  * 
- * @param e l'élément à rechercher
+ * @param e la carte à rechercher
  * @param l liste valide
  * @return l'indice de première occurence de @b e dans @b l (indexé de @a 0 à @a len_liste(l)-1 ),
  *         @b -1 si @b e n'est pas dans @b l .
  */
-int find(elt e, liste l);
+int find(carte e, liste l);
 
 /**
  * @brief Recherche de cellule dans une liste

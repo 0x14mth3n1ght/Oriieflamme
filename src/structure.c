@@ -246,7 +246,7 @@ elt peek(liste l){
     return l->val;
 }
 
-int find(elt e, liste l){
+int find(carte e, liste l){
     int i = 0;
     while (l!=NULL){
         if (equals(l->val,e)==1)
