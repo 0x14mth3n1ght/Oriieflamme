@@ -249,7 +249,7 @@ elt peek(liste l){
 int find(carte e, liste l){
     int i = 0;
     while (l!=NULL){
-        if (equals(l->val,e)==1)
+        if (equals((carte)l->val,e)==1)
             return i;
         i++;
         l = l->next;

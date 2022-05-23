@@ -22,7 +22,8 @@ char* get_nom_court(carte c){
 };
 
 int equals(carte c, carte d){
-  return (c->id == d->id);
+    if (c==NULL || d==NULL) return 0;
+    return (c->id == d->id);
 };
 
 /**

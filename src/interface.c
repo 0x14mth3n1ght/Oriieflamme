@@ -235,6 +235,8 @@ void affiche_effet(carte c){
     #ifndef DEBUG
     sleep(5);
     #endif
+    if (c==NULL)
+        return;
     printf("\nLa carte %s vient d'être retournée.\n",get_carte_nom(c));
     printf("Voici la description de cette carte:\n%s\n",get_carte_description(c));
 }

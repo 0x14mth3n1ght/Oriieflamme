@@ -195,14 +195,14 @@ int retourne_carte(plateau *p, int x, int y){
     grid g = get_grid(*p);
     //Cellule coordonnees x y
     cell cellule = get_cell(g, x, y);
-    if (cellule != NULL){
+    if (cellule != NULL && cellule->c != NULL){
         if (get_occupee(cellule) == 1 && get_visible(cellule) == 0){
             carte car = get_card(cellule);
             cellule->visible = 1;
             (*p)->nb_cartes_visibles += 1;
             push(car, &(*p)->cartes_visibles);
             return 1;
-	    }
+        }
         else return 0;
     }
     else return 0;
@@ -360,7 +360,6 @@ liste adjacent_libre(plateau p, cell c){
     int y = getY(c);
     if (cachee_visible_existe(&p, x, y) == 3){//S'il n'y a pas de cellule en (x,y)
         printf("Error adjacent_libre(x,y) : Pas de carte posée en (x,y)");
-        exit(EXIT_FAILURE);
         return out;
     }
     //Parcours des cellules adjacentes de p(x,y)
@@ -543,7 +542,7 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
         supp_case(pp, x-1, y);
         supp_case(pp, x+1, y);
         break;
-    case id_cafe:
+    case id_cafe:{
         while (test_vide(hist_posees) != 1){//Parcours des cartes posées
             cell c_parcours = pop(&hist_posees);
             if (get_visible(c_parcours) == 1){//S'il y a une carte sur la case et qu'elle est visible
@@ -554,12 +553,13 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
                     supp_case(pp, i, j);
             }
         }
+        liste hist_visible = get_cartes_visibles(*pp);
         if (find(ECOC, hist_visible)!= -1)
             add_ddrs(pf, 1);
         else
             add_ddrs(pf, -1);
-        break;
-    case id_the:
+        break;}
+    case id_the: {
         while (test_vide(hist_posees) != 1){//Parcours des cartes posées
             cell c_parcours = pop(&hist_posees);
             if (get_visible(c_parcours) == 1){//S'il y a une carte sur la case et qu'elle est visible
@@ -570,11 +570,12 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
                     supp_case(pp, i, j);
             }
         }
+        liste hist_visible = get_cartes_visibles(*pp);
         if (find(ECOC, hist_visible)!= -1)
             add_ddrs(pf, 1);
         else
             add_ddrs(pf, -1);
-        break;
+        break;}
     case id_ecocup:
         break;
     case id_reprographie:{
@@ -611,8 +612,12 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
         for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){/*Parcours de ligne*/
             int gauche = taille_ligne_direction(west, g, i);
             int droite = taille_ligne_direction(east, g, i);
+            if (droite < gauche)
+                break;
+            else {
             retourne_carte(pp, i, gauche);
             retourne_carte(pp, i, droite);
+            }
         }
         break;
     case id_heure_sup:{
@@ -863,7 +868,7 @@ carte active_carte(plateau *pp){
     cell hg = non_visible_hg(*pp, &x_hg, &y_hg);
     if (hg==NULL || hg->c == NULL){
         printf("Il n'y a plus de cartes sur le plateau.\n");
-        return FISE; /*Une carte...*/
+        return NULL;
     }
 
     carte c = get_card(hg);

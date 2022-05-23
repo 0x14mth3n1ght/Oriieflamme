@@ -155,11 +155,18 @@ int main()
     * Cela assure la terminaison de la boucle while
     * 
     */
-   int restes_cartes = abs(get_nb_cartes_posees(partie) - get_nb_cartes_visibles(partie) )-get_ALL(partie);
-    while (restes_cartes>0){
+   int restes_cartes = get_nb_cartes_posees(partie) - get_nb_cartes_visibles(partie) -get_ALL(partie);
+    while (restes_cartes>0 && get_nb_cartes_posees(partie) > 0){
+        #ifdef DEBUG
+        printf("\nRestes cartes : %d\n", restes_cartes);
+        printf("NB cartes posees : %d\n", get_nb_cartes_posees(partie));
+        printf("NB cartes visibles : %d\n", get_nb_cartes_visibles(partie));
+        printf("Calcul : %d\n", get_nb_cartes_posees(partie) - get_nb_cartes_visibles(partie) -get_ALL(partie));
+        printf("ALL : %d\n", get_ALL(partie));
+        #endif
         affiche_effet(active_carte(&partie));
         affiche_plateau(partie);
-        restes_cartes=abs(get_nb_cartes_posees(partie) - get_nb_cartes_visibles(partie));
+        restes_cartes=(get_nb_cartes_posees(partie) - get_nb_cartes_visibles(partie) -get_ALL(partie));
     }
     affiche_gagnant_manche(faction1,faction2);
     if (get_ddrs(faction1)>get_ddrs(faction2)) {
