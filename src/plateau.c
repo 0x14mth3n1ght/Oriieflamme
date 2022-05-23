@@ -595,36 +595,13 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
         int nb_f=0; //Nombre de carte non retournées et non supprimée posées par *pf
         int nb_adv=0; //Nombre de carte non retournées et non supprimée posées par *p_adv
         
-        /*Parcours de tout le plateau*/
-        for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
-            for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
-                cell curr_cell = get_cell(g, i, j);
-                if (cachee_visible_existe(pp, i, j) == 0){//Si la carte en (i,j) est face cachée
-                    if (get_faction_id(get_faction(curr_cell)) == get_faction_id(*pf))//Si la carte a été posée par *pf
-                        nb_f++;
-                    else if (get_faction_id(get_faction(curr_cell)) == get_faction_id(*p_adv))//Si la carte a été posée par *p_adv
-                        nb_adv++;
-                }
-            }
-        }
         while (test_vide(hist_posees) != 1){//Parcours des cartes posées
-            cell c_parcours = pop(&hist_posees);
-            if (cachee_visible_existe(c_parcours, getX(c_parcours), getY(c_parcours)) == 0){//S'il y a une carte sur la case et qu'elle est face cachée
-                carte card = get_card(c_parcours);
-                int i = getX(c_parcours);
-                int j = getY(c_parcours);
-                if (equals(card, THE)==1||equals(card, ALCOOL)==1)//si la carte en (i,j) est THE ou ALCOOL
-                    supp_case(pp, i, j);
-            }
-        }
-        while (test_vide(hist_posees) != 1){//Parcours des cartes posées
-            cell c_parcours = pop(&hist_posees);
-            if (get_visible(c_parcours) == 1){//S'il y a une carte sur la case et qu'elle est visible
-                carte card = get_card(c_parcours);
-                int i = getX(c_parcours);
-                int j = getY(c_parcours);
-                if (equals(card, THE)==1||equals(card, ALCOOL)==1)//si la carte en (i,j) est THE ou ALCOOL
-                    supp_case(pp, i, j);
+            cell curr_cell = pop(&hist_posees);
+            if (get_visible(curr_cell) == 0){//S'il y a une carte sur la case et qu'elle est face cachée
+                if (get_faction_id(get_faction(curr_cell)) == get_faction_id(*pf))//Si la carte a été posée par *pf
+                    nb_f++;
+                else if (get_faction_id(get_faction(curr_cell)) == get_faction_id(*p_adv))//Si la carte a été posée par *p_adv
+                    nb_adv++;
             }
         }
         add_ddrs(pf, nb_f);
@@ -643,40 +620,18 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
         add_ddrs(p_adv, -3*nb);
         break;}
     case id_kb:{
-        /*Construction de la liste qui contient les cartes du plateau non retournées*/
-        liste tmp_non_ret = cree_liste_vide(); //Liste qui contiendra les cartes du plateau non retournées
-        int len_tmp = 0; //Longueur de tmp_non_ret
-        /*Parcours de tout le plateau*/
-        for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
-            for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
-                if ((i!=x && j!=y) || cachee_visible_existe(pp, i, j) == 0){//S'il y a une carte face cachée (qui n'est pas Kahina Bouchama)
-                    carte c = get_card(get_cell(g, i, j));
-                    push(c, &tmp_non_ret);
-                    len_tmp++;
-                }
+        /*Construction de la liste des cellules du plateau de carte non-retournées*/
+        liste tmp_non_ret = cree_liste_vide(); //Liste qui contiendra les cellules du plateau non retournées
+        while (test_vide(hist_posees) != 1){//Parcours des cartes posées
+            cell c_parcours = pop(&hist_posees);
+            if (get_visible(c_parcours) == 0){//S'il y a une carte sur la case et qu'elle est face cachée
+                push(c_parcours, &tmp_non_ret);
             }
         }
-
-        int random_carte_pos = rand()%(len_tmp); //Choix au hasard d'une carte non-retournée
-        carte random_c = get_at(random_carte_pos, tmp_non_ret);
-        int occ_tmp = nb_elt(random_c, tmp_non_ret); //Nombre d'occurence de random_c dans tmp_non_ret
-        int random_occ = rand()%(occ_tmp) +1; //Choix au hasard de l'occurence de c parmis les cartes non-retournées
-        int compteur_carte = 1; //Nombre de fois qu'on tombera sur la carte
+        int random_carte_pos = rand()%(len_liste(tmp_non_ret)); //Choix au hasard d'une carte non-retournée
+        cell random_c = get_at(random_carte_pos, tmp_non_ret);
+        supp_case(pp, getX(random_c), getY(random_c));
         free(tmp_non_ret);
-        /*Parcours de tout le plateau*/
-        for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
-            for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
-                if ((i!=x && j!=y) || cachee_visible_existe(pp, i, j) == 0){//On regarde les cartes face cachées (on ne supprime pas Kahina Bouchama)
-                    if (get_carte_id(get_card(get_cell(g, i, j))) == get_carte_id(random_c)){//Si on tombe sur la carte choisie
-                        if (random_occ == compteur_carte){//Si on tombe sur la bonne occurrence
-                            supp_case(pp, i, j);
-                            return;
-                        }
-                        compteur_carte++; //On augmente car on est tombé sur la carte
-                    }
-                }
-            }
-        }
         break;}
     case id_kg:{
         int nb_lignes = abs(taille_grille(south, g) - taille_grille(north, g) +1); //vérifier par calcul
@@ -704,14 +659,14 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
             add_ddrs(p_adv, 3);
         break;
     case id_js:
-        /*Parcours de tout le plateau*/
-        for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
-            for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
-                cell curr_cell = get_cell(g, i, j);
-                if (get_visible(curr_cell)==1){
-                    if (get_carte_id(get_card(curr_cell)) == id_heure_sup)
-                        supp_case(pp, i, j);
-                }
+        while (test_vide(hist_posees) != 1){//Parcours des cartes posées
+            cell c_parcours = pop(&hist_posees);
+            if (get_visible(c_parcours) == 1){//S'il y a une carte sur la case et qu'elle est visible
+                carte card = get_card(c_parcours);
+                int i = getX(c_parcours);
+                int j = getY(c_parcours);
+                if (equals(card, HS)==1)//si la carte en (i,j) est HS
+                    supp_case(pp, i, j);
             }
         }
         break;
@@ -757,11 +712,13 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
         break;
     case id_cm:
         if (find(HS, hist_visible)!=-1){
-            /*Parcours de tout le plateau*/
-            for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
-                for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
-                    cell curr_cell = get_cell(g, i, j);
-                    if (get_carte_id(get_card(curr_cell)) != id_cm && get_carte_id(get_card(curr_cell)) != id_heure_sup)
+            while (test_vide(hist_posees) != 1){//Parcours des cartes posées
+                cell c_parcours = pop(&hist_posees);
+                if (get_visible(c_parcours) == 1){//S'il y a une carte sur la case et qu'elle est visible
+                    carte card = get_card(c_parcours);
+                    int i = getX(c_parcours);
+                    int j = getY(c_parcours);
+                    if (equals(card, HS)!=1||equals(card, CM)!=1)//si la carte en (i,j) est ni HS ni CM
                         supp_case(pp, i, j);
                 }
             }
@@ -798,46 +755,42 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
             add_ddrs(pf, 5);
         break;}
     case id_el:{
-        liste tmp_el = cree_liste_vide();
-        for (int k=0; k<5;k++){//Choix des 5 cartes
-            if (len_liste(hist_visible) == 0)
-                break;
-            int random_carte_pos = rand()%(len_liste(hist_visible)); //Choix au hasard d'une carte retournée
-            carte random_c = get_at(random_carte_pos, hist_visible);
-            int c_id = get_carte_id(random_c);
-            if (c_id==id_cd || c_id==id_all || c_id==id_gb || c_id==id_cm || c_id==id_tl || c_id==id_jf || c_id==id_dw){
-                push(random_c, &tmp_el);
+        int compteur = 0;
+        int min = 5 < len_liste(hist_visible) ? 5 : len_liste(hist_visible);
+
+        /*Construction de la liste des cellules du plateau de carte retournées*/
+        liste tmp_ret = cree_liste_vide(); //Liste qui contiendra les cellules du plateau non retournées
+        while (test_vide(hist_posees) != 1){//Parcours des cartes posées
+            cell c_parcours = pop(&hist_posees);
+            if (get_visible(c_parcours) == 1){//S'il y a une carte sur la case et qu'elle est face retournée
+                push(c_parcours, &tmp_ret);
             }
-            int occ_tmp = nb_elt(random_c, hist_visible); //Nombre d'occurence de random_c dans tmp_non_ret
-            int random_occ = rand()%(occ_tmp) +1; //Choix au hasard de l'occurence de c parmis les cartes non-retournées
-            int compteur_carte = 1; //Nombre de fois qu'on tombera sur la carte
-            /*Parcours de tout le plateau*/
-            for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
-                for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
-                    if (cachee_visible_existe(pp, i, j) == 1 || cachee_visible_existe(pp, i, j) == 2){//On regarde les cartes retournées
-                        if (get_carte_id(get_card(get_cell(g, i, j))) == get_carte_id(random_c)){//Si on tombe sur la carte choisie
-                            if (random_occ == compteur_carte){//Si on tombe sur la bonne occurrence
-                                supp_case(pp, i, j);
-                                goto end_double_loop;
-                            }
-                            compteur_carte++; //On augmente car on est tombé sur la carte
-                        }
-                    }
-                }
-            }
-            end_double_loop:;
         }
+
+        /*Construction de la liste des 5 cartes de l'effet*/
+        liste tmp_el = cree_liste_vide();
+        while (compteur < min){
+            if (len_liste(tmp_ret) == 0)
+                break;
+            int random_pos = rand()%(len_liste(tmp_ret)); //Choix au hasard d'une cellule de carte retournée
+            cell random_cell_ret = get_at(random_pos, tmp_ret);
+            enlever(random_cell_ret, &tmp_ret); //Retrait de celle ci de la liste des cellules à choisir
+            push(get_card(random_cell_ret), &tmp_el); //Ajout dans la liste des cartes de l'effet
+            supp_case(pp, getX(random_cell_ret), getY(random_cell_ret)); //Retrait de la case de la grille
+        }
+
         tmp_el = melanger(tmp_el);
 
         int prem_ligne = taille_grille(north, g);
         int y_carte_hg = taille_ligne_direction(west, g, prem_ligne);
-        int compteur = 0; //Décalage vers la gauche par rapport à la carte en haut a gauche
+        int shift = 0; //Décalage vers la gauche par rapport à la carte en haut a gauche
         while (test_vide(tmp_el)!=1){//On pose les cartes
-            elt c_mel = pop(&tmp_el);
-            compteur++;
-            pose_carte(pp, pf, c_mel, prem_ligne, y_carte_hg -compteur);
+            carte c_mel = pop(&tmp_el);
+            shift++;
+            pose_carte(pp, pf, c_mel, prem_ligne, y_carte_hg -shift);
         }
         free(tmp_el);
+        free(tmp_ret);
         break;}
     case id_lpacav:
         for (int j=taille_ligne_direction(west, g, x); j<=taille_ligne_direction(east, g, x); j++){//Parcours de ligne
@@ -908,7 +861,7 @@ carte active_carte(plateau *pp){
     int x_hg;
     int y_hg;
     cell hg = non_visible_hg(*pp, &x_hg, &y_hg);
-    if (hg==NULL){
+    if (hg==NULL || hg->c == NULL){
         printf("Il n'y a plus de cartes sur le plateau.\n");
         return FISE; /*Une carte...*/
     }
