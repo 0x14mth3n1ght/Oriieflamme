@@ -3,6 +3,10 @@
 #include <stddef.h>
 #include <unistd.h>
 #include <string.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_timer.h>
+
 /*Obtention des types carte, faction et plateau*/
 #include "../header/carte.h"
 #include "../header/faction.h"
@@ -95,7 +99,126 @@ void affiche_plateau(plateau p) {
 
     printf(" Rappel: Les cartes posées par la faction 1 sont affichées en\033[0;31m rouge\033[00m.\n         Les cartes posées par la faction 2 sont affichées en\033[0;34m bleu\033[00m.\n");
     printf("         Les cartes non retournées sont affichées par un \"X\"");
+
+
+      if (SDL_Init(SDL_INIT_VIDEO) == 0) {
+        SDL_Window* window = NULL;
+        SDL_Renderer* renderer = NULL;
+        SDL_Event event;
+        if (SDL_CreateWindowAndRenderer(640, 480, 0, &window, &renderer) == 0) {
+            SDL_bool done = SDL_FALSE;
+
+            while (!done) {
+
+                SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+                SDL_RenderClear(renderer);
+                SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+
+                
+            for(int i=max_north; i<=max_south+1; i+=1){
+                int droite_hori =(480/(max_south -max_north  + 1)) *(i-max_north);
+                SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+
+                SDL_RenderDrawLine(renderer, 0,droite_hori,640,droite_hori);
+
+            }
+            for(int j=max_west;j<=max_east+1;j+=1) {
+                SDL_SetRenderDrawColor(renderer, 255, 255, 255, SDL_ALPHA_OPAQUE);
+
+                int droite_vert=(640/(max_east-max_west + 1))*(j-max_west);
+                SDL_RenderDrawLine(renderer, droite_vert,0,droite_vert, 480);
+
+
+            
+            }
+            for(i=max_north; i<=max_south; i+=1){
+            
+                for(j=max_west;j<=max_east;j+=1) {
+            
+                    switch ( cachee_visible_existe(&p,i,j)) {
+
+                        case 0: {
+                            cell cell_to_print= get_cell(g,i,j);
+                            int num_faction= get_faction_id(get_faction(cell_to_print));
+                                if(num_faction==1){
+                                    SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
+                                    int x1 =(640/(max_east-max_west + 1)) *(j-max_west);
+                                    int y1= (480/(max_south -max_north  + 1))*(i-max_north);
+                                    int x2 =(640/(max_east-max_west + 1)) *(j+1-max_west);
+                                    int y2= (480/(max_south -max_north  + 1))*(i+1-max_north);
+                                    
+                                    SDL_RenderDrawLine(renderer, x1,y1,x2,y2);
+                                    SDL_RenderDrawLine(renderer, x1,y2,x2,y1);
+
+
+                                }       
+                                else {
+                                    SDL_SetRenderDrawColor(renderer, 0, 0, 255, SDL_ALPHA_OPAQUE);
+                                    int x1 =(640/(max_east-max_west + 1)) *(j-max_west);
+                                    int y1= (480/(max_south -max_north  + 1))*(i-max_north);
+                                    int x2 =(640/(max_east-max_west + 1)) *(j+1-max_west);
+                                    int y2= (480/(max_south -max_north  + 1))*(i+1-max_north);
+                                    
+                                    SDL_RenderDrawLine(renderer, x1,y1,x2,y2);
+                                    SDL_RenderDrawLine(renderer, x1,y2,x2,y1);
+
+                                }
+                        }
+                break;
+                case 1:
+                case 2:{
+                    cell cell_to_print= get_cell(g,i,j);
+                    carte card_to_print= get_card(cell_to_print);
+                    int num_faction= get_faction_id(get_faction(cell_to_print));
+                    if(num_faction==1) {
+                        SDL_Rect srcrect;
+
+                        int x1 =(640/(max_east-max_west + 1)) *(j-max_west);
+                        int y1= (480/(max_south -max_north  + 1))*(i-max_north);
+                        int x2 =(640/(max_east-max_west + 1)) *(j+1-max_west);
+                        int y2= (480/(max_south -max_north  + 1))*(i+1-max_north);
+                        srcrect.x=x1;
+                        srcrect.y=y1;
+
+                      /*   printf("\033[0;31m");
+                        printf("%7s",name_card);
+                        printf("\033[00m");  */
+                    }
+                    else{
+                        /* printf("\033[0;34m");
+                        printf("%7s",name_card);
+                        printf("\033[00m");  */
+                    }
+                }
+                break;
+                default: {
+
+                }
+            }
+        
+        }
+    }
+              SDL_RenderPresent(renderer);
+        while( SDL_PollEvent( &event ) ){
+            if(event.type==SDL_KEYDOWN){
+                SDL_Quit();
+                done=SDL_TRUE;
+            }
+            /* Look for a keypress */
+
+            }
+        }}
+
+        if (renderer) {
+            SDL_DestroyRenderer(renderer);
+        }
+        if (window) {
+            SDL_DestroyWindow(window);
+        }
+    }
+    SDL_Quit();
 }
+
 
 
 void affiche_main(faction f) {
