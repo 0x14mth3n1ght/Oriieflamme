@@ -179,12 +179,28 @@ void affiche_plateau(plateau p) {
                         int y2= (480/(max_south -max_north  + 1))*(i+1-max_north);
                         srcrect.x=x1;
                         srcrect.y=y1;
+                        srcrect.h=480/(max_south -max_north  + 1);
+                        srcrect.w=640/(max_east-max_west + 1);
+                        SDL_SetRenderDrawColor( renderer, 255, 0,0,255);
+                        SDL_RenderFillRect( renderer, &srcrect);
 
                       /*   printf("\033[0;31m");
                         printf("%7s",name_card);
                         printf("\033[00m");  */
                     }
                     else{
+                        SDL_Rect srcrect;
+
+                        int x1 =(640/(max_east-max_west + 1)) *(j-max_west);
+                        int y1= (480/(max_south -max_north  + 1))*(i-max_north);
+                        int x2 =(640/(max_east-max_west + 1)) *(j+1-max_west);
+                        int y2= (480/(max_south -max_north  + 1))*(i+1-max_north);
+                        srcrect.x=x1;
+                        srcrect.y=y1;
+                        srcrect.h=480/(max_south -max_north  + 1);
+                        srcrect.w=640/(max_east-max_west + 1);
+                        SDL_SetRenderDrawColor( renderer, 0, 0,255,255);
+                        SDL_RenderFillRect( renderer, &srcrect);
                         /* printf("\033[0;34m");
                         printf("%7s",name_card);
                         printf("\033[00m");  */
