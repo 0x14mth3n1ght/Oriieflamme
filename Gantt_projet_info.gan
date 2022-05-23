@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Projet_Informatique_S2" company="" webLink="http://" view-date="2022-04-25" view-index="0" gantt-divider-location="340" resource-divider-location="300" version="2.8.11" locale="fr_FR">
+<?xml version="1.0" encoding="UTF-8"?><project name="Projet_Informatique_S2" company="" webLink="http://" view-date="2022-04-24" view-index="0" gantt-divider-location="340" resource-divider-location="300" version="2.8.11" locale="fr_FR">
     <description><![CDATA[Organisation es tâche projet informatique]]></description>
     <view zooming-state="default:2" id="gantt-chart">
         <field id="tpd3" name="Nom" width="200" order="0"/>
@@ -63,6 +63,7 @@
             </task>
         </task>
         <task id="11" name="Lot_B" color="#8cb6ce" meeting="false" start="2022-03-21" duration="43" complete="0" thirdDate="2022-03-01" thirdDate-constraint="0" expand="true">
+            <depend id="36" type="2" difference="0" hardness="Strong"/>
             <task id="12" name="Tache_B_1 Aurélien" color="#8cb6ce" meeting="false" start="2022-03-21" duration="31" complete="0" thirdDate="2022-03-04" thirdDate-constraint="0" priority="0" expand="true">
                 <depend id="24" type="2" difference="0" hardness="Strong"/>
                 <task id="25" name="Makefile" color="#8cb6ce" meeting="false" start="2022-03-21" duration="31" complete="0" thirdDate="2022-04-01" thirdDate-constraint="0" expand="true"/>
