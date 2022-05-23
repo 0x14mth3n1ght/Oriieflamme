@@ -279,25 +279,25 @@ carte get_card(cell cellule){
 };
 
 faction get_faction(cell cellule){
-    if (cellule==NULL)
+    if (cellule==NULL || cellule->c == NULL)
         return NULL;
     return cellule->f;
 };
 
 int get_occupee(cell cellule){
-    if (cellule==NULL)
+    if (cellule==NULL || cellule->c == NULL)
         return 0;
     return cellule->occupee;
 };
 
 int get_visible(cell cellule){
-    if (cellule==NULL)
+    if (cellule==NULL || cellule->c == NULL)
         return 0;
     return cellule->visible;
 };
 
 int get_activee(cell cellule){
-    if (cellule==NULL)
+    if (cellule==NULL || cellule->c == NULL)
         return 0;
     return cellule->activee;
 };
@@ -515,17 +515,18 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
         break;}
     case id_ssa:
         if (find(ALCOOL, hist_visible)!=-1){//Si une carte alcool a été retournée
-            //Parcours de grille
-            for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
-                for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
-                    cell c_parcours = get_cell(g,i,j);
-                    if (get_visible(c_parcours) == 1){//S'il y a une carte sur la case et qu'elle est visible
-                        int card_id = get_carte_id(get_card(c_parcours));
-                        if (card_id == id_fise || card_id == id_fisa || card_id == id_fc)//si la carte en (i,j) est FISE, ou FISA, ou FC
-                            supp_case(pp, i, j);
-                    }
+
+            while (test_vide(hist_posees) != 1){//Parcours des cartes posées
+                cell c_parcours = pop(&hist_posees);
+                if (get_visible(c_parcours) == 1){//S'il y a une carte sur la case et qu'elle est visible
+                    carte card = get_card(c_parcours);
+                    int i = getX(c_parcours);
+                    int j = getY(c_parcours);
+                    if (equals(card, FISE)==1||equals(card, FISA)==1||equals(card, FC)==1)//si la carte en (i,j) est FISE, ou FISA, ou FC
+                        supp_case(pp, i, j);
                 }
             }
+
             int prem_ligne = taille_grille(north, g);
             int dern_ligne = taille_grille(south, g);
             for (int j=taille_grille(west, g); j<=taille_grille(east, g); j++){
@@ -543,15 +544,14 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
         supp_case(pp, x+1, y);
         break;
     case id_cafe:
-        //Parcours de grille
-        for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
-            for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
-                cell c_parcours = get_cell(g,i,j);
-                if (get_visible(c_parcours) == 1){//S'il y a une carte sur la case et qu'elle est visible
-                    int card_id = get_carte_id(get_card(c_parcours));
-                    if (card_id == id_the || card_id == id_alcool)//si la carte en (i,j) est Thé ou Alcool
-                        supp_case(pp, i, j);
-                }
+        while (test_vide(hist_posees) != 1){//Parcours des cartes posées
+            cell c_parcours = pop(&hist_posees);
+            if (get_visible(c_parcours) == 1){//S'il y a une carte sur la case et qu'elle est visible
+                carte card = get_card(c_parcours);
+                int i = getX(c_parcours);
+                int j = getY(c_parcours);
+                if (equals(card, THE)==1||equals(card, ALCOOL)==1)//si la carte en (i,j) est THE ou ALCOOL
+                    supp_case(pp, i, j);
             }
         }
         if (find(ECOC, hist_visible)!= -1)
@@ -560,15 +560,14 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
             add_ddrs(pf, -1);
         break;
     case id_the:
-        //Parcours de grille
-        for (int i=taille_grille(north, g); i<=taille_grille(south, g); i++){
-            for (int j=taille_ligne_direction(west, g, i); j<=taille_ligne_direction(east, g, i); j++){
-                cell c_parcours = get_cell(g,i,j);
-                if (get_visible(c_parcours) == 1){//S'il y a une carte sur la case et qu'elle est visible
-                    int card_id = get_carte_id(get_card(c_parcours));
-                    if (card_id == id_cafe || card_id == id_alcool)//si la carte en (i,j) est Café ou Alcool
-                        supp_case(pp, i, j);
-                }
+        while (test_vide(hist_posees) != 1){//Parcours des cartes posées
+            cell c_parcours = pop(&hist_posees);
+            if (get_visible(c_parcours) == 1){//S'il y a une carte sur la case et qu'elle est visible
+                carte card = get_card(c_parcours);
+                int i = getX(c_parcours);
+                int j = getY(c_parcours);
+                if (equals(card, CAFE)==1||equals(card, ALCOOL)==1)//si la carte en (i,j) est CAFE ou ALCOOL
+                    supp_case(pp, i, j);
             }
         }
         if (find(ECOC, hist_visible)!= -1)
@@ -606,6 +605,26 @@ void activation(carte c, plateau* pp, faction* pf, faction* p_adv, int x, int y)
                     else if (get_faction_id(get_faction(curr_cell)) == get_faction_id(*p_adv))//Si la carte a été posée par *p_adv
                         nb_adv++;
                 }
+            }
+        }
+        while (test_vide(hist_posees) != 1){//Parcours des cartes posées
+            cell c_parcours = pop(&hist_posees);
+            if (cachee_visible_existe(c_parcours, getX(c_parcours), getY(c_parcours)) == 0){//S'il y a une carte sur la case et qu'elle est face cachée
+                carte card = get_card(c_parcours);
+                int i = getX(c_parcours);
+                int j = getY(c_parcours);
+                if (equals(card, THE)==1||equals(card, ALCOOL)==1)//si la carte en (i,j) est THE ou ALCOOL
+                    supp_case(pp, i, j);
+            }
+        }
+        while (test_vide(hist_posees) != 1){//Parcours des cartes posées
+            cell c_parcours = pop(&hist_posees);
+            if (get_visible(c_parcours) == 1){//S'il y a une carte sur la case et qu'elle est visible
+                carte card = get_card(c_parcours);
+                int i = getX(c_parcours);
+                int j = getY(c_parcours);
+                if (equals(card, THE)==1||equals(card, ALCOOL)==1)//si la carte en (i,j) est THE ou ALCOOL
+                    supp_case(pp, i, j);
             }
         }
         add_ddrs(pf, nb_f);
