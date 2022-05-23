@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stddef.h>
 #include <unistd.h>
+#include <string.h>
 /*Obtention des types carte, faction et plateau*/
 #include "../header/carte.h"
 #include "../header/faction.h"
@@ -98,6 +99,10 @@ void affiche_plateau(plateau p) {
 
 
 void affiche_main(faction f) {
+    if (is_bot(f) == 1){//N'affiche pas la main d'un ordinateur
+        return;
+    }
+
     printf("\nFaction %i Voici votre main: \n",get_faction_id(f));
     liste main_f= get_main(f);
     int cpt; // Compteur pour la taille de la main (pour afficher en dessous l'indice de la carte)
@@ -123,6 +128,11 @@ int mulligan_main(faction f, int already){
     if (1==already){
         return 0;
     }
+
+    if (is_bot(f) == 1){ // Choix automatique pour l'ordinateur
+        return choose_mulligan();
+    }
+
     printf("\nFaction %i: %s vous pouvez, si vous le souhaitez vider votre main, mélanger la pioche et repiocher une nouvelle main. \n",get_faction_id(f),get_faction_nom(f));
     printf("Pour rappel, voux ne pouvez utiliser cette option qu'une seule fois dans toute la partie\n");
     printf("Souhaitez vous utiliser cette option? (y/n)\n");
@@ -142,7 +152,14 @@ int mulligan_main(faction f, int already){
 }
 
 carte choix_carte(faction f){
+
     liste main_f= get_main(f);
+
+    if (is_bot(f) == 1){
+        int choose = choose_card_index(f);
+        return get_at(choose, main_f);
+    }
+
     int length_main= len_liste(main_f);
     printf("\nQuelle carte voulez vous poser?[1,...,%i]\n",length_main);
     int answer;
@@ -160,19 +177,35 @@ carte choix_carte(faction f){
     } 
     return result;
 }
-void position_carte(faction f, int* x,int* y,int called,int premier){
+void position_carte(faction f, int* x,int* y,int called,int premier, plateau p){
         int answer_y;
         int answer_x;
         do{
             if(premier==0){
-                printf("\n Faction %i: %s comme vous posez la première carte de la manche il n'y a pas besoin d'entrer de coordonées.\n",get_faction_id(f),get_faction_nom(f));
+
+                if (is_bot(f) == 0){ // Pas d'affichage si la faction est jouée par un ordinateur. 
+                    printf("\n Faction %i: %s comme vous posez la première carte de la manche il n'y a pas besoin d'entrer de coordonées.\n",get_faction_id(f),get_faction_nom(f));
+                    sleep(4);
+                } else {
+                    printf("\n Faction %i (%s) vient de placer sa carte.\n", get_faction_id(f), get_faction_nom(f));
+                }
+
                 *x=1;
                 *y=1;
                 answer_x=1;
                 answer_y=1;
-                sleep(4);
             }
             else {
+            
+            if (is_bot(f) == 1){ //Choix de la carte pour un ordinateur
+                cell c = choose_cell_dispo(p);
+                *x = getX(c);
+                *y = getY(c);
+                called++;
+                printf("\n Faction %i (%s) vient de placer sa carte.\n", get_faction_id(f), get_faction_nom(f));
+                return;
+            }
+
             if(called==0) {
                 printf("\n Faction %i: %s où voulez vous poser votre carte? \n Rappel: la carte doit être adjacente à un autre carte déjà posée",get_faction_id(f),get_faction_nom(f));
             }     
@@ -194,7 +227,6 @@ void position_carte(faction f, int* x,int* y,int called,int premier){
             }
             }
         while (answer_x<0 || answer_x>46 || answer_y<0 || answer_y>46);
-        
 }
 
 void affiche_effet(carte c){
@@ -239,4 +271,56 @@ void print_coordonnees_dispo(plateau p){
         printf("(%d, %d) ", getY(c), getX(c));
     }
     printf("\n");
+}
+
+void mode_de_jeu(plateau* pp){
+
+    faction faction1 = get_faction_plateau(*pp, 1);
+
+    printf("\n FACTION 1 : \n");
+    printf("Choisissez si la faction 1 est un joueur ou un ordinateur :\n Entrer 0 pour joueur\n Entrer 1 pour ordinateur\n >>> ");
+    int answer1;
+    scanf("%d", &answer1);
+    getchar();
+    printf("\n");
+    while (answer1 != 0 && answer1 != 1){
+        printf("Veuillez entrer 0 pour que la faction 1 soit un joueur, 1 pour que ce soit un ordinateur\n >>> ");
+        scanf("%d", &answer1);
+        getchar();
+    }
+    if (answer1 == 0){//Joueur
+        char* name1 = malloc(100*sizeof(char)); //taille de nom maximale : 100
+        printf("Veuillez entrer votre nom :\n >>> ");
+        fflush(stdout);
+        scanf("%s", name1);
+        set_name(&faction1, name1);
+    } else {//Ordinateur
+        set_name(&faction1, "Ordinateur 1");
+        set_is_bot(&faction1, 1);
+    }
+
+    faction faction2 = get_faction_plateau(*pp, 2);
+
+    printf("\n FACTION 2 : \n");
+    printf("Choisissez si la faction 2 est un joueur ou un ordinateur :\n Entrer 0 pour joueur\n Entrer 1 pour ordinateur\n >>> ");
+    int answer2;
+    scanf("%d", &answer2);
+    getchar();
+    printf("\n");
+    while (answer2 != 0 && answer2 != 1){
+        printf("Veuillez entrer 0 pour que la faction 2 soit un joueur, 1 pour que ce soit un ordinateur.\n >>> ");
+        scanf("%d", &answer2);
+        getchar();
+    }
+    if (answer2 == 0){//Joueur
+        char* name2 = malloc(100*sizeof(char)); //taille de nom maximale : 100
+        printf("Veuillez entrer votre nom :\n >>> ");
+        fflush(stdout);
+        scanf("%s", name2);
+        set_name(&faction2, name2);
+    } else {//Ordinateur
+        set_name(&faction2, "Ordinateur 2");
+        set_is_bot(&faction2, 1);
+    }
+
 }

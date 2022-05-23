@@ -5,6 +5,7 @@
 #include "carte.h"
 #include "faction.h"
 #include "plateau.h"
+#include "bot.h"
 
 /*@requires : p est un plateau valide
 @assigns    : nothing
@@ -29,10 +30,10 @@ int mulligan_main(faction f, int already);
 carte choix_carte(faction f);
 
 /*@requires : f est valide, x et y des pointeurs valide, called indique si l'utilisateur s'est trompé.
-            si called!=0 l'utilisateur s'est trompé. premier=0 si on pose la première carte.
+            si called!=0 l'utilisateur s'est trompé. premier=0 si on pose la première carte. p est valide.
 @assigns    : pos
 @ensures    : demande à f les coordonnées (x,y) de l'endroit où elle souhaite poser la carte. Les coordonnées seront stockées dans x et y*/
-void position_carte(faction f, int* x,int* y,int called,int premier);
+void position_carte(faction f, int* x,int* y,int called,int premier, plateau p);
 
 /*@requires : c est valide
 @assigns    : nothing
@@ -56,4 +57,11 @@ int affiche_gagnant_manche(faction f1, faction f2);
  * @param p plateau valide
  */
 void print_coordonnees_dispo(plateau p);
+
+/**
+ * @brief Demande à l'utilisateur le mode de jeu : joueur vs joueur, joueur vs ordinateur, ou ordinateur vs ordinateur. Choisit ensuite les noms des factions. Modifie dans la mémoire les factions.
+ * @param pp pointeur vers un plateau valide
+ */
+void mode_de_jeu(plateau* pp);
+
 #endif
