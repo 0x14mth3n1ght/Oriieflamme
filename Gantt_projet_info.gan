@@ -1,9 +1,12 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Projet_Informatique_S2" company="" webLink="http://" view-date="2022-04-24" view-index="0" gantt-divider-location="340" resource-divider-location="300" version="2.8.11" locale="fr_FR">
-    <description><![CDATA[Organisation es tâche projet informatique]]></description>
+<?xml version="1.0" encoding="UTF-8"?><project name="Projet_Informatique_S2" company="" webLink="http://" view-date="2022-04-24" view-index="0" gantt-divider-location="322" resource-divider-location="300" version="3.2.3221" locale="fr_FR">
+    <description>
+        <![CDATA[Organisation es tâche projet informatique]]>
+    </description>
     <view zooming-state="default:2" id="gantt-chart">
         <field id="tpd3" name="Nom" width="200" order="0"/>
         <field id="tpd4" name="Date de début" width="61" order="1"/>
-        <field id="tpd5" name="Date de fin" width="60" order="2"/>
+        <field id="tpd5" name="Date de fin" width="45" order="2"/>
+        <option id="filter.completedTasks" value="false"/>
     </view>
     <view id="resource-table">
         <field id="0" name="Nom" width="210" order="0"/>
@@ -64,6 +67,7 @@
         </task>
         <task id="11" name="Lot_B" color="#8cb6ce" meeting="false" start="2022-03-21" duration="43" complete="0" thirdDate="2022-03-01" thirdDate-constraint="0" expand="true">
             <depend id="36" type="2" difference="0" hardness="Strong"/>
+            <depend id="58" type="2" difference="0" hardness="Strong"/>
             <task id="12" name="Tache_B_1 Aurélien" color="#8cb6ce" meeting="false" start="2022-03-21" duration="31" complete="0" thirdDate="2022-03-04" thirdDate-constraint="0" priority="0" expand="true">
                 <depend id="24" type="2" difference="0" hardness="Strong"/>
                 <task id="25" name="Makefile" color="#8cb6ce" meeting="false" start="2022-03-21" duration="31" complete="0" thirdDate="2022-04-01" thirdDate-constraint="0" expand="true"/>
@@ -111,6 +115,7 @@
                 <task id="57" name="aspect environnemental" color="#8cb6ce" meeting="false" start="2022-05-03" duration="21" complete="0" thirdDate="2022-04-29" thirdDate-constraint="0" expand="true"/>
             </task>
         </task>
+        <task id="58" name="Tache_C_2 Yanis" color="#8cb6ce" meeting="false" start="2022-05-03" duration="21" complete="0" thirdDate="2022-04-24" thirdDate-constraint="0" expand="true"/>
     </tasks>
     <resources>
         <resource id="0" name="Yanis Feuvre" function="Default:0" contacts="" phone=""/>
@@ -120,6 +125,9 @@
     </resources>
     <allocations>
         <allocation task-id="1" resource-id="0" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="24" resource-id="0" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="58" resource-id="0" function="Default:0" responsible="false" load="100.0"/>
+        <allocation task-id="20" resource-id="0" function="Default:0" responsible="false" load="100.0"/>
         <allocation task-id="4" resource-id="1" function="Default:0" responsible="false" load="100.0"/>
         <allocation task-id="35" resource-id="1" function="Default:0" responsible="true" load="100.0"/>
         <allocation task-id="2" resource-id="2" function="Default:0" responsible="false" load="100.0"/>
