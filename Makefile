@@ -1,4 +1,4 @@
-CC = gcc -Wall -Wextra -std=c99 -g
+CC = gcc -Wall -Wextra -std=c99 -g -fcommon
 
 jeu: main.o
 	$(CC) obj/*.o -o bin/jeu `sdl2-config --libs --cflags` -ggdb3 -O0 --std=c99 -Wall -lSDL2_image -lm
