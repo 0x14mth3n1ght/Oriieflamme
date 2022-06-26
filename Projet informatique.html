@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <title>Projet informatique</title>
+  <meta name="description" content="Projet informatique">
+  
+  <link rel="stylesheet" href="Projet%20informatique_fichiers/main.css">
+  
+</head>
+
+<body>
+
+  <div class="title">
+    PROJET INFORMATIQUE -  Sujet  </div>
+  <div class="person-information"> APPRENANT</div>
+
+  <hr class="separator">
+
+<hr class="separator"> 
+  <div class="main"> 
+
+  
+<h1>Le projet en quelques lignes</h1>
+
+<ul>
+  <li>Vous devez coder une application ou un jeu, décrit ci-après.</li>
+  <li>Vous êtes par groupe d'au plus 4 personnes. Cette limite est non 
+négociable. Allez sur la page des groupes pour choisir votre groupe. 
+Chaque groupe est encadré par une personne.</li>
+  <li>Votre projet est découpé en lots et en tâches. La partie gestion 
+de projet est aussi importante que la partie technique. Vous devez vous 
+organiser correctement. Les lots et les tâches sont détaillés plus bas 
+dans ce sujet.</li>
+  <li>Les encadrants utilisent ce site pour noter vos projets. Allez sur la page correspondante pour en savoir plus.</li>
+</ul>
+
+<hr>
+
+
+<div class="subject">
+
+
+
+<h1>Jeu à programmer</h1>
+<h2>Oriieflamme</h2>
+<p><em>L'ENSIIE vit dans la tourmente depuis la fermeture de la porte 
+interdimensionnelle. L'école doit maintenant réparer les dégâts 
+écologiques et sociaux causés par la guerre entre les ENSIIE. </em></p>
+<p><em>FISE, FISA, FC et Personnels administratifs et enseignants ont 
+été appelés pour gérer et optimiser les ressources de l'école. Mais les 
+divers débats sur la manière de procéder ont mené à la scission en 2 
+factions. Chacune doit maintenant montrer au directeur de quoi elles 
+sont capables et laquelle sera choisie pour terminer le travail... </em></p>
+<p>Vous devez coder un jeu de carte à 2 joueurs, chaque joueur ou 
+joueuse représentant une faction. La partie se joue en plusieurs 
+manches. A chaque manche, les factions posent à tour de rôle des cartes 
+pour proposer au directeur des idées. Les cartes sont ensuite révélées 
+une à une pour se confronter les unes aux autres.</p>
+<h2>Les manches</h2>
+<p>Le jeu se joue en deux ou trois manches. Chaque manche est remportée 
+par une des deux factions. La faction qui remporte deux manches gagne la
+ partie. Chaque manche se joue en 2 phases. </p>
+<h3>Première phase</h3>
+<h4>La main et la boîte à idées</h4>
+<p>Chaque faction dispose au début d'une manche d'une <em>boîte à idées</em>,
+ une pile de cartes mélangées. Elle y pioche les 8 premières cartes 
+qu'elle met dans sa main et qu'elle garde secrètes. Il n'y a pas de 
+système de pioche dans le jeu, ces 8 cartes seront les seules qu'elle 
+aura au cours de la manche. Cependant, si elle n'est pas satisfaite de 
+son tirage, elle peut, <strong>une fois dans l'ensemble des manches du jeu</strong>, remettre sa main dans la boîte à idées, la remélanger et repiocher 8 cartes.</p>
+<h4>Exposer ses idées sur le plateau</h4>
+<p>Au début de la première phase, une faction, au hasard, est désignée <em>Première faction</em>.
+ À la deuxième phase, l'autre faction est désignée première faction. À 
+la troisième phase s'il y en a une, la première faction est de nouveau 
+désignée au hasard. </p>
+<p>Le plateau de jeu est une grille 2D de taille infinie. À tour de 
+rôle, en commençant par la première faction, chaque faction dépose une 
+carte <em>face cachée</em> sur une case libre du plateau. La carte doit 
+toucher horizontalement ou verticalement une carte précédemment posée. 
+Ainsi, à l'issue de cette phase, 16 cartes ont été posées sur le plateau
+ et forment un ensemble connecté de cartes. Ces cartes sont posées faces
+ cachées de sorte qu'aucune faction ne sait quelles cartes ont été 
+posées par l'autre.</p>
+<h3>Deuxième phase</h3>
+<p>On retourne les cartes une par une. On commence avec les cartes de la
+ ligne la plus en haut, en retournant les cartes de gauche à droite sur 
+cette ligne. Puis les cartes de la ligne suivante, toujours de gauche à 
+droite, et ainsi de suite jusqu'à ce que toutes les cartes soient 
+retournées. Chaque carte dispose d'un pouvoir qui est activé au moment 
+où elle est retournée. Si le pouvoir ne peut être appliqué, alors rien 
+ne se passe.</p>
+<p>Certains pouvoirs permettent de supprimer des cartes du plateau ou de
+ les retourner sans appliquer leur effet. On ne retourne donc plus ces 
+cartes dans la suite du jeu. Certains pouvoirs ont pour effet de 
+remettre des cartes face cachée en haut du plateau. Dans ce cas, au tour
+ suivant, au lieu de retourner la carte qui aurait dû être retournée en 
+temps normal, on commence par retourner ces cartes. De manière général, 
+quand on doit choisir la prochaine carte à retourner, on choisi toujours
+ la carte non retournée qui est sur la ligne la plus en haut et le plus à
+ gauche possible sur cette ligne. Pour simplifier, cette carte sera 
+nommée <em>carte la plus en haut à gauche du plateau</em>.</p>
+<h4>Les points DDRS</h4>
+<p>Certaines cartes attribuent des points DDRS à une faction ou en 
+retire à la faction adverse. Il n'y a pas de limite au nombre de points 
+que peut avoir une faction dans une manche mais elle ne peut en avoir 
+moins de 0. Au début de chaque manche, les deux factions ont 0 points 
+DDRS. </p>
+<h4>Victoire de manche</h4>
+<p>La faction qui remporte la manche est celle qui a le plus de points 
+DDRS à l'issue de la manche. En cas d'égalité, la faction qui a posé la 
+carte qui est la plus en haut à gauche du plateau à l'issue de la manche
+ gagne <em>(attention, puisque certaines cartes peuvent être supprimées 
+ou déplacées, la carte la plus en haut à gauche à la fin de la manche 
+n'est pas nécessairement la carte qui a été retournée en premier durant 
+la manche)</em>. On remélange ensuite les cartes de chaque faction dans sa boîte à idée avant de démarrer la manche suivante.</p>
+<h2>Les cartes</h2>
+<p>Les deux factions disposent chacun d'une copie des mêmes cartes dans 
+leur boîte à idée. Chaque carte dispose d'un pouvoir spécial qui est 
+activé au moment où la carte est retournée sur le plateau. Enfin, chaque
+ carte peut apparaître plusieurs fois dans la boîte et donc être piochée
+ plusieurs fois. </p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Nom de la carte</th>
+<th>Effet de la carte</th>
+<th style="text-align: center;">Nombre d'occurences</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>FISE</strong></td>
+<td>La faction qui a posé cette carte gagne 1 point DDRS.</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>FISA</strong></td>
+<td>La faction qui a posé cette carte gagne 2 points DDRS si le nombre 
+de cartes retournées  sur le plateau (y compris celle-ci) est pair, et 0
+ sinon.</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>FC</strong></td>
+<td>La faction qui a posé cette carte gagne 4 points DDRS si au moins une autre carte FC est retournée sur le plateau et 0 sinon</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>EcologIIE</strong></td>
+<td>La faction qui a posé cette carte gagne 1 point DDRS par carte FISE/FISA/FC retournée.</td>
+<td style="text-align: center;">2</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>lIIEns</strong></td>
+<td>Prenez toutes les cartes FISE/FISA/FC retournées, retirez les du 
+plateau, mélangez les et reposez les face cachées une par une sur la 
+gauche de la carte la plus en haut à gauche du plateau, dans cet ordre. 
+Les prochaines cartes à être retournées sont ces cartes là.</td>
+<td style="text-align: center;">2</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Soirée sans alcool</strong></td>
+<td>Si au moins une carte alcool est retournée, supprimez toutes les 
+cartes FISE/FISA/FC retournées du plateau. Supprimez ensuite la première
+ et la dernière ligne du plateau. Sinon la faction qui a posé cette 
+carte gagne 5 points DDRS.</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Alcool</strong></td>
+<td>Supprimez du plateau toutes les cartes qui touchent cette carte-ci (mais laissez la carte Alcool sur le plateau).</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Café</strong></td>
+<td>Supprimez toutes les cartes Thé et Alcool retournées sur le plateau.
+  Si une carte Ecocup est retournée sur le plateau, la faction qui a 
+posé cette carte gagne 1 point DDRS. Sinon elle perd 1 point DDRS.</td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Thé</strong></td>
+<td>Supprimez toutes les cartes Café et Alcool retournées sur le 
+plateau. Si une carte Ecocup est retournée sur le plateau, la faction 
+qui a posé cette carte gagne 1 point DDRS. Sinon elle perd 1 point DDRS.</td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Ecocup</strong></td>
+<td>Cette carte est sans effet.</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Reprographie</strong></td>
+<td>La faction adverse de celle qui a posé cette carte perd 1 points 
+DDRS pour chaque paire de cartes retournées et identiques sur le 
+plateau. (S'il y a 3 cartes identiques, cela fait 3 paires).</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Isolation du bâtiment</strong></td>
+<td>Chaque faction gagne 1 point DDRS par carte non retournée et non supprimée du plateau qu'elle a posée sur le plateau.</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Parcours sobriété numérique</strong></td>
+<td>Retournez toutes les cartes non retournées les plus à gauche et à droite de chaque ligne, sans appliquer leur effet.</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Heures supplémentaires</strong></td>
+<td>La faction adverse de celle qui a posé cette carte perd 3 points 
+DDRS par carte Heures supplémentaires retournée sur le plateau (y 
+compris celle-ci).</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Kahina Bouchama</strong></td>
+<td>Supprimez une carte non retournée du plateau choisie au hasard.</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Kevin Goilard</strong></td>
+<td>Supprimez une ligne au hasard, la faction qui a posé cette carte gagne 2 points DDRS par carte supprimée ainsi.</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Massinissa Merabet</strong></td>
+<td>La faction qui a posé cette carte réactive l'effet de la dernière 
+carte retournée avant Massinissa Merabet, en faisant comme elle l'avait 
+posée elle-même, même si ce n'est pas le cas.</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Vitéra Y</strong></td>
+<td>La faction qui a le moins de points DDRS gagne 3 points DDRS.</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Jonas Senizergues</strong></td>
+<td>Supprimez toutes les cartes Heures supplémentaires retournées du plateau.</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Fetia Bannour</strong></td>
+<td>Si la carte Heures supplémentaires est retournée sur le plateau, 
+supprimez toutes les cartes de la ligne et de la colonne où est posée 
+cette carte (y compris celle-ci). Sinon la faction qui a posé cette 
+carte gagne 1 point DDRS par carte Catherine Dubois, Anne-Laure Ligozat,
+ Guillaume Burel, Christophe Mouilleron, Thomas Lim, Julien Forest et 
+Dimitri Watel retournée sur le plateau.</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Catherine Dubois</strong></td>
+<td>Supprimez la première et la dernière cartes de la ligne et de la colonne où est posée cette carte.</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Anne-Laure Ligozat</strong></td>
+<td>Pour chaque carte EcologIIE, Ecocup, Isolation du bâtiment et 
+parcours Sobriété numérique retournées, la faction qui a posé cette 
+carte gagne 3 points DDRS et la dernière carte non retournée du plateau 
+est supprimée.</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Guillaume Burel</strong></td>
+<td>Si la faction adverse de celle qui a posé cette carte a plus de points DDRS, la seconde lui vole 3 points DDRS.</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Christophe Mouilleron</strong></td>
+<td>Si la carte Heures supplémentaires est retournée sur le plateau, 
+supprimez toutes les cartes retournées du plateau sauf les cartes 
+Christophe Mouilleron et Heures supplémentaires.</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Thomas Lim</strong></td>
+<td>Si Julien Forest n'est par retourné sur le plateau, la faction qui a
+ posé cette carte gagne 3 points DDRS par carte FISE retournée sur le 
+plateau. Sinon la faction adverse perd 1 point DDRS par carte FISE 
+retournée sur le plateau.</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Julien Forest</strong></td>
+<td>La faction qui a posé cette carte gagne 6 points DDRS par carte FISE
+ retournée sur le plateau si au moins une carte Café est retournée sur 
+le plateau.</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Dimitri Watel</strong></td>
+<td>La faction qui a posé cette carte gagne 3 points DDRS par carte FISA
+ ou FC retournée sur le plateau si au moins une carte Thé est retournée 
+sur le plateau.</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Djibril-Aurélien Dembele-Cabot</strong></td>
+<td>S'il y a plus de 3 cartes retournées sur la ligne de cette carte, la faction qui a posé cette carte gagne 5 points DDRS.</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Eric Lejeune</strong></td>
+<td>Prenez au hasard 5 cartes retournées du plateau (ou toutes les 
+cartes retournées du plateau s'il y a moins de 5). Si une de ces cartes 
+est une carte Catherine Dubois, Anne-Laure Ligozat, Guillaume Burel, 
+Christophe Mouilleron, Thomas Lim, Julien Forest ou Dimitri Watel, 
+mélangez les et placez les à gauche de la case la plus à gauche de la 
+première ligne. Les prochaines cartes à être retournées sont ces cartes 
+là. Sinon, supprimez ces cartes du plateau.</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Lucienne Pacavé</strong></td>
+<td>S'il y a une carte FISA retournée dans la même ligne ou la même 
+colonne que cette carte, la faction qui a posé cette carte gagne 5 
+points DDRS.</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Katrin Salhab</strong></td>
+<td>Si les cartes Djibril-Aurélien Djembele-Cabeau, Eric Lejeune et 
+Lucienne Pacavé sont retournées, la faction qui a posé cette carte gagne
+ 10 points DDRS. Sinon, retournez toutes les cartes dans la même ligne 
+de cette carte sans appliquer leurs effets.</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Laurent Prével</strong></td>
+<td>Si Laurent Prével est la dernière carte retournée du plateau, la 
+faction qui a posé cette carte gagne la manche, quel que soit le nombre 
+de points DDRS des deux factions.</td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>  </div>
+
+
+  <br>
+  <br>
+  <br>
+
+  <hr>
+
+  La suite décrit le travail à réaliser. Votre travail s'effectue par groupe d'au plus 4 personnes.
+  <br>
+  <br>
+
+  Le travail que vous devez rendre est découpé en 3 lots. Chaque lot est
+ découpé en tâches, décrites ci-après avec chaque lot. Chaque tâche doit
+ être attribuée à une seule et unique personne de votre groupe. Ces 
+tâches doivent vous permettrent de vous répartir le travail en fonction 
+de vos compétences et de vos envies. Chaque lot doit être rendu à une 
+date précisée dans la page des évaluations. Toutes les tâches du lot 
+sont ensuite évaluées par votre encadrant. La page des évaluations 
+indique ce qui sera évalué, vous permettant ainsi de savoir ce qui est 
+attendu.
+
+  <br>
+  <br>
+  Votre travail devra être développé et rendu avec l'outil de versionnement <strong>git</strong>.
+ Cela vous permettra d'échanger facilement votre travail avec votre 
+encadrant(e) et les autres membres de votre groupe. Cela permettra 
+également à votre encadrant(e) de savoir qui a travaillé sur quelle 
+partie du code. 
+
+  <br>
+  <br>
+
+  Chaque personne de votre groupe devra travailler sur au moins 3 tâches
+ (tous lots confondus). Ainsi, un groupe n'ayant que 2 membres devra 
+rendre un travail correspondant à 6 tâches, moins conséquent qu'un 
+groupe ayant 3 membres et devant rendre un travail correspondant à 9 
+tâches. Il est tout à fait possible, tant que vous respectez cette 
+contrainte de ne pas rendre l'ensemble des lots décrits ci-dessous, mais
+ plus votre travail est complet, meilleure sera votre note.
+
+
+        <h1>Lot A</h1>
+      <p>Le lot A consiste en la mise en place des interfaces. A l'issue
+ de ce lot, vous n'aurez pas d'exécutable fonctionnel, juste une série 
+de fichiers <code>.h</code>, un <code>Makefile</code> et  le fichier <code>main.c</code> qui contiendra la fonction <code>main</code>. Vous ne devez coder aucune autre fonction que celle présente dans le fichier <code>main.c</code>. L'exécutable sera produit pour le lot B.</p>
+<p>Le premier lot consiste à réfléchir à la mise en place du projet et à préparer les interfaces de vos modules (fichiers <code>.h</code>).
+ Les interfaces ne contiennent que la définition de types (concrets ou 
+abstraits), les signatures des fonctions utiles et des commentaires 
+indiquant à quoi elles servent (mais pas comment elles seront codées). 
+Elle ne contiennent pas de code à proprement parler. Pour les produire, 
+il vous faut donc réfléchir, non pas à comment vous aller les implanter,
+ mais ce que vous voulez que les fonctions fassent. À l’aide de ces 
+signatures, vous pouvez programmer votre fichier principal <code>main.c</code> en le précompiler en fichier <code>main.o</code>. Ce fichier <code>main.c</code>
+ doit contenir le code du logiciel permettant à un joueur de lancer une 
+partie et de la jouer jusqu’à son terme selon le cahier des charges de 
+la section précédente.</p>
+<p>Vous ne serez pas en mesure de générer un exécutable à partir de <code>main.c</code>,
+ puisque les fonctions décrites dans les interfaces ne sont pas encore 
+implantées. Mais ça ne vous empêche pas de les utiliser dans le fichier <code>main.c</code>
+ puisque vous savez ce que ces fonctions sont sensées prendre en entrée 
+et produire en sortie. Votre fichier devra compiler avec la commande <code>gcc -Wall -Wextra -std=c99 -c main.c</code>. Si vos interfaces et votre fichier <code>main.c</code>
+ sont corrects, vous n’aurez plus qu’à implanter les fonctions des 
+interfaces pour avoir un programme fonctionnel. Ces tâches sont prévues 
+pour le lot B et le lot C. Cette méthode permet à votre chargé de 
+s'assurer que vous ne partez pas dans une direction hasardeuse au début 
+du projet. Le lot B constituera une implantation des fonctions de sorte à
+ jouer en console. Le lot C constituera une évolution du projet 
+(interface graphique, augmentation du nombre de fonctionnalités, ...).</p>
+<p>Il s'agit donc essentiellement d'une phase de réflexion pour poser 
+les bases de votre code. Il faut noter que l'architecture qui est 
+proposée ici n'est pas la seule solution mais c'est celle que vous 
+devrez respecter dans un premier temps même si elle ne vous semble pas 
+la plus adaptée ou la plus utile. Voyez cela comme si votre client vous 
+l'avait imposé. Sachez que plus vous avancerez dans le projet, plus vous
+ aurez de libertés. Vous pourrez lors du lot C changer complètement 
+cette architecture pour une autre qui vous convient mieux par exemple.</p>
+  Attribuez chacune des tâches suivantes à une (et une seule) personne 
+de votre groupe. Rappelez vous que chaque personne doit travailler sur 
+au moins 3 tâches en tout.
+
+            <h2>Tache A.1 - mise en place du projet et du main</h2>
+      <p>Votre rôle est <strong>central</strong> pour le Lot A. Toute défaillance sur cette tâche peut affecter tout le travail du groupe. Il est important de la considérer <strong>très</strong> sérieusement.</p>
+<p>Lisez les tâches de tous les membres du groupe avant de commencer. </p>
+<ul>
+<li>Mettez en place un nouveau dépôt git (n'utilisez pas le dépot du 
+mini-TP tutoriel) et invitez votre encadrant sur votre dépôt en tant que
+ rapporter ainsi que tous les membres du groupe en tant que developper. 
+Ce git contiendra votre code. Créez y une première branche lot_a. Le<br>
+dernier commit de cette branche contiendra le code du Lot A une fois 
+celui-ci terminé et déterminera la date à laquelle vous rendez votre 
+lot.</li>
+<li>Créer un projet avec GanttProject et poussez le sur votre dépot git,
+ dans la branche lot_a. Remplissez ce fichier avec les différentes 
+tâches du Lot A. Mettez des durées arbitraires sur vos tâches. Ajoutez 
+chaque membre du groupe comme ressource. Affectez ces membres aux tâches
+ après décision de qui effectue quelle tâche. Enfin, indiquez les 
+contraintes de précédences sur les tâches (quelle tâche doit être finie 
+pour pouvoir commencer une nouvelle tâche). Vous pouvez couper les<br>
+tâches en sous-taches sur vous voulez.</li>
+<li>Codez le fichier <code>main.c</code>. Ce fichier devra utiliser 
+toutes les fonctions et uniquement les fonctions qui auront été ajoutées
+ dans les interfaces remplies par les autres membres du groupe. <em>Remarque : ce fichier restera normalement inchangé tout le long du Lot B.</em> Une fois ce dernier terminé, <code>main.c</code> pourra être compilé en un exécutable qui fera tourner le projet.</li>
+<li>Vérifiez, une fois toutes les interfaces rédigées par les autres membres, que votre fichier <code>main.c</code> compile sous forme de fichier objet <code>main.o</code>.</li>
+<li>Faites valider le Lot A par votre encadrant une fois toutes les tâches terminées.</li>
+</ul>
+<p>Vous devez maintenir le dépot git à jour au fur et à mesure de 
+l’avancement de votre travail. Vos commits doivent avoir l’indication 
+Tâche A.1 (en plus d’un message décrivant le commit).</p>        
+            <h2>Tache A.2 - carte.h et faction.h</h2>
+      <p>Le fichier <code>carte.h</code> est en charge des informations 
+des cartes du jeu : en particulier son nom, sa description, le nombre 
+d’occurrences de cette carte. Il n'est pas responsable de la 
+manipulation des cartes (placer une carte sur le plateau ou dans la main
+ d'un joueur par exemple). </p>
+<p>Le fichier <code>faction.h</code> est en charge des informations et 
+des manipulations propres à une faction : son nom, le nombre de points 
+DDRS, sa main, sa pioche ... mais pas ce qui affecte les deux factions à
+ la fois. Par exemple ce n'est pas ce fichier qui décide quelle faction 
+joue en premier dans une manche. </p>
+<p>Ajoutez chacun des types et des fonctions suivants, avec les 
+paramètres qui vous semblent adéquats à vous et au responsable de la 
+tâche A.1 pour coder le fichier main.c. Documentez ensuite ces fonctions
+ et ces types suffisamment pour pouvoir les implanter facilement dans le
+ lot suivant et pour pouvoir les utiliser correctement dans le fichier <code>main.c</code>.</p>
+<p>Dans le fichier <code>carte.h</code>:</p>
+<ul>
+<li>un type <code>carte</code> (possiblement abstrait)</li>
+</ul>
+<p>Dans le fichier <code>faction.h</code>:</p>
+<ul>
+<li>un type <code>faction</code> (possiblement abstrait)</li>
+<li>une fonction permettant de savoir si une faction a utilisé l'option 
+de remélanger sa main et la boîte à idée et de repiocher des cartes.</li>
+<li>une fonction permettant à une faction d'utiliser l'option ci-dessus.</li>
+<li>une fonction permettant à une faction de vider sa main dans sa pioche.</li>
+<li>une fonction permettant à une faction de mélanger sa pioche. </li>
+<li>une fonction permettant à une faction de repiocher ses cartes. </li>
+</ul>
+<p><strong>Attention : aucune de ces fonctions n’échange d’informations 
+avec le joueur humain (pas de printf, pas de scanf). C’est le rôle de 
+interface.h.</strong></p>
+<p>On rappelle qu’un fichier .h ne contient pas de code, juste des signatures de fonctions.</p>
+<p>Vous devez maintenir le dépot git à jour au fur et à mesure de 
+l’avancement de votre travail. Vos commits doivent avoir l’indication 
+Tâche A.2 (en plus d’un message décrivant le commit).</p>        
+            <h2>Tache A.3 - plateau.h</h2>
+      <p>Le fichier <code>plateau.h</code> est en charge de tout ce qui 
+concerne le plateau et le déroulement de la partie : gérer les deux 
+factions, poser les cartes sur le plateau faces cachées, les retourner 
+et activer les effets. Il ne gère pas directement les cartes en main 
+d'une faction, les scores des factions, les points de manche, ... qui 
+sont gérés par le fichier <code>faction.h</code>. Il ne gère pas non plus les informations relatives aux cartes qui sont gérées par le fichier <code>carte.h</code>.</p>
+<p>Ajoutez chacun des types et des fonctions suivants, avec les 
+paramètres qui vous semblent adéquats à vous et au responsable de la 
+tâche A.1 pour coder le fichier main.c. Documentez ensuite ces fonctions
+ et ces types suffisamment pour pouvoir les implanter facilement dans le
+ lot suivant et pour pouvoir les utiliser correctement dans le fichier <code>main.c</code>.</p>
+<ul>
+<li>un type <code>plateau</code> (possiblement abstrait)</li>
+<li>une fonction pour créer un nouveau plateau (et les deux factions qui joueront dessus)</li>
+<li>une fonction pour libérer la mémoire associée à un plateau (et ses deux factions)</li>
+<li>une fonction pour initialiser une nouvelle manche du jeu, ou, le cas échéant, indiquer que le jeu est terminé</li>
+<li>une fonction qui renvoie la liste des deux factions du jeu</li>
+<li>une fonction pour permettre à une faction de poser une carte face cachée sur le plateau</li>
+<li>une fonction pour retourner la carte la plus en haut à gauche face visible et activer son effet, et renvoyer cette carte</li>
+</ul>
+<p><strong>Attention : aucune de ces fonctions n’échange d’informations 
+avec le joueur humain (pas de printf, pas de scanf). C’est le rôle de 
+interface.h.</strong></p>
+<p>On rappelle qu’un fichier .h ne contient pas de code, juste des signatures de fonctions.</p>
+<p>Vous devez maintenir le dépot git à jour au fur et à mesure de 
+l’avancement de votre travail. Vos commits doivent avoir l’indication 
+Tâche A.3 (en plus d’un message décrivant le commit).</p>        
+            <h2>Tache A.4 - interface.h</h2>
+      <p>Le fichier <code>interface.h</code> est en charge d'échanger 
+des informations avec les joueurs. Par exemple demander quelle carte la 
+faction veut poser sur le plateau et à quel endroit, ou afficher le 
+plateau de jeu en console. </p>
+<p>Ajoutez chacune des fonctions suivants, avec les paramètres qui vous 
+semblent adéquats à vous et au responsable de la tâche A.1 pour coder le
+ fichier main.c. Documentez ensuite ces fonctions et ces types 
+suffisamment pour pouvoir les implanter facilement dans le lot suivant 
+et pour pouvoir les utiliser correctement dans le fichier <code>main.c</code>.</p>
+<p>Dans le fichier <code>interface.h</code>:</p>
+<ul>
+<li>une fonction pour afficher le plateau</li>
+<li>une fonction pour afficher la main d'une faction</li>
+<li>une fonction pour demander à une faction si elle veut utiliser son 
+option permettant de vider sa main, de mélanger sa pioche et de 
+repiocher</li>
+<li>une fonction pour demander quelle carte de sa main la faction souhaite poser face cachée sur le plateau</li>
+<li>une fonction pour demander à quelle position la faction souhaite poser sa carte</li>
+<li>une fonction pour afficher les effets d'une carte qui vient d'être retournée sur le plateau</li>
+<li>une fonction pour afficher le vainqueur de la partie</li>
+</ul>
+<p><strong>Attention : aucune de ces fonctions ne modifie le plateau de 
+jeu ou les factions ou ne contient d'information sur les cartes. C’est 
+le rôle de plateau.h, faction.h ou carte.h.</strong></p>
+<p>On rappelle qu’un fichier .h ne contient pas de code, juste des signatures de fonctions.</p>
+<p>Vous devez maintenir le dépot git à jour au fur et à mesure de 
+l’avancement de votre travail. Vos commits doivent avoir l’indication 
+Tâche A.4 (en plus d’un message décrivant le commit).</p>        
+              <h1>Lot B</h1>
+      <p>Le but du Lot B est de permettre de compiler pleinement le fichier <code>main.c</code>
+ en un exécutable fonctionnel. Il faudra ici implanter toutes les 
+fonctions des interfaces créées dans le Lot A. Pour cela, un peu de 
+travail est nécessaire pour permettre une bonne communication entre les 
+différents modules du jeu. Par exemple, il est nécessaire d'accéder aux 
+informations des cartes pour pouvoir les afficher, ce qui n'a pas été 
+prévu dans le lot A puisque ce n'était pas nécessaire à la mise en place
+ du fichier <code>main.c</code>. Ce lot s'intéresse également aux 
+structures de données, à des fichiers de paramétrages (les constantes du
+ jeu) et aux tests unitaires.</p>
+<p>A l'issue de ce lot, vous pourrez normalement jouer à votre jeu.</p>
+<p>Vous ne devez plus déplacer la branche <code>lot_a</code>. Elle 
+restera définitivement pointée sur la fin de votre travail précédent 
+même si vous remettez en question ce travail ultérieurement.</p>
+  Attribuez chacune des tâches suivantes à une (et une seule) personne 
+de votre groupe. Rappelez vous que chaque personne doit travailler sur 
+au moins 3 tâches en tout.
+
+            <h2>Tache B.1 - organisation du lot et makefile</h2>
+      <p>Dans le dépot <strong>git</strong>, créez une deuxième branche <code>lot_b</code>.
+ Le dernier commit de cette branche contiendra le code du Lot B une fois
+ celui-ci terminé. Vous pouvez, vous ou les autres membres du groupe, si
+ vous le souhaitez, créer d’autres branches temporaires le temps de la 
+conception du Lot B.</p>
+<p>Créer un fichier <code>makefile</code> et quatre dossiers <code>src</code>, <code>obj</code>, <code>bin</code> et <code>headers</code> pour ranger vos fichiers. Remplissez le <code>makefile</code> pour qu’il permette, à terme, de compiler chacun des fichiers sources en fichier objet (.o) et le fichier <code>main.o</code> en un exécutable.</p>
+<p>Remplissez le fichier GanttProject avec les différentes tâches du Lot
+ B. Mettez des durées arbitraires sur vos tâches. Affectez les 
+ressources aux tâches après décision de qui effectue quelle tâche. </p>
+<p>Vous devez maintenir le dépot git à jour au fur et à mesure de 
+l’avancement de votre travail. Vos commits doivent avoir l’indication 
+Tâche B.1 (en plus d’un message décrivant le commit).</p>        
+            <h2>Tache B.2 - tests unitaires</h2>
+      <p>Créez sur le dépot <strong>git</strong> une branche <code>lot_b_test</code> dans laquelle vous effectuerez vos tests sans affecter le code du <code>lot_b</code>. Créez un fichier <code>test.c</code>
+ qui vous permettra de tester. N’hésitez par à modifier le code des 
+autres et à commiter, il n’y a pas de risque, vous êtes sur une autre 
+branche.</p>
+<p>Vous pouvez utiliser CUnit si vous le souhaitez.</p>
+<p>Effectuez les tests de l’exécutable. Remontez les bugs aux membres du
+ groupe pour déterminer qui doit corriger ce bug. Vous pouvez par 
+exemple commiter sur <code>lot_b_test</code> un code qui démontre le 
+bug. Pensez à garder une trace écrite de vos tests, en particulier si le
+ bug est visuel, s’il n’affecte pas le fonctionnement du jeu, s’il n’est
+ pas codable, vous pouvez simplement décrire le bug dans un fichier 
+texte que vous commiterez. Corrigez ou faites corriger ce bug sur la 
+branche <code>lot_b</code>. Puis fusionnez les deux branches et recommencez.</p>
+<p>Vos tests doivent inclure toutes les règles du jeu. Par exemple :</p>
+<ul>
+<li>Initialisation des factions</li>
+<li>Initialisation du plateau</li>
+<li>Ordre aléatoire des factions à la première manche</li>
+<li>Ordre déterministe des factions à la deuxième manche </li>
+<li>Présence ou non d'une troisième manche</li>
+<li>Option pour repiocher</li>
+<li>Poser une carte</li>
+<li>Placement des cartes sur l'espace 2D</li>
+<li>Appliquer les effets d'une carte (mise à jour des DDRS, impact sur 
+le plateau, ..., inutile de - tester toutes les cartes une par une)</li>
+<li>Vainqueur de manche</li>
+<li>Vainqueur du jeu</li>
+<li>Démarrage du jeu</li>
+<li>Fin du jeu</li>
+</ul>
+<p>Vous devez maintenir le dépot git à jour au fur et à mesure de 
+l’avancement de votre travail. Vos commits doivent avoir l’indication 
+Tâche B.2 (en plus d’un message décrivant le commit).</p>        
+            <h2>Tache B.3 - structures de données</h2>
+      <p><strong> Attention, on parle bien ici de structures de donnée (tableau, file, pile, ensemble, dictionnaire,<br>
+...), pas de structure au sens <code>struct</code> en C.</strong><br>
+Créez un nouveau fichier <code>structure.h</code> qui gérera toutes vos 
+structures de données. Ces structures géreront le contenu du plateau, la
+ liste des cartes en main, la liste des cartes dans la pioche et 
+d'autres données organisées du jeu que vous jugerez utiles. Ces 
+structures seront utilisées pour<br>
+implanter les types <code>carte</code>, <code>faction</code> et <code>plateau</code>.</p>
+<p>Il peut s’agit de simples tableaux ou de structures plus évoluées. 
+Ajoutez des types et des fonctions permettant de gérer ces structures 
+(ajout, suppression, lecture du i-eme élément, ...). Documentez ensuite 
+ces fonctions et implantez les dans un fichier structure.c.</p>
+<p>Vous devez maintenir le dépôt git à jour au fur et à mesure de 
+l’avancement de votre travail. Vos commits doivent avoir l’indication 
+Tâche B.3 (en plus d’un message décrivant le commit).</p>        
+            <h2>Tache B.4 - constantes et variables globales</h2>
+      <p>Les règles du jeu disposent de beaucoup de constantes. Placez dans les fichier <code>carte.h</code>, <code>plateau.h</code> et <code>faction.h</code> ou d'autres fichiers adaptés des constantes ou des variables globales contenant les différents paramètres du jeu. </p>
+<p>Par exemple le nombre de cartes dans la main d'une faction au début 
+d'une manche, le nom des différentes cartes, le nombre de manches 
+gagnantes, ... Ces constantes vous donneront plus facilement accès à ces
+ informations et de manière plus lisible.</p>
+<p>Vous devez maintenir le dépot git à jour au fur et à mesure de 
+l’avancement de votre travail. Vos commits doivent avoir l’indication 
+Tâche B.4 (en plus d’un message décrivant le commit).</p>        
+            <h2>Tache B.5 - getters et setters</h2>
+      <p>Implantez le type <code>carte</code> dans le fichier <code>carte.c</code>, le type <code>faction</code> dans le fichier <code>faction.c</code> et le type <code>plateau</code> dans le fichier <code>plateau.c</code>.</p>
+<p>Ajouter aux fichiers <code>.h</code> associés des fonctions utiles 
+pour récupérer des informations sur les cartes, les factions ou le 
+plateau : par exemple récupérer le nom d'une carte, récupérer ou 
+modifier le nombre de points DDRS d'une faction, savoir si la carte à la
+ ligne 3 et colonne 7 du plateau est face visible ou face cachée, ...</p>
+<p>Ces informations seront utilisées :</p>
+<ul>
+<li>par l'interface graphique</li>
+<li>par les autres fichiers lors du déroulement du jeu, en particulier lors de l'activation des effets d'une carte.</li>
+</ul>
+<p>Implantez ensuite ces fonctions dans les fichiers <code>.c</code> associés.</p>
+<p>Vous devez maintenir le dépot git à jour au fur et à mesure de 
+l’avancement de votre travail. Vos commits doivent avoir l’indication 
+Tâche B.5 (en plus d’un message décrivant le commit).</p>        
+            <h2>Tache B.6 - carte.c, faction.c, plateau.c</h2>
+      <p>Implantez toutes les fonctions restantes des fichiers <code>carte.h</code>, <code>faction.h</code> et <code>plateau.h</code> dans les <code>.c</code> associés, à l'exception des fonctions activant les effets d'une carte retournée qui seront codées dans la tâche B.7.</p>
+<p>Vous devez maintenir le dépot git à jour au fur et à mesure de 
+l’avancement de votre travail. Vos commits doivent avoir l’indication 
+Tâche B.6 (en plus d’un message décrivant le commit).</p>        
+            <h2>Tache B.7 - effets des cartes</h2>
+      <p>Implantez toutes les fonctions permettant d'activer une carte retournée face visible sur le plateau.</p>
+<p>Vous devez maintenir le dépot git à jour au fur et à mesure de 
+l’avancement de votre travail. Vos commits doivent avoir l’indication 
+Tâche B.7 (en plus d’un message décrivant le commit).</p>        
+            <h2>Tache B.8 - interface</h2>
+      <p>Implantez toutes les fonctions du fichier <code>interface.h</code> dans le fichier <code>interface.c</code>.</p>
+<p><em>Conseil : contentez vous dans un premier temps d’un affichage 
+simple. Quand il fonctionnera, vous pourrez le faire évoluer vers une 
+esthétique de meilleure qualité.</em></p>
+<p>Vous devez maintenir le dépot git à jour au fur et à mesure de 
+l’avancement de votre travail. Vos commits doivent avoir l’indication 
+Tâche B.8 (en plus d’un message décrivant le commit).</p>        
+              <h1>Lot C</h1>
+      <p>Le Lot C est complètement libre. Rédigez un petit rapport ou 
+présentez oralement votre projet au chargé de projet, selon ce que vous 
+et lui préférez.</p>
+<p>Voici quelques idées :</p>
+<ul>
+<li>Vous pouvez tenter de mesurer l’impact environnemental de votre 
+code. Par exemple en observant sa consommation mémoire avec top ou 
+valgrind, le temps CPU utilisé avec time, ou les lectures écritures sur 
+le disque avec l’outil iotop. Vous pouvez aller à fond et regarder la 
+consommation électrique de la machine pendant l’exécution du jeu, mais 
+il vous faut un wattmètre.</li>
+<li>Vous pouvez utiliser une bibliothèque d’interface graphique pour passer d’un jeu en console à un jeu graphique.</li>
+<li>Vous pouvez passer le jeu à un jeu en réseau</li>
+<li>Vous pouvez changer des règles. Par exemple créez des nouvelles 
+cartes, ajouter des joueurs, ... Les changements doivent être 
+drastiques. Une modification mineure ne sera pas une contribution très 
+intéressante.</li>
+</ul>
+<p>Organisez votre Lot en tâches, répartissez les tâches comme dans les autres lots.<br>
+Vous devez maintenir le dépot git à jour au fur et à mesure de l’avancement de votre travail.</p>
+  Attribuez chacune des tâches suivantes à une (et une seule) personne 
+de votre groupe. Rappelez vous que chaque personne doit travailler sur 
+au moins 3 tâches en tout.
+
+            <h2>Tache C.1</h2>
+      <p>Tache libre</p>        
+            <h2>Tache C.2</h2>
+      <p>Tache libre</p>        
+            <h2>Tache C.3</h2>
+      <p>Tache libre</p>        
+            <h2>Tache C.4</h2>
+      <p>Tache libre</p>        
+        </div>
+
+<hr>
+
+<div class="copyright">Copyright © 2021</div>
+
+
+
+
+
+
+
+</body></html>
+<!-- LICENSES DES BIBLIOTHEQUES EXTERNES UTILISEES POUR CE SITE WEB -->
+<!-- 
+
+  ##### Bibliothèque Parsedown #####
+
+Source : https://github.com/erusev/parsedown
+License: 
+
+
+The MIT License (MIT)
+
+Copyright (c) 2013-2018 Emanuil Rusev, erusev.com
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+  -->
