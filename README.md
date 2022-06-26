@@ -31,7 +31,7 @@ Amusez vous!!
 
 ## Installation bibliothèques nécessaires
 
-Tout d'abord il faut installer SDL. Pour ce faire sur Linux/Unix il faut éxécuter ses lignes de code dans un terminal:
+Tout d'abord il faut installer SDL. Pour se faire sur Linux/Unix il faut éxécuter:
 
     ```
     git clone https://github.com/libsdl-org/SDL
@@ -43,9 +43,9 @@ Tout d'abord il faut installer SDL. Pour ce faire sur Linux/Unix il faut éxécu
     sudo make install   
     ```
 
-Puis il faut installer sdl_image. Sur Linux/Unix il suffit de faire:
+Puis il faut installer sdl_image:
 
     ```
-    sudo apt update
-    sudo apt install libsdl2-image-dev
+    sudo apt update     #sudo pacman -Syu
+    sudo apt install libsdl2-image-dev  #sudo pacman -S sdl2
     ```
