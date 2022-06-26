@@ -5,4 +5,5 @@ Pour jouer au jeu effectuez:
 
 ```
 git checkout Lot_C
-make```
+make
+```
