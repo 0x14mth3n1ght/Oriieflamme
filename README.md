@@ -21,7 +21,7 @@ y (Ordonnée)
 > La faction (le joueur) qui débute est définie de façon aléatoire.
 
         
-Appuyer sur la touche entrée sur le tableau après chaque action pour continuer.
+Appuyez sur la touche entrée sur le tableau après chaque action pour continuer.
 
 
 
@@ -31,7 +31,7 @@ Amusez vous!!
 
 ## Installation bibliothèques nécessaires
 
-Tout d'abord il faut installer SDL. Pour se faire sur Linux/Unix il faut éxécuter:
+Tout d'abord il faut installer SDL. Pour ce faire sur Linux/Unix il faut éxécuter:
 
     ```
     git clone https://github.com/libsdl-org/SDL
