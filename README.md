@@ -21,7 +21,7 @@ y (Ordonnée)
 > La faction (le joueur) qui débute est définie de façon aléatoire.
 
         
-
+Appuyer sur la touche entrée sur le tableau après chaque action pour continuer.
 
 
 
