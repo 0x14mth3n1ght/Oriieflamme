@@ -4,7 +4,7 @@ Afin de lancer Oriieflamme: La Grande Guerre DDRS :
 - taper la commande `make`
 - executer le jeu grâce à la commande `./bin/jeu`
 
-Quelques petites précision avant de vous lancer dans cette guerre de Développement Durable et de Responsabilité Sociétale :
+Quelques petites précisions avant de vous lancer dans cette guerre de Développement Durable et de Responsabilité Sociétale :
 
 Le système de coordonnées du plateau fonctionne ainsi :
 
